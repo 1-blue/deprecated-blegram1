@@ -1,0 +1,21 @@
+body .Toastify__toast {
+  border-radius: 0.2em;
+  box-shadow: 4px 4px 16px black;
+}
+
+body .Toastify__toast-body > div:last-child {
+  white-space: pre-wrap;
+  line-height: 1.2;
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 486px) {
+  body .Toastify__toast {
+    width: 80vw;
+    min-width: 200px;
+    max-width: 300px;
+    
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+}

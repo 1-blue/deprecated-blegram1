@@ -1,4 +1,5 @@
 export * from "./size";
+export * from "./validate";
 
 /**
  * 스로틀링 헬퍼 함수
