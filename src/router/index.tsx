@@ -1,9 +1,8 @@
 // type
-import type { NavRouter } from "@src/types";
+import type { GetNavRouterHandler, RouterElement } from "@src/types";
 
-// TODO: 로그인 여부에 따라 다르게 변경
-/** 2023/03/24 네비게이션 라우팅에 사용하는 변수 - by 1-blue */
-export const navRouter: NavRouter = [
+/** 2023/03/24 - 네비게이션 라우팅에 사용하는 변수 ( 기본 ) - by 1-blue */
+const navRouter: RouterElement[] = [
   { path: "/", label: "메인", icon: "home", withAuth: false },
   {
     path: "/search",
@@ -23,10 +22,30 @@ export const navRouter: NavRouter = [
     icon: "bell",
     withAuth: false,
   },
-  {
-    path: "/login",
-    label: "로그인",
-    icon: "arrow-right-on-rectangle",
-    withAuth: false,
-  },
 ];
+
+/** 2023/03/27 - 로그인 여부에 따라 다른 네비게이션 바를 리턴하는 함수 - by 1-blue */
+export const getNavRouter: GetNavRouterHandler = (name) => {
+  const myNavRouter = [...navRouter];
+
+  // 로그인한 경우
+  if (name) {
+    myNavRouter.push({
+      path: "/" + name,
+      label: "내 정보",
+      icon: "user",
+      withAuth: false,
+    });
+  }
+  // 로그인 안 한 경우
+  else {
+    myNavRouter.push({
+      path: "/login",
+      label: "로그인",
+      icon: "arrow-right-on-rectangle",
+      withAuth: false,
+    });
+  }
+
+  return myNavRouter;
+};

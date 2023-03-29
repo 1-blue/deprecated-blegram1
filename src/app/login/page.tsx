@@ -1,22 +1,28 @@
 "use client";
 
-import { FormEventHandler, useCallback } from "react";
+import { useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+
+// api
+import { apiServiceAuth } from "@src/apis";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
+import Logo from "@src/components/common/Logo";
 
 // style
 import StyledLogInForm from "./style";
 
 // type
 import type { LogInForm } from "@src/types";
-import Logo from "@src/components/common/Logo";
-import { apiServiceAuth } from "@src/apis";
 
 /** 2023/03/24 - 로그인 페이지 - by 1-blue */
 const LogInPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -24,16 +30,28 @@ const LogInPage = () => {
   } = useForm<LogInForm>();
 
   /** 2023/03/25 - 로그인 수행 핸들러 - by 1-blue */
-  const onLogIn: FormEventHandler<HTMLFormElement> = handleSubmit(
-    useCallback(async (body) => {
-      try {
-        const { data } = await apiServiceAuth.apiLogIn(body);
+  const onLogIn: React.FormEventHandler<HTMLFormElement> = handleSubmit(
+    useCallback(
+      async (body) => {
+        try {
+          const { message } = await apiServiceAuth.apiLogIn(body);
 
-        console.log("data >> ", data);
-      } catch (error) {
-        console.error(error);
-      }
-    }, [])
+          toast.success(message);
+          router.replace("/");
+        } catch (error) {
+          let message = "알 수 없는 오류가 발생했습니다.";
+
+          if (error instanceof AxiosError) {
+            message = error.response?.data.message;
+          } else if (error instanceof Error) {
+            message = error.message;
+          }
+
+          toast.warning(message);
+        }
+      },
+      [router]
+    )
   );
 
   return (

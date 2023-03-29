@@ -1,8 +1,13 @@
 "use client";
 
+import { Flip, ToastContainer } from "react-toastify";
+
 import StyledComponentsRegistry from "@src/lib/registry";
 import Provider from "@src/providers/MyProvider";
 import Layout from "@src/layout/Layout";
+
+import "react-toastify/dist/ReactToastify.css";
+import "@src/css/react-toastify.css";
 
 /** 2023/03/24 - Root Layout - by 1-blue */
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -38,6 +43,14 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       <body>
         <StyledComponentsRegistry>
+          <ToastContainer
+            theme="dark"
+            hideProgressBar
+            autoClose={2000}
+            position="top-center"
+            transition={Flip}
+          />
+
           <Provider>
             <Layout>{children}</Layout>
           </Provider>

@@ -14,4 +14,5 @@ export type IconShape =
   | "chat-bubble-bottom-center-text"
   | "bell"
   | "plus-circle"
-  | "arrow-right-on-rectangle";
+  | "arrow-right-on-rectangle"
+  | "user";

@@ -1,7 +1,10 @@
 "use client";
 
 import { FormEventHandler, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 // util
 import { getRegExp } from "@src/utils";
@@ -19,9 +22,10 @@ import StyledSignUpForm from "./style";
 // type
 import type { SignUpForm } from "@src/types";
 
-// TODO: 배포전에 validate 주석 해제하기
+// FIXME: 배포전에 validate 주석 해제하기
 /** 2023/03/25 - 회원가입 페이지 - by 1-blue */
 const SignUpPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,17 +36,29 @@ const SignUpPage = () => {
 
   /** 2023/03/25 - 회원가입 수행 핸들러 - by 1-blue */
   const onSignUp: FormEventHandler<HTMLFormElement> = handleSubmit(
-    useCallback(async (body) => {
-      console.log("body >> ", body);
+    useCallback(
+      async ({ passwordCheck, ...body }) => {
+        try {
+          // TODO: 아바타(이미지) 먼저 등록
 
-      try {
-        const { data } = await apiServiceAuth.apiSignUp(body);
+          const { message } = await apiServiceAuth.apiSignUp(body);
 
-        console.log("data >> ", data);
-      } catch (error) {
-        console.error(error);
-      }
-    }, [])
+          toast.success(message);
+          router.replace("/");
+        } catch (error) {
+          let message = "알 수 없는 오류가 발생했습니다.";
+
+          if (error instanceof AxiosError) {
+            message = error.response?.data.message;
+          } else if (error instanceof Error) {
+            message = error.message;
+          }
+
+          toast.warning(message);
+        }
+      },
+      [router]
+    )
   );
 
   /** 2023/03/25 - 비밀번호 확인에 사용 - by 1-blue */

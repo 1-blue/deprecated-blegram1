@@ -8,10 +8,11 @@ import { hashing } from "@src/lib/auth";
 // type
 import type { NextApiHandler } from "next";
 import type { SignUpForm } from "@src/types";
-type SignUpBody = SignUpForm;
+import type { ApiSignUpResponse } from "@src/types/api";
+interface SignUpBody extends SignUpForm {}
 
 /** 2023/03/26 - 회원가입 - by 1-blue */
-const handler: NextApiHandler = async (req, res) => {
+const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
   try {
     // 회원가입
     if (req.method === "POST") {
@@ -40,16 +41,10 @@ const handler: NextApiHandler = async (req, res) => {
       const hashedPassword = await hashing(password);
 
       // 유저 생성
-      const createdUser = await prisma.user.create({
-        data: {
-          ...body,
-          password: hashedPassword,
-        },
-      });
+      await prisma.user.create({ data: { ...body, password: hashedPassword } });
 
       return res.status(201).json({
         message: "회원가입을 성공했습니다.\n로그인 페이지로 이동됩니다.",
-        createdUser,
       });
     }
   } catch (error) {

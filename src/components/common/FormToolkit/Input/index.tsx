@@ -5,7 +5,7 @@ import StyledInput from "./style";
 
 // type
 import type { UseFormRegister } from "react-hook-form";
-import type { LoginForm, SignUpForm } from "@src/types";
+import type { LogInForm, SignUpForm } from "@src/types";
 
 interface Props {
   id: string;
@@ -21,7 +21,7 @@ const Input = React.forwardRef<
   Props &
     (
       | ReturnType<UseFormRegister<SignUpForm>>
-      | ReturnType<UseFormRegister<LoginForm>>
+      | ReturnType<UseFormRegister<LogInForm>>
     )
 >(({ id, type, placeholder, subText, ...props }, ref) => (
   <StyledInput>

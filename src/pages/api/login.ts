@@ -13,9 +13,10 @@ import { generateCookie } from "@src/utils/cookie";
 // type
 import type { NextApiHandler } from "next";
 import type { LogInForm } from "@src/types";
-type LogInBody = LogInForm;
+import type { ApiLogInResponse } from "@src/types/api";
+interface LogInBody extends LogInForm {}
 
-const handler: NextApiHandler = async (req, res) => {
+const handler: NextApiHandler<ApiLogInResponse> = async (req, res) => {
   try {
     // 로그인
     if (req.method === "POST") {
@@ -26,8 +27,6 @@ const handler: NextApiHandler = async (req, res) => {
         where: { id },
         select: { idx: true, password: true },
       });
-
-      console.log("id >> ", exUser);
 
       // 아이디에 해당하는 유저가 존재하지 않음
       if (!exUser)
@@ -52,8 +51,9 @@ const handler: NextApiHandler = async (req, res) => {
         generateCookie("brt", refreshToken, 1000 * 60 * 60 * 24 * 7),
       ]);
 
-      // 유저 정보 반환 엔드 포인트로 리다이렉트
-      res.status(302).redirect("/api/me");
+      return res
+        .status(200)
+        .json({ message: "로그인에 성공했습니다.\n메인 페이지로 이동됩니다." });
     }
   } catch (error) {
     console.error("/api/login error >> ", error);
