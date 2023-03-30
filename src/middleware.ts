@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /** 2023/03/27 - 로그인 후 접근 가능한 URL - by 1-blue */
-const authURLs = ["/dm"];
+const authURLs = ["/dm", "/update"];
 /** 2023/03/27 - 로그인 후 접근 불가능한 URL - by 1-blue */
 const nonAuthURLs = ["/login", "/signup"];
 

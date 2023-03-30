@@ -5,7 +5,7 @@ import StyledTextarea from "./style";
 
 // type
 import type { UseFormRegister } from "react-hook-form";
-import type { SignUpForm } from "@src/types";
+import type { SignUpForm, ProfileUpdateForm } from "@src/types";
 
 interface Props {
   id: string;
@@ -17,7 +17,11 @@ interface Props {
 /** 2023/03/25 - Textarea 컴포넌트 - by 1-blue */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
-  Props & ReturnType<UseFormRegister<SignUpForm>>
+  Props &
+    (
+      | ReturnType<UseFormRegister<SignUpForm>>
+      | ReturnType<UseFormRegister<ProfileUpdateForm>>
+    )
 >(({ id, placeholder, subText, ...props }, ref) => {
   return (
     <StyledTextarea>
