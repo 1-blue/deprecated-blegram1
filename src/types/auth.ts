@@ -20,6 +20,13 @@ export interface LogInForm {
   password: string;
 }
 
-/** 2023/03/29 - 프로필 수정 타입 - by 1-blue */
+/** 2023/03/29 - 프로필 수정 요청 타입 - by 1-blue */
 export interface ProfileUpdateForm
   extends Omit<User, "id" | "password" | "birthday"> {}
+
+/** 2023/03/31 - 비밀번호 수정 요청 타입 - by 1-blue */
+export interface PasswordUpdateForm {
+  currentPassword: string;
+  password: string;
+  passwordCheck: string;
+}

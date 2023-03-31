@@ -6,6 +6,8 @@ import type {
   ApiFetchMeResponse,
   ApiUpdateMeHandler,
   ApiUpdateMeResponse,
+  ApiUpdatePasswordHandler,
+  ApiUpdatePasswordResponse,
 } from "@src/types/api";
 
 /** 2023/03/16 - 로그인한 유저 정보 가져오기 요청 - by 1-blue */
@@ -17,9 +19,17 @@ const apiFetchMe: ApiFetchMeHandler = async () => {
 
 /** 2023/03/30 - 로그인한 유저 정보 수정 요청 - by 1-blue */
 const apiUpdateMe: ApiUpdateMeHandler = async (body) => {
-  const { data } = await serverInstance.patch<ApiUpdateMeResponse>("/me", {
-    body,
-  });
+  const { data } = await serverInstance.patch<ApiUpdateMeResponse>("/me", body);
+
+  return data;
+};
+
+/** 2023/03/31 - 로그인한 유저 비밀번호 수정 요청 - by 1-blue */
+const apiUpdatePassword: ApiUpdatePasswordHandler = async (body) => {
+  const { data } = await serverInstance.patch<ApiUpdatePasswordResponse>(
+    "/me/password",
+    body
+  );
 
   return data;
 };
@@ -30,4 +40,6 @@ export const apiServiceMe = {
   apiFetchMe,
   /** 2023/03/30 - 로그인한 유저 정보 수정 요청 - by 1-blue */
   apiUpdateMe,
+  /** 2023/03/31 - 로그인한 유저 비밀번호 수정 요청 - by 1-blue */
+  apiUpdatePassword,
 };
