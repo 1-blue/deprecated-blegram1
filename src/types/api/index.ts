@@ -4,3 +4,5 @@ export type ApiResponse<T = unknown> = { message: string } & T;
 export * from "./auth";
 export * from "./me";
 export * from "./user";
+export * from "./photo";
+export * from "./aws";
