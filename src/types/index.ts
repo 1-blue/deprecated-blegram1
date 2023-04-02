@@ -18,4 +18,5 @@ export type IconShape =
   | "arrow-right-on-rectangle"
   | "user"
   | "plus"
-  | "arrow-path";
+  | "arrow-path"
+  | "chevron-double-down";
