@@ -10,47 +10,7 @@ const StyledProfile = styled.article`
     margin-left: 2em;
   }
 
-  /** 프로필 이미지 */
-  & > button {
-    & > figure {
-      width: 120px;
-      height: 120px;
-
-      border-radius: 50%;
-    }
-  }
-
-  /** 프로필 이미지 수정/취소 모달 */
-  & > aside {
-    position: fixed;
-    bottom: 10vh;
-    margin: 0 auto;
-    padding: 0.4em 0.2em;
-
-    border-radius: 0.2em;
-
-    color: ${({ theme }) => theme.colors.bg};
-    background-color: ${({ theme }) => theme.colors.fg};
-
-    /** 프로필 이미지 수정/취소 버튼 */
-    & > button[type="button"] {
-      padding: 0.4em 0.5em;
-
-      font-size: 0.9rem;
-      font-weight: bold;
-
-      border-radius: 0.2em;
-      color: ${({ theme }) => theme.colors.bg};
-
-      transition: all 0.4s;
-
-      &:hover {
-        color: ${({ theme }) => theme.colors.fg};
-        background-color: ${({ theme }) => theme.colors.bg};
-      }
-    }
-  }
-
+  /** 유저 정보 및 기능 버튼들 */
   & > section {
     display: flex;
     flex-flow: column nowrap;
@@ -66,7 +26,8 @@ const StyledProfile = styled.article`
       }
     }
 
-    & > .rename-0 {
+    /** 유저 이름 / 프로필 편집 / 로그아웃 */
+    & > .wrapper-header {
       & > li {
         /* 이름 */
         & > h2 {
@@ -97,9 +58,20 @@ const StyledProfile = styled.article`
       }
     }
 
-    & > .rename-2 {
+    /** 게시물 / 팔로잉 / 팔로워 버튼 */
+    & > .wrapper-buttons {
+    }
+
+    /** 닉네임 / 자기소개 */
+    & > .wrapper-info {
+      & > h2 {
+        font-size: 0.95em;
+        font-weight: bold;
+        margin-bottom: 0.2em;
+      }
+
       & > p {
-        font-size: 0.9em;
+        font-size: 0.8em;
         line-height: 1.4;
         white-space: pre-line;
       }

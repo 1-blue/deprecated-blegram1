@@ -16,4 +16,6 @@ export type IconShape =
   | "bell"
   | "plus-circle"
   | "arrow-right-on-rectangle"
-  | "user";
+  | "user"
+  | "plus"
+  | "arrow-path";

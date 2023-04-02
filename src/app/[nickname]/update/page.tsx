@@ -2,8 +2,11 @@
 
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
+// api
+import { apiServicePhoto } from "@src/apis";
 // util
 import { getRegExp } from "@src/utils";
 
@@ -11,6 +14,7 @@ import { getRegExp } from "@src/utils";
 import useMe from "@src/hooks/query/useMe";
 import useUser from "@src/hooks/query/useUser";
 import useUpdateMe from "@src/hooks/query/useUpdateMe";
+import useUpdateAvatar from "@src/hooks/query/useUpdateAvatar";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -35,6 +39,8 @@ const ProfileUpdate: React.FC<Props> = ({ params: { nickname } }) => {
   const { user, isFetchingUser } = useUser(nickname);
   /** 2023/03/30 - 로그인한 유저 정보 수정 뮤테이트 훅 - by 1-blue */
   const updateMeMudate = useUpdateMe();
+  /** 2023/04/02 - 프로필 이미지 서버에 업로드 훅 - by 1-blue */
+  const updateAvatarMutata = useUpdateAvatar();
 
   const {
     register,
@@ -82,15 +88,47 @@ const ProfileUpdate: React.FC<Props> = ({ params: { nickname } }) => {
     )
   );
 
+  /** 2023/04/02 - 이미지 등록 핸들러 - by 1-blue */
+  const onUploadAvatar = useCallback(
+    async (filelist: null | FileList) => {
+      if (!filelist) return;
+
+      // TODO: 이미지 업로드중인 경우 스피너 구현하기
+
+      // 서버에서 "presignedURL" 생성 후 가져오기
+      const { preSignedURL } = await apiServicePhoto.apiFetchPresignedURL({
+        name: filelist[0].name,
+      });
+
+      // 완성될 이미지 경로 얻기
+      const avatarPath = preSignedURL
+        .slice(0, preSignedURL.indexOf("?"))
+        .slice(preSignedURL.indexOf(process.env.NODE_ENV));
+
+      // 아바타 이미지 "S3"에 업로드
+      await apiServicePhoto.apiUploadPhoto({ file: filelist[0], preSignedURL });
+
+      // 아바타 이미지 경로 서버에 업로드
+      updateAvatarMutata({ avatar: avatarPath });
+    },
+    [updateAvatarMutata]
+  );
+
   // 데이터 패칭중인 경우 FIXME:
-  if (isFetchingUser) return <>로딩중...</>;
+  if (isFetchingMe || isFetchingUser) return <>로딩중...</>;
 
   // 유저 데이터가 없는 경우 FIXME:
-  if (!user) return <>유저 데이터가 없는 경우</>;
+  if (!me || !user) return <>유저 데이터가 없는 경우</>;
 
   return (
     <StyledProfileUpdatePage onSubmit={onSubmit}>
-      <figure className="avatar" />
+      <FormToolkit.SinglePhotoInput
+        width={160}
+        height={160}
+        src={user.avatar || "/photo/user.png"}
+        alt={`${user.nickname}님의 프로필 이미지`}
+        onUploadPhoto={onUploadAvatar}
+      />
 
       {/* 이름 */}
       <FormToolkit.Input
@@ -170,6 +208,9 @@ const ProfileUpdate: React.FC<Props> = ({ params: { nickname } }) => {
       />
       <br />
       <FormToolkit.Button type="submit">프로필 수정</FormToolkit.Button>
+
+      <br />
+      <Link href={`/${me.nickname}/update/password`}>비밀번호 수정</Link>
     </StyledProfileUpdatePage>
   );
 };

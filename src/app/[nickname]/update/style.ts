@@ -5,6 +5,10 @@ const StyledProfileUpdatePage = styled.form`
   min-height: calc(100vh - 80px);
   max-width: 468px;
 
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+
   padding: 1em;
   margin: 0 auto;
 
@@ -12,15 +16,20 @@ const StyledProfileUpdatePage = styled.form`
     margin-top: 0.4em;
   }
 
-  /* 아바타 */
-  & > .avatar {
-    margin: 0 auto;
+  /* 비밀번호 수정 */
+  & > a {
+    align-self: flex-end;
 
-    width: 160px;
-    height: 160px;
+    display: inline-block;
 
-    background-color: ${({ theme }) => theme.colors.indigo500};
-    border-radius: 50%;
+    font-size: 0.8rem;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
   }
 `;
 

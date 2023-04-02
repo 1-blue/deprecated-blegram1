@@ -1,6 +1,9 @@
 // prisma
 import { prisma } from "@src/prisma";
 
+// aws
+import { movePhoto } from "@src/aws";
+
 // lib
 import withAuthMiddleware from "@src/lib/middleware";
 
@@ -10,7 +13,6 @@ import type {
   ApiUpdatePhotoRequest,
   ApiUpdatePhotoResponse,
 } from "@src/types/api";
-import { movePhoto } from "@src/aws";
 
 /** 2023/04/01 - 프로필 이미지 업로드 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiUpdatePhotoResponse> = async (req, res) => {
@@ -23,7 +25,7 @@ const handler: NextApiHandler<ApiUpdatePhotoResponse> = async (req, res) => {
       const { avatar } = req.body as ApiUpdatePhotoRequest;
 
       // 기존 이미지가 있다면 제거로 이동
-      if (req.user.avatar) movePhoto(req.user.avatar);
+      if (req.user.avatar) await movePhoto(req.user.avatar);
 
       // 프로필 이미지 수정
       await prisma.user.update({
