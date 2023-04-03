@@ -2,6 +2,6 @@
 export const blurDataURL =
   "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88Pz/fwAJPAPHGezJpAAAAABJRU5ErkJggg==";
 
-/** 2023/04/01 - AWS-S3의 URL로 변환- by 1-blue */
+/** 2023/04/01 - AWS-S3의 URL로 변환 - by 1-blue */
 export const combinePhotoURL = (url: string) =>
   "https://blegram.s3.ap-northeast-2.amazonaws.com/" + url;

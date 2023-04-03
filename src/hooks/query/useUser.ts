@@ -20,7 +20,8 @@ interface UseUserHandler {
 const useUser: UseUserHandler = (nickname) => {
   const { data, isLoading } = useQuery<ApiFetchUserResponse>(
     [queryKeys.user, nickname],
-    () => apiServiceUser.apiFetchUser({ nickname })
+    () => apiServiceUser.apiFetchUser({ nickname }),
+    { retry: 2, refetchOnWindowFocus: false }
   );
 
   return { user: data?.user, isFetchingUser: isLoading };

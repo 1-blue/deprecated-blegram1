@@ -11,13 +11,17 @@ const StyledNavBar = styled.nav<StyledProps>`
   inset: 0;
   top: auto;
 
+  max-width: 1024px;
   width: 100%;
+  margin: 0 auto;
 
   display: flex;
   justify-content: space-between;
 
   color: ${({ theme }) => theme.colors.bg};
   background-color: ${({ theme }) => theme.colors.fg};
+
+  border-top: 2px solid ${({ theme }) => theme.colors.gray400};
 
   transform: translateY(${({ isUp }) => (isUp ? "100%" : "0%")});
   transform: translateY(${({ isBottom }) => isBottom && "0%"});

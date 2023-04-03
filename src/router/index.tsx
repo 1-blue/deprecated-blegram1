@@ -25,13 +25,13 @@ const navRouter: RouterElement[] = [
 ];
 
 /** 2023/03/27 - 로그인 여부에 따라 다른 네비게이션 바를 리턴하는 함수 - by 1-blue */
-export const getNavRouter: GetNavRouterHandler = (name) => {
+export const getNavRouter: GetNavRouterHandler = (nickname) => {
   const myNavRouter = [...navRouter];
 
   // 로그인한 경우
-  if (name) {
+  if (nickname) {
     myNavRouter.push({
-      path: "/" + name,
+      path: "/" + nickname,
       label: "내 정보",
       icon: "user",
       withAuth: false,

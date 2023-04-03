@@ -1,9 +1,12 @@
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 // api
 import { apiServiceAuth } from "@src/apis";
+
+// key
+import { queryKeys } from ".";
 
 // type
 import type { UseMutateFunction } from "react-query";
@@ -17,13 +20,18 @@ const useLogOut = (): UseMutateFunction<
   unknown
 > => {
   const router = useRouter();
-  const { mutate, isSuccess } = useMutation(apiServiceAuth.apiLogOut);
+  const queryClient = useQueryClient();
 
-  /** 2023/03/31 - 로그아웃 성공 시 로그인 페이지로 리다이렉트 - by 1-blue */
-  useEffect(
-    () => void (isSuccess && router.replace("/login")),
-    [isSuccess, router]
-  );
+  const { mutate } = useMutation(apiServiceAuth.apiLogOut, {
+    /** 2023/04/03 - 로그아웃 성공 시 캐시 초기화 및 로그인 페이지로 리다이렉트 - by 1-blue */
+    onSuccess(data, variables, context) {
+      queryClient.resetQueries([queryKeys.user, "me"]);
+
+      toast.success(data.message);
+
+      router.replace("/login");
+    },
+  });
 
   return mutate;
 };

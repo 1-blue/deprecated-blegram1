@@ -25,10 +25,10 @@ export const getRegExp: GetRegExpHandler = (type) => {
 
     case "phone":
       // 숫자만 11자리
-      return /[0-9]{11,11}/;
+      return /[0-9]{11}/;
 
     case "birthday":
       // 숫자만 8자리
-      return /[0-9]{8,8}/;
+      return /[0-9]{8}/;
   }
 };

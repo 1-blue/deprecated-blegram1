@@ -8,7 +8,7 @@ import withAuthMiddleware from "@src/lib/middleware";
 import type { NextApiHandler } from "next";
 import type { ApiFetchUserResponse } from "@src/types/api";
 
-/** 2023/03/29 - 특정 유저 정보 요청 - by 1-blue */
+/** 2023/03/29 - 특정 유저 정보 관련 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiFetchUserResponse> = async (req, res) => {
   try {
     // 특정 유저의 정보 요청

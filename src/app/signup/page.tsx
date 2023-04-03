@@ -1,16 +1,13 @@
 "use client";
 
-import { FormEventHandler, useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 
 // util
 import { getRegExp } from "@src/utils";
 
-// api
-import { apiServiceAuth } from "@src/apis";
+// hook
+import useSignUp from "@src/hooks/query/useSignUp";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -25,7 +22,6 @@ import type { SignUpForm } from "@src/types";
 // FIXME: 배포전에 validate 주석 해제하기
 /** 2023/03/25 - 회원가입 페이지 - by 1-blue */
 const SignUpPage = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -33,31 +29,14 @@ const SignUpPage = () => {
     watch,
     setValue,
   } = useForm<SignUpForm>();
+  /** 2023/03/30 - 회원가입 요청 뮤테이트를 얻는 훅 - by 1-blue */
+  const signUpMudate = useSignUp();
 
   /** 2023/03/25 - 회원가입 수행 핸들러 - by 1-blue */
-  const onSignUp: FormEventHandler<HTMLFormElement> = handleSubmit(
+  const onSignUp: React.FormEventHandler<HTMLFormElement> = handleSubmit(
     useCallback(
-      async ({ passwordCheck, ...body }) => {
-        try {
-          // TODO: 아바타(이미지) 먼저 등록
-
-          const { message } = await apiServiceAuth.apiSignUp(body);
-
-          toast.success(message);
-          router.replace("/");
-        } catch (error) {
-          let message = "알 수 없는 오류가 발생했습니다.";
-
-          if (error instanceof AxiosError) {
-            message = error.response?.data.message;
-          } else if (error instanceof Error) {
-            message = error.message;
-          }
-
-          toast.warning(message);
-        }
-      },
-      [router]
+      async ({ passwordCheck, ...body }) => signUpMudate(body),
+      [signUpMudate]
     )
   );
 
@@ -70,7 +49,8 @@ const SignUpPage = () => {
     setValue("id", "a");
     setValue("password", "a");
     setValue("passwordCheck", "a");
-    setValue("name", "1-blue");
+    setValue("name", "박상은");
+    setValue("nickname", "1-blue");
     setValue("email", "1-blue98@naver.com");
     setValue("phone", "01021038259");
     setValue("birthday", "19981106");
@@ -135,7 +115,21 @@ const SignUpPage = () => {
           required: "이름을 입력해주세요!",
           // maxLength: {
           //   value: 20,
-          //   message: "20자 이내로 입력해주세요.",
+          //   message: "20자 이내로 입력해주세요!",
+          // },
+        })}
+      />
+      {/* 별칭 */}
+      <FormToolkit.Input
+        id="nickname"
+        type="text"
+        placeholder="별칭을 입력해주세요."
+        subText={errors.nickname?.message}
+        {...register("nickname", {
+          required: "별칭을 입력해주세요!",
+          // maxLength: {
+          //   value: 30,
+          //   message: "30자 이내로 입력해주세요!",
           // },
         })}
       />
@@ -149,7 +143,7 @@ const SignUpPage = () => {
           required: "이메일을 입력해주세요!",
           // pattern: {
           //   value: getRegExp("email"),
-          //   message: "이메일 형식에 맞게 입력해 주세요.",
+          //   message: "이메일 형식에 맞게 입력해주세요!",
           // },
         })}
       />
@@ -163,7 +157,15 @@ const SignUpPage = () => {
           required: "휴대폰 번호를 입력해주세요!",
           // pattern: {
           //   value: getRegExp("phone"),
-          //   message: "숫자만 11자리 입력해 주세요.",
+          //   message: "숫자만 11자리 입력해주세요!",
+          // },
+          // minLength: {
+          //   value: 11,
+          //   message: "11자리를 입력해주세요!",
+          // },
+          // maxLength: {
+          //   value: 11,
+          //   message: "11자리를 입력해주세요!",
           // },
         })}
       />
@@ -171,13 +173,21 @@ const SignUpPage = () => {
       <FormToolkit.Input
         id="birthday"
         type="text"
-        placeholder="생년월일을 입력해 주세요. ( 19981106 )"
+        placeholder="생년월일을 입력해주세요. ( 19981106 )"
         subText={errors.birthday?.message}
         {...register("birthday", {
           required: "생년월일을 입력해주세요!",
           // pattern: {
           //   value: getRegExp("birthday"),
-          //   message: "숫자만 8자리 입력해 주세요.",
+          //   message: "숫자만 8자리 입력해주세요!",
+          // },
+          // minLength: {
+          //   value: 8,
+          //   message: "8자리를 입력해주세요!",
+          // },
+          // maxLength: {
+          //   value: 8,
+          //   message: "8자리를 입력해주세요!",
           // },
         })}
       />
@@ -189,7 +199,7 @@ const SignUpPage = () => {
         {...register("introduction", {
           // maxLength: {
           //   value: 100,
-          //   message: "100자 이내로 입력해주세요.",
+          //   message: "100자 이내로 입력해주세요!",
           // },
         })}
       />

@@ -35,4 +35,14 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+  html {
+    font-size: 16px;
+    ${({ theme }) => theme.util.scroll}
+  }
+
+  @media ${({ theme }) => theme.mediaSize.md} {
+    html {
+      font-size: 14px;
+    }
+  }
 `;

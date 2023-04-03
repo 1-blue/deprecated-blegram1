@@ -1,19 +1,11 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-/** 2023/04/02 - 이미지 업로드 컨펌 모달에 사용할 애니메이션 - by 1-blue */
-const modalFadeUp = keyframes`
-  0% {
-    opacity: 0.01;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-`;
+// type
+import type { Props } from ".";
+interface StyledProps extends Pick<Props, "width" | "height"> {}
 
 /** 2023/04/02 - 단일 이미지 입력받는 인풋 스타일 - by 1-blue */
-const StyledSinglePhotoInput = styled.button<{ width: number; height: number }>`
+const StyledSinglePhotoInput = styled.button<StyledProps>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
 
@@ -83,7 +75,7 @@ const StyledConfirmModal = styled.section`
   color: ${({ theme }) => theme.colors.bg};
   background-color: ${({ theme }) => theme.colors.fg};
 
-  animation: ${modalFadeUp} 1s;
+  animation: ${({ theme }) => theme.animation.fadeUp} 1s;
 
   /** 프로필 이미지 수정/취소 버튼 */
   & > button[type="button"] {

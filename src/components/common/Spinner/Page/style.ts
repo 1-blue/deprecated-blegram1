@@ -1,21 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0.01;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-const spin = keyframes`
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-`;
+import styled from "styled-components";
 
 /** 2023/04/02 - 페이지 전체를 가리는 스피너 컴포넌트 스타일 - by 1-blue */
 const StyledPage = styled.aside`
@@ -36,10 +19,10 @@ const StyledPage = styled.aside`
   fill: ${({ theme }) => theme.colors.main500};
 
   perspective: 800px;
-  animation: ${fadeIn} 0.6s;
+  animation: ${({ theme }) => theme.animation.fadeIn} 0.6s;
 
   & > svg {
-    animation: ${spin} 1.4s linear infinite;
+    animation: ${({ theme }) => theme.animation.spinY} 1.4s linear infinite;
   }
 `;
 

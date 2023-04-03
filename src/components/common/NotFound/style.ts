@@ -1,15 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const bounce = keyframes`
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-  }
-  50% {
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  }
-`;
+import styled from "styled-components";
 
 /** 2023/04/03 - 404 페이지 스타일 - by 1-blue */
 const StyledNotFound = styled.article`
@@ -55,7 +44,7 @@ const StyledNotFound = styled.article`
     align-items: center;
 
     & > svg {
-      animation: ${bounce} 1s infinite;
+      animation: ${({ theme }) => theme.animation.bounce} 1s infinite;
     }
 
     & > a {

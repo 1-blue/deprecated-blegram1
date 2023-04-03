@@ -11,7 +11,7 @@ import Icon from "@src/components/common/Icon";
 import StyledSinglePhotoInput, { StyledConfirmModal } from "./style";
 
 // type
-interface Props {
+export interface Props {
   width: number;
   height: number;
   src: string | null;
@@ -75,7 +75,7 @@ const SinglePhotoInput: React.FC<Props> = ({
   if (previewPhoto) path = previewPhoto;
   else if (src) {
     // "AWS-S3"에 업로드된 이미지인 경우
-    if (src.includes(process.env.NODE_ENV + "/images/"))
+    if (src.includes(process.env.NODE_ENV + "/photos/"))
       path = combinePhotoURL(src);
     // 다른곳에서 제공받은 이미지인 경우
     else path = src;

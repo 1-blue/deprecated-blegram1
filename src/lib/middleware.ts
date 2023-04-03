@@ -4,10 +4,11 @@ import { prisma } from "@src/prisma";
 import { generateAccessToken, verifyToken } from "@src/lib/auth";
 
 // util
-import { clearCookie, generateCookie } from "@src/utils/cookie";
+import { clearCookie, generateCookie } from "@src/utils";
 
 // type
 import type { NextApiHandler } from "next";
+import type { ApiResponse } from "@src/types/api";
 
 /** 2023/03/26 - HTTP Methods 타입 - by 1-blue */
 type Methods = "GET" | "POST" | "DELETE" | "PATCH";
@@ -18,7 +19,7 @@ interface AuthMiddlewareConfig {
   isAuth?: boolean;
 }
 interface WithAuthMiddleware {
-  (config: AuthMiddlewareConfig): NextApiHandler;
+  (config: AuthMiddlewareConfig): NextApiHandler<ApiResponse>;
 }
 
 // 2023/03/26 - method에 따른 라우팅을 쉽게 처리해주는 HOF + 접근 권한 확인 - by 1-blue
@@ -26,7 +27,11 @@ const withAuthMiddleware: WithAuthMiddleware =
   ({ methods, handler, isAuth = true }) =>
   async (req, res) => {
     // 정해진 메서드를 사용하지 않았다면
-    if (!methods.includes(req.method as Methods)) return res.status(405).end();
+    if (!methods.includes(req.method as Methods)) {
+      return res.status(405).json({
+        message: "가능한 요청이 아닙니다.\n확인후에 다시 시도해주세요!",
+      });
+    }
 
     // 로그인이 필요한 접근이라면 ( 토큰 검사 후 "req.user"에 로그인한 데이터 넣어주는 로직 )
     if (isAuth) {

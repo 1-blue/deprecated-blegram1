@@ -13,7 +13,7 @@ import type { ApiFetchPresignedURLHandler } from "@src/types/api";
 const convertS3ImagePath = (name: string) => {
   const [filename, ext] = name.split(".");
 
-  return `${process.env.NODE_ENV}/images/${filename}_${Date.now()}.${ext}`;
+  return `${process.env.NODE_ENV}/photos/${filename}_${Date.now()}.${ext}`;
 };
 
 /**

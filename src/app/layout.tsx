@@ -46,9 +46,10 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           <ToastContainer
             theme="dark"
             hideProgressBar
-            autoClose={2000}
+            autoClose={1500}
             position="top-center"
             transition={Flip}
+            pauseOnFocusLoss={false}
           />
 
           <Provider>

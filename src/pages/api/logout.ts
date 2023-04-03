@@ -2,12 +2,13 @@
 import withAuthMiddleware from "@src/lib/middleware";
 
 // util
-import { clearCookie } from "@src/utils/cookie";
+import { clearCookie } from "@src/utils";
 
 // type
 import type { NextApiHandler } from "next";
 import type { ApiLogOutResponse } from "@src/types/api";
 
+/** 2023/03/31 - 로그아웃 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiLogOutResponse> = async (req, res) => {
   try {
     // 쿠키에서 인증/리프래쉬 토큰 갖고오기

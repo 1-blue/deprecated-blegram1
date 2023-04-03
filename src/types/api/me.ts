@@ -6,8 +6,9 @@ import type { PasswordUpdateForm, ProfileUpdateForm } from "@src/types";
 /** 2023/03/26 - 로그인한 유저 정보 가져오기 요청 송신 타입 - by 1-blue */
 export interface ApiFetchMeRequest {}
 /** 2023/03/26 - 로그인한 유저 정보 가져오기 요청 수신 타입 - by 1-blue */
-export interface ApiFetchMeResponse
-  extends ApiResponse<{ user: Omit<User, "password"> }> {}
+export interface ApiFetchMeResponse extends ApiResponse {
+  user: Omit<User, "password">;
+}
 /** 2023/03/26 - 로그인한 유저 정보 가져오기 요청 핸들러 - by 1-blue */
 export interface ApiFetchMeHandler {
   (): Promise<ApiFetchMeResponse>;
