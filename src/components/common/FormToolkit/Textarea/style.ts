@@ -43,7 +43,7 @@ const StyledTextarea = styled.div`
   }
   & > span {
     margin-top: 0.6em;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: ${({ theme }) =>
       theme.isDark ? theme.colors.red400 : theme.colors.red600};
     align-self: flex-start;

@@ -8,7 +8,7 @@ import withAuthMiddleware from "@src/lib/middleware";
 import { generateAccessToken, generateRefreshToken } from "@src/lib/auth";
 
 // util
-import { generateCookie } from "@src/utils/cookie";
+import { generateCookie } from "@src/utils";
 
 // type
 import type { NextApiHandler } from "next";
@@ -16,6 +16,7 @@ import type { LogInForm } from "@src/types";
 import type { ApiLogInResponse } from "@src/types/api";
 interface LogInBody extends LogInForm {}
 
+/** 2023/03/29 - 로그인 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiLogInResponse> = async (req, res) => {
   try {
     // 로그인

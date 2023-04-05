@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
 
 /** 자주 사용하는 색상들 ( [tailwindcss](https://tailwindcss.com/docs/customizing-colors) ) */
 const colors = {
@@ -320,6 +320,46 @@ const util = {
   `,
 };
 
+/** 애니메이션 */
+const animation = {
+  fadeUp: keyframes`
+    0% {
+      opacity: 0.01;
+      transform: translateY(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  `,
+  fadeIn: keyframes`
+    0% {
+      opacity: 0.01;
+    }
+    100% {
+      opacity: 1;
+    }
+  `,
+  spinY: keyframes`
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  `,
+  bounce: keyframes`
+    0%, 100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  `,
+};
+
 /** 현재 상태 ( true: "dark" ) / ( false: "light" ) */
 const isDark = false;
 
@@ -330,6 +370,7 @@ const theme = {
   fontSize,
   size,
   util,
+  animation,
   isDark,
 };
 

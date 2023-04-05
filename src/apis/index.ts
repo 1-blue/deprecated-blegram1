@@ -8,3 +8,6 @@ export const serverInstance = axios.create({
 });
 
 export * from "./auth";
+export * from "./me";
+export * from "./user";
+export * from "./photo";

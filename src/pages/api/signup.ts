@@ -7,22 +7,20 @@ import { hashing } from "@src/lib/auth";
 
 // type
 import type { NextApiHandler } from "next";
-import type { SignUpForm } from "@src/types";
-import type { ApiSignUpResponse } from "@src/types/api";
-interface SignUpBody extends SignUpForm {}
+import type { ApiSignUpRequest, ApiSignUpResponse } from "@src/types/api";
 
-/** 2023/03/26 - 회원가입 - by 1-blue */
+/** 2023/03/26 - 회원가입 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
   try {
     // 회원가입
     if (req.method === "POST") {
       // 회원가입하는 유저의 데이터
-      const { password, ...body } = req.body as SignUpBody;
+      const { password, ...body } = req.body as ApiSignUpRequest;
 
       // 아이디, 이름, 이메일, 휴대폰 번호 중복 검사 ( DB )
       const exUserList = await Promise.all([
         prisma.user.findUnique({ where: { id: body.id } }),
-        prisma.user.findUnique({ where: { name: body.name } }),
+        prisma.user.findUnique({ where: { nickname: body.nickname } }),
         prisma.user.findUnique({ where: { email: body.email } }),
         prisma.user.findUnique({ where: { phone: body.phone } }),
       ]);
@@ -31,7 +29,7 @@ const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
       if (exUserList[0])
         return res.status(409).json({ message: "아이디가 이미 존재합니다." });
       if (exUserList[1])
-        return res.status(409).json({ message: "이름이 이미 존재합니다." });
+        return res.status(409).json({ message: "별칭이 이미 존재합니다." });
       if (exUserList[2])
         return res.status(409).json({ message: "이메일이 이미 존재합니다." });
       if (exUserList[3])

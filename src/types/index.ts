@@ -1,5 +1,6 @@
 export * from "./router";
 export * from "./auth";
+export * from "./aws";
 
 /** 2023/03/23 - 크기 - by 1-blue */
 export type Size = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
@@ -15,4 +16,7 @@ export type IconShape =
   | "bell"
   | "plus-circle"
   | "arrow-right-on-rectangle"
-  | "user";
+  | "user"
+  | "plus"
+  | "arrow-path"
+  | "chevron-double-down";

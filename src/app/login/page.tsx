@@ -2,13 +2,10 @@
 
 import { useCallback } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 
-// api
-import { apiServiceAuth } from "@src/apis";
+// hook
+import useLogIn from "@src/hooks/query/useLogIn";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -22,36 +19,17 @@ import type { LogInForm } from "@src/types";
 
 /** 2023/03/24 - 로그인 페이지 - by 1-blue */
 const LogInPage = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LogInForm>();
+  /** 2023/03/30 - 로그인 요청 뮤테이트 얻는 훅 - by 1-blue */
+  const logInMudate = useLogIn();
 
   /** 2023/03/25 - 로그인 수행 핸들러 - by 1-blue */
   const onLogIn: React.FormEventHandler<HTMLFormElement> = handleSubmit(
-    useCallback(
-      async (body) => {
-        try {
-          const { message } = await apiServiceAuth.apiLogIn(body);
-
-          toast.success(message);
-          router.replace("/");
-        } catch (error) {
-          let message = "알 수 없는 오류가 발생했습니다.";
-
-          if (error instanceof AxiosError) {
-            message = error.response?.data.message;
-          } else if (error instanceof Error) {
-            message = error.message;
-          }
-
-          toast.warning(message);
-        }
-      },
-      [router]
-    )
+    useCallback((body) => logInMudate(body), [logInMudate])
   );
 
   return (
