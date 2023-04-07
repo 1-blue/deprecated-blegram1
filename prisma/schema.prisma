@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// 유저 테이블
 model User {
   idx Int @id @unique @default(autoincrement())
   id String @unique @db.VarChar(16)
@@ -18,4 +19,87 @@ model User {
   birthday String @db.VarChar(8)
   introduction String @db.VarChar(100)
   avatar String? @db.VarChar(160)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 게시글 1 : N
+  posts Post[]
+
+  // 유저와 게시글 ( 좋아요 ) N : M
+  postLiked PostLikes[]
+
+  // 유저와 댓글 1 : N
+  comments Comment[]
+
+  // 유저와 댓글 ( 좋아요 ) N : M
+  commentLiked CommentLikes[]
+
+  // 유저와 게시글 ( 북마크 ) N : M
+  bookmarked Bookmark[]
 }
+
+// 게시글 테이블
+model Post {
+  idx Int @id @unique @default(autoincrement())
+  contents String @db.VarChar(2000)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 게시글 1 : N
+  userIdx Int
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 유저와 게시글 ( 좋아요 ) N : M
+  postLiker PostLikes[]
+
+  // 유저와 게시글 ( 북마크 ) N : M
+  bookmarker Bookmark[]
+}
+
+// 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
+model PostLikes {
+  postLiker User @relation(fields: [postLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postLikerIdx Int
+  postLiked Post @relation(fields: [postLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postLikedIdx Int
+
+  @@id([postLikedIdx, postLikerIdx])
+}
+
+// 댓글 테이블
+model Comment {
+  idx Int @id @unique @default(autoincrement())
+  contents String @db.VarChar(500)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 댓글 1 : N
+  userIdx Int
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 유저와 댓글 ( 좋아요 ) N : M
+  commentLiker CommentLikes[]
+}
+
+// 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
+model CommentLikes {
+  commentLiker User @relation(fields: [commentLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  commentLikerIdx Int
+  commentLiked Comment @relation(fields: [commentLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  commentLikedIdx Int
+
+  @@id([commentLikedIdx, commentLikerIdx])
+}
+
+// 북마크 ( 유저와 게시글 중간 테이블 )
+model Bookmark {
+  bookmarker User @relation(fields: [bookmarkerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  bookmarkerIdx Int
+  bookmarked Post @relation(fields: [bookmarkedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  bookmarkedIdx Int
+
+  @@id([bookmarkerIdx, bookmarkedIdx])
+}
+
+// 알림
+// 태그
