@@ -42,6 +42,8 @@ model User {
 model Post {
   idx Int @id @unique @default(autoincrement())
   contents String @db.VarChar(2000)
+  // 여러 이미지 경로에 "|"를 기준으로 합치고 구분
+  photos String @db.VarChar(1000)
   createdAt DateTime
   updatedAt DateTime @updatedAt
 

@@ -39,7 +39,9 @@ const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
       const hashedPassword = await hashing(password);
 
       // 유저 생성
-      await prisma.user.create({ data: { ...body, password: hashedPassword } });
+      await prisma.user.create({
+        data: { ...body, password: hashedPassword, createdAt: new Date() },
+      });
 
       return res.status(201).json({
         message: "회원가입을 성공했습니다.\n로그인 페이지로 이동됩니다.",

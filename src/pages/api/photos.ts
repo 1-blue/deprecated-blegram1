@@ -7,27 +7,31 @@ import withAuthMiddleware from "@src/lib/middleware";
 // type
 import type { NextApiHandler } from "next";
 import type {
-  ApiFetchPresignedURLRequest,
-  ApiFetchPresignedURLResponse,
+  ApiFetchPresignedURLsRequest,
+  ApiFetchPresignedURLsResponse,
   ApiResponse,
 } from "@src/types/api";
 
 interface MyResponseType
-  extends Partial<ApiFetchPresignedURLResponse>,
+  extends Partial<ApiFetchPresignedURLsResponse>,
     ApiResponse {}
 
-/** 2023/04/01 - "AWS-S3"에 이미지 생성 요청 관련 엔드포인트 - by 1-blue */
+/** 2023/04/08 - "AWS-S3"에 이미지들 생성 요청 관련 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<MyResponseType> = async (req, res) => {
   try {
-    // "presignedURL" 요청
+    // "presignedURL"들 요청
     if (req.method === "POST") {
-      const { name } = req.body as ApiFetchPresignedURLRequest;
+      const { names } = req.body as ApiFetchPresignedURLsRequest;
 
-      const { presignedURL } = await getPresignedURL({ name });
+      const results = await Promise.all(
+        names.map((name) => getPresignedURL({ name }))
+      );
+
+      const presignedURLs = results.map((v) => v.presignedURL);
 
       return res
         .status(200)
-        .json({ message: "presignedURL을 가져왔습니다.", presignedURL });
+        .json({ message: "presignedURL들을 가져왔습니다.", presignedURLs });
     }
   } catch (error) {
     console.error("/api/photo error >> ", error);
