@@ -3,7 +3,7 @@ import type { ApiResponse } from ".";
 // ============================== AWS-S3에 이미지 등록 ==============================
 /** 2023/04/01 - AWS-S3에 이미지 등록 요청 송신 타입 - by 1-blue */
 export interface ApiUploadPhotoRequest {
-  preSignedURL: string;
+  presignedURL: string;
   file: File;
 }
 /** 2023/04/01 - AWS-S3에 이미지 등록 요청 수신 타입 - by 1-blue */
@@ -16,7 +16,7 @@ export interface ApiUploadPhotoHandler {
 // ============================== 서버에 이미지 등록 ==============================
 /** 2023/04/01 - 서버에 이미지 등록 요청 송신 타입 - by 1-blue */
 export interface ApiUpdatePhotoRequest {
-  avatar: string;
+  avatarPath: string;
 }
 /** 2023/04/01 - 서버에 이미지 등록 요청 수신 타입 - by 1-blue */
 export interface ApiUpdatePhotoResponse extends ApiResponse {}

@@ -6,3 +6,4 @@ export * from "./me";
 export * from "./user";
 export * from "./photo";
 export * from "./aws";
+export * from "./post";

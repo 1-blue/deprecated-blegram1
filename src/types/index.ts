@@ -19,4 +19,5 @@ export type IconShape =
   | "user"
   | "plus"
   | "arrow-path"
-  | "chevron-double-down";
+  | "chevron-double-down"
+  | "photo";

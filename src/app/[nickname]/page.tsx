@@ -48,23 +48,23 @@ const ProfilePage: React.FC<Props> = ({ params: { nickname } }) => {
         setIsUploadAvatar(true);
 
         // 서버에서 "presignedURL" 생성 후 가져오기
-        const { preSignedURL } = await apiServicePhoto.apiFetchPresignedURL({
+        const { presignedURL } = await apiServicePhoto.apiFetchPresignedURL({
           name: filelist[0].name,
         });
 
         // 완성될 이미지 경로 얻기
-        const avatarPath = preSignedURL
-          .slice(0, preSignedURL.indexOf("?"))
-          .slice(preSignedURL.indexOf(process.env.NODE_ENV));
+        const avatarPath = presignedURL
+          .slice(0, presignedURL.indexOf("?"))
+          .slice(presignedURL.indexOf(process.env.NODE_ENV));
 
         // 아바타 이미지 "S3"에 업로드
         await apiServicePhoto.apiUploadPhoto({
           file: filelist[0],
-          preSignedURL,
+          presignedURL,
         });
 
         // 아바타 이미지 경로 서버에 업로드
-        updateAvatarMutata({ avatar: avatarPath });
+        updateAvatarMutata({ avatarPath });
       } catch (error) {
         console.error("아바타 이미지 업로드 에러 >> ", error);
       } finally {
