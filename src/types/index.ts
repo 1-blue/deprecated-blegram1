@@ -20,4 +20,8 @@ export type IconShape =
   | "plus"
   | "arrow-path"
   | "chevron-double-down"
-  | "photo";
+  | "photo"
+  | "ellipsis-vertical"
+  | "heart"
+  | "bookmark"
+  | "chat-bubble-oval-left";
