@@ -1,0 +1,67 @@
+import { Prisma } from "@prisma/client";
+
+const dummyUsers: Prisma.UserCreateInput[] = [
+  {
+    id: "a",
+    password: "$2b$10$j1bviMWrGvDSYZQfuQX0aebvTEvMJPASXQ41KIjOX1tZ6uOr5F/cC",
+    name: "유저 - 1",
+    nickname: "apple",
+    email: "apple@naver.com",
+    phone: "01011111111",
+    birthday: "20010101",
+    introduction: "소개" + 1 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
+    createdAt: new Date(),
+    avatar: `${process.env.NODE_ENV}/photos/cat.jpg`,
+  },
+  {
+    id: "b",
+    password: "$2b$10$j1bviMWrGvDSYZQfuQX0aeMHt.neFttc57DnxkAZ4yzPsfMX0S0sy",
+    name: "유저 - 2",
+    nickname: "blue",
+    email: "blue@naver.com",
+    phone: "01022222222",
+    birthday: "20020202",
+    introduction: "소개" + 2 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
+    createdAt: new Date(),
+    avatar: `${process.env.NODE_ENV}/photos/dog.jpg`,
+  },
+  {
+    id: "c",
+    password: "$2b$10$j1bviMWrGvDSYZQfuQX0aeq8Irdz/LQi7PKW78ybBfo7WcAAEUS.W",
+    name: "유저 - 3",
+    nickname: "color",
+    email: "color@naver.com",
+    phone: "01033333333",
+    birthday: "30030303",
+    introduction: "소개" + 3 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
+    createdAt: new Date(),
+    avatar: `${process.env.NODE_ENV}/photos/lion.jpg`,
+  },
+  {
+    id: "d",
+    password: "$2b$10$j1bviMWrGvDSYZQfuQX0aehDfq8lqpAZCdsRZ.Ak8nmaaa2en.hUi",
+    name: "유저 - 4",
+    nickname: "delete",
+    email: "delete@naver.com",
+    phone: "01044444444",
+    birthday: "40040404",
+    introduction: "소개" + 4 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
+    createdAt: new Date(),
+    avatar: "",
+  },
+  {
+    id: "e",
+    password: "$2b$10$j1bviMWrGvDSYZQfuQX0aeIFc6zE.j3CRf/ROIzppPKl4bBcGojNK",
+    name: "유저 - 5",
+    nickname: "egg",
+    email: "egg@naver.com",
+    phone: "01055555555",
+    birthday: "50050505",
+    introduction: "소개" + 5 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
+    createdAt: new Date(),
+    avatar: "",
+  },
+];
+
+/** 2023/04/10 - 가짜 유저들 - by 1-blue */
+export const getDummyUsers = (): Prisma.UserCreateManyInput[] => dummyUsers;
