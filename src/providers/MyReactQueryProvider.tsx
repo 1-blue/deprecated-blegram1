@@ -34,8 +34,8 @@ const queryClient = new QueryClient({
     queries: {
       onError: queryErrorHandler,
       onSuccess: querySuccessHandler,
-      staleTime: 1000 * 60 * 15, // 15 분
-      cacheTime: 1000 * 60 * 10, // 10 분
+      staleTime: 1000 * 60 * 10, // 10 분
+      cacheTime: 1000 * 60 * 15, // 15 분
     },
     mutations: {
       onError: queryErrorHandler,
