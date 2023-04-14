@@ -24,4 +24,7 @@ export type IconShape =
   | "ellipsis-vertical"
   | "heart"
   | "bookmark"
-  | "chat-bubble-oval-left";
+  | "chat-bubble-oval-left"
+  | "trash"
+  | "link"
+  | "pencil";

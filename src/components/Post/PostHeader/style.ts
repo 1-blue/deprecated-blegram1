@@ -21,7 +21,7 @@ const StyledPostHeader = styled.section`
   }
 
   /* 팔로우/언팔로우 */
-  & > button[type="button"] {
+  & > .follow {
     padding: 0.4em 0.8em;
     margin-right: 0.6em;
 
