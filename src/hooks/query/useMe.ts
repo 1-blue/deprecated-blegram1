@@ -14,11 +14,11 @@ type UseMeHandler = (once?: boolean) => {
 };
 
 /** 2023/03/29 - 로그인한 유저 정보를 얻는 훅 - by 1-blue */
-const useMe: UseMeHandler = (once) => {
+const useMe: UseMeHandler = () => {
   const { data, isLoading } = useQuery<ApiFetchMeResponse>(
     [queryKeys.user, "me"],
     apiServiceMe.apiFetchMe,
-    { ...(once && { retry: false, onError() {} }) }
+    { onSuccess() {}, onError() {}, retry: false }
   );
 
   return { me: data?.user, isFetchingMe: isLoading };

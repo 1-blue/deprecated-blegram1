@@ -18,10 +18,10 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
 
       const posts = await prisma.post.findMany({
         where: {},
-        take: take,
+        take,
         skip: lastIdx === -1 ? 0 : 1,
         ...(lastIdx !== -1 && { cursor: { idx: lastIdx } }),
-        orderBy: { updatedAt: "desc" },
+        orderBy: { createdAt: "desc" },
         include: {
           user: {
             select: {
@@ -52,7 +52,7 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
       });
 
       return res.status(200).json({
-        message: `최신 게시글 ${take}개를 가져왔습니다.`,
+        message: `최신 게시글 ${posts.length}개를 가져왔습니다.`,
         posts,
       });
     }

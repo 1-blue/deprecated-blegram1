@@ -3,25 +3,25 @@ import { useCallback, useEffect, useRef } from "react";
 // type
 import type { PropsWithChildren } from "react";
 interface Props {
-  fetchMore: () => void;
   hasMore?: boolean;
+  fetchMore: () => void;
 }
 
-/** 2023/04/10 - "IntersectionObserver"의 옵션들 - by 1-blue */
+/** 2023/04/11 - "IntersectionObserver"의 옵션들 - by 1-blue */
 const options: IntersectionObserverInit = {
   threshold: 0.1,
 };
 
-/** 2023/04/10 - 무한 스크롤링 적용 ( using "IntersectionObserver" ) - by 1-blue */
+/** 2023/04/11 - 무한 스크롤링 적용 ( using "IntersectionObserver" ) - by 1-blue */
 const InfiniteScrollContainer: React.FC<PropsWithChildren<Props>> = ({
   hasMore,
   fetchMore,
   children,
 }) => {
-  /** 2023/04/10 - 감시할 요소의 ref ( 임시로 생성 ) - by 1-blue */
+  /** 2023/04/11 - 감시할 요소의 ref - by 1-blue */
   const observerRef = useRef<HTMLDivElement>(null);
 
-  /** 2023/04/10 - 뷰포트 내에 감시하는 태그가 들어왔다면 패치 - by 1-blue */
+  /** 2023/04/11 - 상단으로 뷰포트 내에 감시하는 태그가 들어왔다면 패치 - by 1-blue */
   const onScroll: IntersectionObserverCallback = useCallback(
     (entries) => {
       if (!entries[0].isIntersecting) return;
@@ -30,8 +30,7 @@ const InfiniteScrollContainer: React.FC<PropsWithChildren<Props>> = ({
     },
     [fetchMore]
   );
-
-  /** 2023/04/10 - observer 등록 ( 해당 태그가 뷰포트에 들어오면 게시글 추가 패치 실행 ) - by 1-blue */
+  /** 2023/04/11 - 상단 observer 등록 ( 해당 태그가 뷰포트에 들어오면 게시글 추가 패치 실행 ) - by 1-blue */
   useEffect(() => {
     if (!observerRef.current) return;
 
