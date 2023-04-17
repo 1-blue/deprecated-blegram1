@@ -1,42 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Slider, { type Settings } from "react-slick";
-
-// util
-import { blurDataURL } from "@src/utils";
 
 // component
 import Icon from "@src/components/common/Icon";
+import Carousel from "@src/components/common/Carousel";
 
 // style
 import StyledMultiPhoto from "./style";
 
 // type
-export interface Props {
-  width: number;
-  height: number;
-  alt: string;
+interface Props {
   setPhotos: React.Dispatch<React.SetStateAction<FileList | null>>;
 }
 
-/** 2023/04/08 - react-slick setting - by 1-blue */
-const settings: Settings = {
-  dots: true,
-  infinite: true,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  touchMove: true,
-  arrows: false,
-  dotsClass: "custom-dots",
-};
-
 /** 2023/04/08 - 다중 이미지 입력받는 인풋 컴포넌트 - by 1-blue */
-const MultiPhotoInput: React.FC<Props> = ({
-  width,
-  height,
-  alt,
-  setPhotos,
-}) => {
+const MultiPhotoInput: React.FC<Props> = ({ setPhotos }) => {
   /** 2023/04/08 - 이미지 ref - by 1-blue */
   const photoRef = useRef<null | HTMLInputElement>(null);
   /** 2023/04/08 - 이미지 미리보기 - by 1-blue */
@@ -80,7 +57,7 @@ const MultiPhotoInput: React.FC<Props> = ({
   }, [previewPhotos]);
 
   return (
-    <StyledMultiPhoto width={width - 24} height={height}>
+    <StyledMultiPhoto>
       {/* 이미지 입력받는 인풋 */}
       <input
         type="file"
@@ -93,20 +70,7 @@ const MultiPhotoInput: React.FC<Props> = ({
 
       {/* preview || 이미지 */}
       <figure>
-        <Slider {...settings}>
-          {previewPhotos.map((previewPhoto) => (
-            <Image
-              key={previewPhoto}
-              src={previewPhoto}
-              alt={alt}
-              width={width - 24}
-              height={height - 12}
-              quality={75}
-              placeholder="blur"
-              blurDataURL={blurDataURL}
-            />
-          ))}
-        </Slider>
+        <Carousel photos={previewPhotos} />
 
         {previewPhotos.length === 0 && <Icon shape={"photo"} size="xl" fill />}
 

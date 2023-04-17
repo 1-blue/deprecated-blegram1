@@ -12,7 +12,6 @@ import useInnerSize from "@src/hooks/useInnerSize";
 import useUploadPost from "@src/hooks/query/useUploadPost";
 
 // component
-import MultiPhotoInput from "@src/components/common/FormToolkit/MultiPhotoInput";
 import FormToolkit from "@src/components/common/FormToolkit";
 import Spinner from "@src/components/common/Spinner";
 
@@ -92,12 +91,7 @@ const PostUploadPage = () => {
 
         <div>
           <span>이미지 등록</span>
-          <MultiPhotoInput
-            width={width}
-            height={width * 0.8}
-            alt="게시글에 등록할 이미지"
-            setPhotos={setPhotos}
-          />
+          <FormToolkit.MultiPhotoInput setPhotos={setPhotos} />
         </div>
 
         <form onSubmit={onUploadPost}>

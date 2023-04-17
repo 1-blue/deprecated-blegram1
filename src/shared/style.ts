@@ -40,39 +40,6 @@ export const GlobalStyle = createGlobalStyle`
     ${({ theme }) => theme.util.scroll}
   }
 
-  /* react-slick dots customizing */
-  .custom-dots {
-    display: flex;
-    text-align: center;
-    margin-top: 1em;
-
-    & > li {
-      display: inline-block;
-      margin: 0 6px;
-      padding: 0;
-      
-      cursor: pointer;
-
-      & > button {
-        display: block;
-        height: 8px;
-        width: 8px;
-        padding: 0;
-
-        border: none;
-        color: transparent;
-        background: ${({ theme }) =>
-          theme.isDark ? theme.colors.gray500 : theme.colors.gray400};
-        border-radius: 50%;
-        cursor: pointer;
-      }
-      
-      &.slick-active > button {
-        background: ${({ theme }) => theme.colors.fg};
-      }
-    }
-  }
-
   @media ${({ theme }) => theme.mediaSize.md} {
     html {
       font-size: 14px;

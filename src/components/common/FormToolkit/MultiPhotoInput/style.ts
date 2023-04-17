@@ -1,18 +1,14 @@
 import styled from "styled-components";
 
-// type
-import type { Props } from ".";
-interface StyledProps extends Pick<Props, "width" | "height"> {}
-
 /** 2023/04/08 - 여러 이미지 업로드 인풋 스타일 - by 1-blue */
-const StyledMultiPhoto = styled.article<StyledProps>`
+const StyledMultiPhoto = styled.article`
   display: flex;
   justify-content: center;
 
   & > figure {
     position: relative;
-    width: ${({ width }) => width}px;
-    height: ${({ height }) => height}px;
+    width: 100%;
+    height: 400px;
 
     padding: 4px;
 
@@ -49,6 +45,10 @@ const StyledMultiPhoto = styled.article<StyledProps>`
 
         transform: translate(-50%, -50%);
       }
+    }
+
+    @media ${({ theme }) => theme.mediaSize.xs} {
+      height: 320px;
     }
   }
 
