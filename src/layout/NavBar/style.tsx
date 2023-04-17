@@ -10,6 +10,7 @@ const StyledNavBar = styled.nav<StyledProps>`
   position: fixed;
   inset: 0;
   top: auto;
+  z-index: 1;
 
   max-width: 1024px;
   width: 100%;

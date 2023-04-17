@@ -8,6 +8,8 @@ import Layout from "@src/layout/Layout";
 
 import "react-toastify/dist/ReactToastify.css";
 import "@src/css/react-toastify.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 /** 2023/03/24 - Root Layout - by 1-blue */
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {

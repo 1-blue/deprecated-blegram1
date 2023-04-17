@@ -19,4 +19,12 @@ export type IconShape =
   | "user"
   | "plus"
   | "arrow-path"
-  | "chevron-double-down";
+  | "chevron-double-down"
+  | "photo"
+  | "ellipsis-vertical"
+  | "heart"
+  | "bookmark"
+  | "chat-bubble-oval-left"
+  | "trash"
+  | "link"
+  | "pencil";

@@ -71,9 +71,6 @@ const StyledIcon = styled.svg<StyledProps>`
   a:hover > & {
     color: ${({ hover }) => hover};
     stroke-width: ${({ strokeWidth }) => strokeWidth && +strokeWidth + 1};
-  }
-  button:hover > &,
-  a:hover > & {
     cursor: pointer;
   }
 `;

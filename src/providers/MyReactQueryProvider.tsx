@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { toast } from "react-toastify";
@@ -7,9 +7,12 @@ import { toast } from "react-toastify";
 const queryErrorHandler = (error: unknown) => {
   let message = "알 수 없는 오류가 발생했습니다.";
 
-  if (error instanceof AxiosError) {
+  // Axios Error
+  if (isAxiosError(error)) {
     message = error.response?.data.message;
-  } else if (error instanceof Error) {
+  }
+  // Error
+  else if (error instanceof Error) {
     message = error.message;
   }
 
@@ -34,8 +37,8 @@ const queryClient = new QueryClient({
     queries: {
       onError: queryErrorHandler,
       onSuccess: querySuccessHandler,
-      staleTime: 1000 * 60 * 15, // 15 분
-      cacheTime: 1000 * 60 * 10, // 10 분
+      staleTime: 1000 * 60 * 10, // 10 분
+      cacheTime: 1000 * 60 * 15, // 15 분
     },
     mutations: {
       onError: queryErrorHandler,

@@ -11,9 +11,9 @@ const navRouter: RouterElement[] = [
     withAuth: false,
   },
   {
-    path: "/dm",
-    label: "메세지",
-    icon: "chat-bubble-bottom-center-text",
+    path: "/upload",
+    label: "생성",
+    icon: "plus-circle",
     withAuth: false,
   },
   {

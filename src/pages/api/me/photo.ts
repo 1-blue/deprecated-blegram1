@@ -22,7 +22,7 @@ const handler: NextApiHandler<ApiUpdatePhotoResponse> = async (req, res) => {
   try {
     // 프로필 이미지 업로드
     if (req.method === "PATCH") {
-      const { avatar } = req.body as ApiUpdatePhotoRequest;
+      const { avatarPath } = req.body as ApiUpdatePhotoRequest;
 
       // 기존 이미지가 있다면 제거로 이동
       if (req.user.avatar) await movePhoto(req.user.avatar);
@@ -30,7 +30,7 @@ const handler: NextApiHandler<ApiUpdatePhotoResponse> = async (req, res) => {
       // 프로필 이미지 수정
       await prisma.user.update({
         where: { idx: req.user.idx },
-        data: { avatar },
+        data: { avatar: avatarPath },
       });
 
       return res

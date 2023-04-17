@@ -27,7 +27,7 @@ export const getPresignedURL: ApiFetchPresignedURLHandler = async ({
   const photoURL = convertS3ImagePath(name);
 
   // 20초동안 이미지를 업로드할 수 있는 미리 서명된 URL 생성
-  const preSignedURL = S3.getSignedUrl("putObject", {
+  const presignedURL = S3.getSignedUrl("putObject", {
     // 버킷을 생성할 때 지정한 유니크한 이름
     Bucket: process.env.AWS_S3_BUCKET,
     // 경로 + 파일명
@@ -38,5 +38,5 @@ export const getPresignedURL: ApiFetchPresignedURLHandler = async ({
   });
 
   // 서명된 URL 반환
-  return { preSignedURL };
+  return { presignedURL };
 };

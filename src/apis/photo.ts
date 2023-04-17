@@ -18,10 +18,10 @@ import type {
  * @param 생성할 이미지 이름
  * @returns 생성된 "presingedURL"
  */
-const apiFetchPresignedURL: ApiFetchPresignedURLHandler = async ({ name }) => {
-  const { data } = await serverInstance.get<ApiFetchPresignedURLResponse>(
+const apiFetchPresignedURL: ApiFetchPresignedURLHandler = async (body) => {
+  const { data } = await serverInstance.post<ApiFetchPresignedURLResponse>(
     "/photo",
-    { params: { name } }
+    body
   );
 
   return data;
@@ -34,10 +34,10 @@ const apiFetchPresignedURL: ApiFetchPresignedURLHandler = async ({ name }) => {
  * @returns 사용 안 함
  */
 const apiUploadPhoto: ApiUploadPhotoHandler = async ({
-  preSignedURL,
+  presignedURL,
   file,
 }) => {
-  const { data } = await axios.put<ApiUploadPhotoResponse>(preSignedURL, file, {
+  const { data } = await axios.put<ApiUploadPhotoResponse>(presignedURL, file, {
     headers: { "Content-Type": file.type },
   });
 

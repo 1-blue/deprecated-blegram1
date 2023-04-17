@@ -263,6 +263,7 @@ const mediaSize = {
   lg: `screen and (max-width: 1024px)`,
   xl: `screen and (max-width: 1280px)`,
   "2xl": `screen and (max-width: 1536px)`,
+  "3xl": `screen and (max-width: 1920px)`,
 };
 
 /** 폰트 크기 */
