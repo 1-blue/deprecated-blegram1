@@ -9,7 +9,7 @@ export const getDummyPosts = (): Prisma.PostCreateManyInput[] =>
   Array(32)
     .fill(null)
     .map((v, i) => ({
-      contents:
+      content:
         "테스트 게시글 " + i + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
       photos: `${process.env.NODE_ENV}/photos/cat.jpg|${process.env.NODE_ENV}/photos/dog.jpg|${process.env.NODE_ENV}/photos/lion.jpg`,
       createdAt: new Date(),

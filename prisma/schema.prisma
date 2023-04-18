@@ -41,7 +41,7 @@ model User {
 // 게시글 테이블
 model Post {
   idx Int @id @unique @default(autoincrement())
-  contents String @db.VarChar(2000)
+  content String @db.VarChar(2000)
   // 여러 이미지 경로에 "|"를 기준으로 합치고 구분
   photos String @db.VarChar(1000)
   createdAt DateTime
@@ -55,7 +55,10 @@ model Post {
   postLiker PostLikes[]
 
   // 유저와 게시글 ( 북마크 ) N : M
-  bookmarker Bookmark[]
+  bookMarker Bookmark[]
+
+  // 게시글과 댓글 N : M
+  comments Comment[]
 }
 
 // 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
@@ -71,13 +74,17 @@ model PostLikes {
 // 댓글 테이블
 model Comment {
   idx Int @id @unique @default(autoincrement())
-  contents String @db.VarChar(500)
+  content String @db.VarChar(500)
   createdAt DateTime
   updatedAt DateTime @updatedAt
 
   // 유저와 댓글 1 : N
   userIdx Int
   user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 게시글과 댓글 1 : N
+  postIdx Int
+  post Post @relation(fields: [postIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
 
   // 유저와 댓글 ( 좋아요 ) N : M
   commentLiker CommentLikes[]
