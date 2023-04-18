@@ -2,4 +2,5 @@
 export const queryKeys = {
   user: "user",
   post: "post",
+  comment: "comment",
 };

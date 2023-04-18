@@ -46,6 +46,7 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
             select: {
               comments: true,
               postLiker: true,
+              bookMarker: true,
             },
           },
         },

@@ -20,7 +20,7 @@ const handler: NextApiHandler<
   try {
     // 게시글 업로드 요청
     if (req.method === "POST") {
-      const { contents, photoPaths } = req.body as ApiUploadPostRequest;
+      const { content, photoPaths } = req.body as ApiUploadPostRequest;
 
       if (!req.user) {
         return res.status(401).json({ message: "로그인후에 접근해주세요!" });
@@ -28,7 +28,7 @@ const handler: NextApiHandler<
 
       const createdPost = await prisma.post.create({
         data: {
-          contents,
+          content,
           photos: photoPaths.join("|"),
           createdAt: new Date(),
           userIdx: req.user?.idx,

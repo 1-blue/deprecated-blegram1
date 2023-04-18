@@ -13,3 +13,4 @@ export * from "./photo";
 export * from "./aws";
 export * from "./post";
 export * from "./posts";
+export * from "./comment";

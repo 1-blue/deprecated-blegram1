@@ -8,6 +8,7 @@ interface PostWithData extends Post {
   _count: {
     comments: number;
     postLiker: number;
+    bookMarker: number;
   };
 }
 
