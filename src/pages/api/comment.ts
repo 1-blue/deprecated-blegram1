@@ -36,7 +36,7 @@ const handler: NextApiHandler<ApiUploadCommentResponse | ApiResponse> = async (
       });
 
       return res.status(200).json({
-        message: "댓글을 업로드했습니다.\n메인 페이지로 이동됩니다.",
+        message: "댓글을 업로드했습니다.",
         createdComment,
       });
     }

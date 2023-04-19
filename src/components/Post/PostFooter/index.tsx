@@ -16,17 +16,18 @@ import { StyledNotLoggedInText } from "./style";
 interface Props {
   postIdx: number;
   content: string;
+  commentCount: number;
 }
 
 /** 2023/04/09 - 게시글 하단부 ( 버튼들, 내용, 댓글, 댓글폼 ) - by 1-blue */
-const PostFooter: React.FC<Props> = ({ content, postIdx }) => {
+const PostFooter: React.FC<Props> = ({ content, postIdx, commentCount }) => {
   const { me } = useMe();
 
   return (
     <>
       <PostButtons />
       <PostContent content={content} />
-      <PostComments />
+      <PostComments postIdx={postIdx} commentCount={commentCount} />
       {me ? (
         <PostCommentForm postIdx={postIdx} />
       ) : (
