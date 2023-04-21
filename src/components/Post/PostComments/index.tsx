@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 // hooks
 import useComments from "@src/hooks/query/useComments";
+import useDeleteComment from "@src/hooks/query/useDeleteComment";
+
+// component
+import PostComment from "@src/components/Post/PostComment";
 
 // style
 import StyledPostComments from "./style";
-import Avatar from "@src/components/common/Avatar";
 
 // type
 interface Props {
@@ -27,6 +30,28 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   /** 2023/04/19 - 댓글들 접기 - by 1-blue */
   const [isOpen, setIsOpen] = useState(true);
 
+  /** 2023/04/21 - 댓글 수정 훅 - by 1-blue */
+
+  /** 2023/04/21 - 댓글 삭제 훅 - by 1-blue */
+  const deleteCommentMutate = useDeleteComment();
+
+  /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
+  const onUpdateOrDeleteComment: React.MouseEventHandler<HTMLUListElement> =
+    useCallback(
+      (e) => {
+        if (!(e.target instanceof HTMLButtonElement)) return;
+
+        // 댓글 수정
+        if (e.target.dataset.type === "update") {
+          console.log(e.target.dataset);
+        }
+        if (e.target.dataset.type === "delete") {
+          deleteCommentMutate({ idx: Number(e.target.dataset.idx) });
+        }
+      },
+      [deleteCommentMutate]
+    );
+
   /** 2023/04/19 - 남은 댓글들의 개수 ( 더 불러올 수 있는 댓글들 개수 ) - by 1-blue */
   const count = commentCount - (data?.pages.length || 0) * take;
 
@@ -39,7 +64,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
         </button>
 
         {/* 댓글 더 불러오기 */}
-        {isOpen && hasNextPage && !!count && (
+        {isOpen && hasNextPage && count > 0 && (
           <button type="button" onClick={() => fetchNextPage()}>
             {count}댓글 더 불러오기...
           </button>
@@ -47,22 +72,10 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
       </section>
 
       {isOpen && (
-        <ul>
+        <ul onClick={onUpdateOrDeleteComment}>
           {data?.pages?.map((page) =>
             page.comments?.map((comment) => (
-              <li key={comment.idx}>
-                <Avatar
-                  src={comment.user.avatar}
-                  alt={`${comment.user.nickname}님의 아바타 이미지`}
-                />
-                <div>
-                  <div>
-                    <span>{comment.user.nickname}</span>
-                    <time>{comment.createdAt}</time>
-                  </div>
-                  <p>{comment.content}</p>
-                </div>
-              </li>
+              <PostComment key={comment.idx} comment={comment} />
             ))
           )}
         </ul>

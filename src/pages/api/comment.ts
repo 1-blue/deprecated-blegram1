@@ -7,16 +7,15 @@ import withAuthMiddleware from "@src/lib/middleware";
 // type
 import type { NextApiHandler } from "next";
 import type {
-  ApiResponse,
   ApiUploadCommentResponse,
   ApiUploadCommentRequest,
+  ApiDeleteCommentResponse,
 } from "@src/types/api";
 
 /** 2023/04/18 - 댓글 관련 엔드포인트 - by 1-blue */
-const handler: NextApiHandler<ApiUploadCommentResponse | ApiResponse> = async (
-  req,
-  res
-) => {
+const handler: NextApiHandler<
+  ApiUploadCommentResponse | ApiDeleteCommentResponse
+> = async (req, res) => {
   try {
     // 댓글 업로드 요청
     if (req.method === "POST") {
@@ -40,6 +39,18 @@ const handler: NextApiHandler<ApiUploadCommentResponse | ApiResponse> = async (
         createdComment,
       });
     }
+    // 댓글 제거 요청
+    if (req.method === "DELETE") {
+      const idx = +req.query.idx!;
+
+      if (!req.user) {
+        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+      }
+
+      await prisma.comment.delete({ where: { idx } });
+
+      return res.status(204).json({ message: "댓글을 삭제했습니다." });
+    }
   } catch (error) {
     console.error("/api/user error >> ", error);
 
@@ -50,7 +61,7 @@ const handler: NextApiHandler<ApiUploadCommentResponse | ApiResponse> = async (
 };
 
 export default withAuthMiddleware({
-  methods: ["POST"],
+  methods: ["POST", "DELETE"],
   handler,
   isAuth: true,
 });
