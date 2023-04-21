@@ -29,48 +29,6 @@ const StyledPostComments = styled.ul`
     & > * + * {
       margin-top: 0.6em;
     }
-
-    & > li {
-      display: flex;
-
-      & > * + * {
-        margin-left: 0.4em;
-      }
-
-      /* 댓글 작성자 아바타 */
-      & > figure {
-        width: 2.4rem;
-        height: 2.4rem;
-      }
-
-      /* 댓글 작성자 및 내용 wrapper */
-      & > div {
-        & > * + * {
-          margin-top: 0.4em;
-        }
-
-        /* 작성자와 작성시간 */
-        & > div {
-          font-size: 0.8rem;
-
-          & > * + * {
-            margin-left: 0.6em;
-          }
-
-          /* 작성 시간 */
-          & > time {
-            color: ${({ theme }) => theme.colors.gray400};
-          }
-        }
-
-        /* 작성 내용 */
-        & > p {
-          white-space: pre-wrap;
-          font-size: 0.9rem;
-          line-height: 1.1;
-        }
-      }
-    }
   }
 `;
 

@@ -2,7 +2,7 @@ import type { ApiResponse, SimpleUser } from ".";
 import type { Comment } from "@prisma/client";
 
 /** 2023/04/19 - 응답받을 댓글의 타입 - by 1-blue */
-interface CommentsWithData extends Comment {
+export interface CommentsWithData extends Comment {
   user: SimpleUser;
   commentLiker: { commentLiker: SimpleUser }[];
   _count: { commentLiker: number };

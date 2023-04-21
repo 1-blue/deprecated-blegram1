@@ -10,6 +10,7 @@ import type {
   ApiUploadCommentResponse,
   ApiUploadCommentRequest,
   ApiDeleteCommentResponse,
+  ApiUpdateCommentRequest,
 } from "@src/types/api";
 
 /** 2023/04/18 - 댓글 관련 엔드포인트 - by 1-blue */
@@ -39,6 +40,18 @@ const handler: NextApiHandler<
         createdComment,
       });
     }
+    // 댓글 수정 요청
+    if (req.method === "PATCH") {
+      const { idx, content } = req.body as ApiUpdateCommentRequest;
+
+      if (!req.user) {
+        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+      }
+
+      await prisma.comment.update({ where: { idx }, data: { content } });
+
+      return res.status(200).json({ message: "댓글을 수정했습니다." });
+    }
     // 댓글 제거 요청
     if (req.method === "DELETE") {
       const idx = +req.query.idx!;
@@ -61,7 +74,7 @@ const handler: NextApiHandler<
 };
 
 export default withAuthMiddleware({
-  methods: ["POST", "DELETE"],
+  methods: ["POST", "PATCH", "DELETE"],
   handler,
   isAuth: true,
 });

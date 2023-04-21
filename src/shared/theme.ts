@@ -288,12 +288,14 @@ const size = {
 
 /** 유틸리티 */
 const util = {
+  /** "..." */
   truncate: () => css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
 
+  /** 스크롤 바 디자인 변경 */
   scroll: () => css`
     &::-webkit-scrollbar {
       /** 스크롤바의 너비 */
@@ -309,6 +311,15 @@ const util = {
     &::-webkit-scrollbar-track {
       /** 스크롤바 뒷 배경 색상 */
       background: ${({ theme }) => theme.colors.indigo300};
+    }
+  `,
+
+  /** 스크롤 바 숨기기 */
+  noScroll: () => css`
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
     }
   `,
 

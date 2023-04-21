@@ -6,11 +6,23 @@ import type {
   ApiUploadCommentHandler,
   ApiDeleteCommentHandler,
   ApiDeleteCommentResponse,
+  ApiUpdateCommentHandler,
+  ApiUpdateCommentResponse,
 } from "@src/types/api";
 
 /** 2023/04/18 - 댓글 업로드 요청 - by 1-blue */
 const apiUploadComment: ApiUploadCommentHandler = async (body) => {
   const { data } = await serverInstance.post<ApiUploadCommentResponse>(
+    "/comment",
+    body
+  );
+
+  return data;
+};
+
+/** 2023/04/21 - 댓글 수정 요청 - by 1-blue */
+const apiUpdateComment: ApiUpdateCommentHandler = async (body) => {
+  const { data } = await serverInstance.patch<ApiUpdateCommentResponse>(
     "/comment",
     body
   );
@@ -32,6 +44,8 @@ const apiDeleteComment: ApiDeleteCommentHandler = async (body) => {
 export const apiServiceComment = {
   /** 2023/04/18 - 댓글 업로드 요청 - by 1-blue */
   apiUploadComment,
+  /** 2023/04/21 - 댓글 수정 요청 - by 1-blue */
+  apiUpdateComment,
   /** 2023/04/21 - 댓글 제거 요청 - by 1-blue */
   apiDeleteComment,
 };

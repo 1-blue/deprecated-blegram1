@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 
 // hooks
 import useComments from "@src/hooks/query/useComments";
+import useUpdateComment from "@src/hooks/query/useUpdateComment";
 import useDeleteComment from "@src/hooks/query/useDeleteComment";
 
 // component
@@ -31,23 +32,26 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   /** 2023/04/21 - 댓글 수정 훅 - by 1-blue */
+  const updateCommentMutate = useUpdateComment();
+
+  /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
+  const onUpdateComment = useCallback(
+    (idx: number, content: string) => updateCommentMutate({ idx, content }),
+    [updateCommentMutate]
+  );
 
   /** 2023/04/21 - 댓글 삭제 훅 - by 1-blue */
   const deleteCommentMutate = useDeleteComment();
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
-  const onUpdateOrDeleteComment: React.MouseEventHandler<HTMLUListElement> =
+  const onDeleteComment: React.MouseEventHandler<HTMLUListElement> =
     useCallback(
       (e) => {
         if (!(e.target instanceof HTMLButtonElement)) return;
 
-        // 댓글 수정
-        if (e.target.dataset.type === "update") {
-          console.log(e.target.dataset);
-        }
-        if (e.target.dataset.type === "delete") {
-          deleteCommentMutate({ idx: Number(e.target.dataset.idx) });
-        }
+        if (!e.target.dataset.idx) return;
+
+        deleteCommentMutate({ idx: Number(e.target.dataset.idx) });
       },
       [deleteCommentMutate]
     );
@@ -72,10 +76,14 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
       </section>
 
       {isOpen && (
-        <ul onClick={onUpdateOrDeleteComment}>
+        <ul onClick={onDeleteComment}>
           {data?.pages?.map((page) =>
             page.comments?.map((comment) => (
-              <PostComment key={comment.idx} comment={comment} />
+              <PostComment
+                key={comment.idx}
+                comment={comment}
+                onUpdateComment={onUpdateComment}
+              />
             ))
           )}
         </ul>
