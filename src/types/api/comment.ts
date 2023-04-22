@@ -1,4 +1,4 @@
-import type { ApiResponse } from ".";
+import type { ApiResponse, CommentsWithData } from ".";
 import type { Comment } from "@prisma/client";
 
 // ============================== 댓글 업로드 ==============================
@@ -9,7 +9,7 @@ export interface ApiUploadCommentRequest {
 }
 /** 2023/04/18 - 댓글 업로드 요청 수신 타입 - by 1-blue */
 export interface ApiUploadCommentResponse extends ApiResponse {
-  createdComment: Comment;
+  createdComment: CommentsWithData;
 }
 /** 2023/04/18 - 댓글 업로드 요청 핸들러 - by 1-blue */
 export interface ApiUploadCommentHandler {

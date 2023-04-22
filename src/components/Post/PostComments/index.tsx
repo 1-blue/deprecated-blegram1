@@ -32,7 +32,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   /** 2023/04/21 - 댓글 수정 훅 - by 1-blue */
-  const updateCommentMutate = useUpdateComment();
+  const updateCommentMutate = useUpdateComment(postIdx);
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
   const onUpdateComment = useCallback(
@@ -41,7 +41,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   );
 
   /** 2023/04/21 - 댓글 삭제 훅 - by 1-blue */
-  const deleteCommentMutate = useDeleteComment();
+  const deleteCommentMutate = useDeleteComment(postIdx);
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
   const onDeleteComment: React.MouseEventHandler<HTMLUListElement> =
@@ -63,10 +63,11 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
     <StyledPostComments>
       <section>
         {/* 댓글 접기 */}
-        <button type="button" onClick={() => setIsOpen((prev) => !prev)}>
-          댓글 {isOpen ? "접기" : "열기"}
-        </button>
-
+        {!!data?.pages?.[0]?.comments?.length && (
+          <button type="button" onClick={() => setIsOpen((prev) => !prev)}>
+            댓글 {isOpen ? "접기" : "열기"}
+          </button>
+        )}
         {/* 댓글 더 불러오기 */}
         {isOpen && hasNextPage && count > 0 && (
           <button type="button" onClick={() => fetchNextPage()}>

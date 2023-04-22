@@ -27,8 +27,6 @@ const useUpdatePassword = (): UseMutateFunction<
 
   const { mutate } = useMutation(apiServiceMe.apiUpdatePassword, {
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries([queryKeys.user]);
-
       toast.success(data.message);
 
       router.replace("/login");

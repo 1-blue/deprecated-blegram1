@@ -18,7 +18,7 @@ interface Props {
 const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
   const { data, fetchNextPage, hasNextPage } =
     useInfiniteQuery<ApiFetchCommentsResponse>(
-      queryKeys.comment,
+      [queryKeys.comment, postIdx],
       ({ pageParam = lastIdx }) =>
         apiServiceComments.apiFetchComments({
           postIdx,
@@ -26,10 +26,12 @@ const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
           lastIdx: pageParam,
         }),
       {
-        getNextPageParam: (lastPage, allPage) =>
-          lastPage.comments?.length === take
-            ? lastPage.comments[lastPage.comments.length - 1].idx
-            : null,
+        getNextPageParam: (lastPage, allPage) => {
+          if (!lastPage.comments) return null;
+
+          if (lastPage.comments.length < take) return null;
+          else return lastPage.comments[lastPage.comments.length - 1].idx;
+        },
       }
     );
 

@@ -7,7 +7,6 @@ import withAuthMiddleware from "@src/lib/middleware";
 // type
 import type { NextApiHandler } from "next";
 import type {
-  ApiDeletePostRequest,
   ApiDeletePostResponse,
   ApiUploadPostRequest,
   ApiUploadPostResponse,
@@ -32,6 +31,34 @@ const handler: NextApiHandler<
           photos: photoPaths.join("|"),
           createdAt: new Date(),
           userIdx: req.user?.idx,
+        },
+        include: {
+          user: {
+            select: {
+              idx: true,
+              avatar: true,
+              nickname: true,
+            },
+          },
+          comments: {},
+          postLiker: {
+            select: {
+              postLiker: {
+                select: {
+                  idx: true,
+                  avatar: true,
+                  nickname: true,
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+              postLiker: true,
+              bookMarker: true,
+            },
+          },
         },
       });
 

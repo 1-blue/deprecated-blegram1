@@ -33,6 +33,31 @@ const handler: NextApiHandler<
           postIdx: +postIdx,
           userIdx: req.user.idx,
         },
+        include: {
+          user: {
+            select: {
+              idx: true,
+              avatar: true,
+              nickname: true,
+            },
+          },
+          commentLiker: {
+            select: {
+              commentLiker: {
+                select: {
+                  idx: true,
+                  avatar: true,
+                  nickname: true,
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              commentLiker: true,
+            },
+          },
+        },
       });
 
       return res.status(200).json({

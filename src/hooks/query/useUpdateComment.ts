@@ -1,4 +1,4 @@
-import { type InfiniteData, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
 // api
@@ -8,7 +8,7 @@ import { apiServiceComment } from "@src/apis";
 import { queryKeys } from ".";
 
 // type
-import type { UseMutateFunction } from "react-query";
+import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
   ApiUpdateCommentRequest,
   ApiUpdateCommentResponse,
@@ -16,7 +16,9 @@ import type {
 } from "@src/types/api";
 
 /** 2023/04/21 - 댓글 수정 훅 ( 서버 ) - by 1-blue */
-const useUpdateComment = (): UseMutateFunction<
+const useUpdateComment = (
+  postIdx: number
+): UseMutateFunction<
   ApiUpdateCommentResponse,
   unknown,
   ApiUpdateCommentRequest,
@@ -28,16 +30,21 @@ const useUpdateComment = (): UseMutateFunction<
     onSuccess(data, { idx, content }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
-      >(queryKeys.comment, (prev) => ({
-        pageParams: [],
-        ...prev,
-        pages: prev!.pages.map((page) => ({
-          ...page,
-          comments: page.comments!.map((comment) =>
-            comment.idx === idx ? { ...comment, content } : comment
-          ),
-        })),
-      }));
+      >(
+        [queryKeys.comment, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            pages: prev.pages.map((page) => ({
+              ...page,
+              comments:
+                page.comments &&
+                page.comments.map((comment) =>
+                  comment.idx === idx ? { ...comment, content } : comment
+                ),
+            })),
+          }
+      );
 
       toast.success(data.message);
     },

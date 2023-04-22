@@ -1,12 +1,16 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
 // api
 import { apiServiceComment } from "@src/apis";
 
+// key
+import { queryKeys } from ".";
+
 // type
-import type { UseMutateFunction } from "react-query";
+import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
+  ApiFetchCommentsResponse,
   ApiUploadCommentRequest,
   ApiUploadCommentResponse,
 } from "@src/types/api";
@@ -18,8 +22,25 @@ const useUploadComment = (): UseMutateFunction<
   ApiUploadCommentRequest,
   unknown
 > => {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation(apiServiceComment.apiUploadComment, {
-    onSuccess(data, variables, context) {
+    onSuccess(data, { postIdx }, context) {
+      queryClient.setQueryData<
+        InfiniteData<ApiFetchCommentsResponse> | undefined
+      >([queryKeys.comment, postIdx], (prev) => ({
+        pageParams: [],
+        ...prev,
+        pages: prev!.pages.map((page, index) => {
+          if (index !== prev!.pages.length - 1) return page;
+
+          return {
+            ...page,
+            comments: [...page.comments!, data.createdComment],
+          };
+        }),
+      }));
+
       toast.success(data.message);
     },
   });
