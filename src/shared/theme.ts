@@ -324,12 +324,13 @@ const util = {
   `,
 
   /** 2023/03/10 - 텍스트 라인 제한 - by 1-blue */
-  lineClamp: (line: number) => css`
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: ${() => line};
-    overflow: hidden;
-  `,
+  lineClamp: (line: number) => () =>
+    css`
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: ${line};
+      overflow: hidden;
+    `,
 };
 
 /** 애니메이션 */

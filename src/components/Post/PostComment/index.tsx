@@ -37,10 +37,11 @@ const PostComment: React.FC<Props> = ({ comment, onUpdateComment }) => {
   const onClickUpdateButton = useCallback(
     (idx: number) => {
       if (!disabled) onUpdateComment(idx, content);
+      else setTimeout(() => commentRef.current?.focus(), 0);
 
       setDisabled((prev) => !prev);
     },
-    [onUpdateComment, content, disabled]
+    [onUpdateComment, content, disabled, commentRef]
   );
 
   return (
@@ -72,9 +73,10 @@ const PostComment: React.FC<Props> = ({ comment, onUpdateComment }) => {
                 e.stopPropagation();
                 setDisabled(true);
                 setContent(comment.content);
+                setTimeout(() => handleResizeHeight(), 0);
               }}
             >
-              취소
+              수정 취소
             </button>
           )}
         </div>

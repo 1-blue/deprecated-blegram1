@@ -47,19 +47,24 @@ const StyledPostComment = styled.li`
 
     /* 작성 내용 */
     & > textarea {
+      padding: 0.4em;
       background-color: transparent;
       border: 0;
 
       color: ${({ theme }) => theme.colors.fg};
 
       font-size: 0.9rem;
-      line-height: 1.1;
+      line-height: 1.2;
       resize: none;
+      border: 2px solid ${({ theme }) => theme.colors.fg};
 
       ${({ theme }) => theme.util.noScroll};
 
       &:focus {
         outline: none;
+      }
+      &:disabled {
+        border: 2px solid transparent;
       }
     }
   }

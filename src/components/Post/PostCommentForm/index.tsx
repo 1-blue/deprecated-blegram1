@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 
 // hook
 import useMe from "@src/hooks/query/useMe";
-import useResizeTextarea from "@src/hooks/useResizeTextarea";
 import useUploadComment from "@src/hooks/query/useUploadComment";
 
 // component
@@ -15,15 +14,22 @@ import StyledPostCommentForm from "./style";
 
 interface Props {
   postIdx: number;
+  isCommentFocus: boolean;
+  commentTextareaRef: React.MutableRefObject<HTMLTextAreaElement | null>;
+  handleCommentTextareaResizeHeight: () => void;
+  setIsCommentFocus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /** 2023/04/09 - 게시글의 댓글 작성 폼 - by 1-blue ( 2023/04/18 ) */
-const PostCommentForm: React.FC<Props> = ({ postIdx }) => {
+const PostCommentForm: React.FC<Props> = ({
+  postIdx,
+  isCommentFocus,
+  commentTextareaRef,
+  handleCommentTextareaResizeHeight,
+  setIsCommentFocus,
+}) => {
   /** 2023/04/18 - 로그인한 유저 정보 - by 1-blue */
   const { me } = useMe();
-
-  /** 2023/04/18 - textarea 리사이즈 - by 1-blue */
-  const [textRef, handleResizeHeight] = useResizeTextarea();
 
   /** 2023/04/18 - 댓글 업로드 훅 - by 1-blue */
   const uploadComment = useUploadComment();
@@ -33,9 +39,9 @@ const PostCommentForm: React.FC<Props> = ({ postIdx }) => {
     (e) => {
       e.preventDefault();
 
-      if (!textRef.current) return;
+      if (!commentTextareaRef.current) return;
 
-      const content = textRef.current.value.trim();
+      const content = commentTextareaRef.current.value.trim();
 
       if (!content) return toast.warning("댓글을 입력해주세요!");
       if (content.length > 500)
@@ -43,10 +49,15 @@ const PostCommentForm: React.FC<Props> = ({ postIdx }) => {
 
       uploadComment({ postIdx, content });
 
-      textRef.current.value = "";
-      handleResizeHeight();
+      commentTextareaRef.current.value = "";
+      handleCommentTextareaResizeHeight();
     },
-    [uploadComment, postIdx, textRef, handleResizeHeight]
+    [
+      uploadComment,
+      postIdx,
+      commentTextareaRef,
+      handleCommentTextareaResizeHeight,
+    ]
   );
 
   return (
@@ -54,12 +65,14 @@ const PostCommentForm: React.FC<Props> = ({ postIdx }) => {
       <Avatar src={me?.avatar || null} alt="로그인한 유저의 아바타 이미지" />
       <textarea
         placeholder="댓글추가"
-        ref={textRef}
-        onChange={handleResizeHeight}
+        ref={commentTextareaRef}
+        onChange={handleCommentTextareaResizeHeight}
         rows={1}
+        onFocus={() => setIsCommentFocus(true)}
+        onBlur={() => setIsCommentFocus(false)}
       />
       <button type="submit">
-        <Icon shape="chat-bubble-oval-left" />
+        <Icon shape="chat-bubble-oval-left" fill={isCommentFocus} />
       </button>
     </StyledPostCommentForm>
   );

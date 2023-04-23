@@ -5,11 +5,14 @@ const StyledPostButtons = styled.ul`
   display: flex;
   padding: 0 0.6em;
 
+  /* 이게 없으면 대체 왜 아이콘 <path>를 인지를 못할까요...? */
+  transform: translateY(0%);
+
   & > * + * {
     margin-left: 0.4em;
   }
 
-  & > svg {
+  & > button[type="button"] {
     &:last-child {
       margin-left: auto;
     }
