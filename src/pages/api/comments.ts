@@ -6,22 +6,30 @@ import withAuthMiddleware from "@src/lib/middleware";
 
 // type
 import type { NextApiHandler } from "next";
-import type { ApiFetchPostsResponse } from "@src/types/api";
+import type { ApiResponse, ApiFetchCommentsResponse } from "@src/types/api";
 
-/** 2023/04/08 - 게시글들 관련 엔드포인트 - by 1-blue */
-const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
+/** 2023/04/19 - 댓글들 관련 엔드포인트 - by 1-blue */
+const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
+  req,
+  res
+) => {
   try {
-    // 모든 게시글들 가져오기 요청
+    // 특정 게시글의 댓글들 요청
     if (req.method === "GET") {
+      const postIdx = +(req.query.postIdx as string);
       const take = +(req.query.take as string);
       const lastIdx = +(req.query.lastIdx as string);
 
-      const posts = await prisma.post.findMany({
-        where: {},
+      if (!req.user) {
+        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+      }
+
+      const comments = await prisma.comment.findMany({
+        where: { postIdx },
         take,
         skip: lastIdx === -1 ? 0 : 1,
         ...(lastIdx !== -1 && { cursor: { idx: lastIdx } }),
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
         include: {
           user: {
             select: {
@@ -30,10 +38,9 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
               nickname: true,
             },
           },
-          comments: {},
-          postLiker: {
+          commentLiker: {
             select: {
-              postLiker: {
+              commentLiker: {
                 select: {
                   idx: true,
                   avatar: true,
@@ -44,30 +51,28 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
           },
           _count: {
             select: {
-              comments: true,
-              postLiker: true,
-              bookMarker: true,
+              commentLiker: true,
             },
           },
         },
       });
 
       return res.status(200).json({
-        message: `최신 게시글 ${posts.length}개를 가져왔습니다.`,
-        posts,
+        message: `댓글들을 ${comments.length}개 가져왔습니다.`,
+        comments,
       });
     }
   } catch (error) {
     console.error("/api/user error >> ", error);
 
-    return res.status(500).json({
-      message: "서버측 문제입니다.\n잠시후에 다시 시도해주세요!",
-    });
+    return res
+      .status(500)
+      .json({ message: "서버측 문제입니다.\n잠시후에 다시 시도해주세요!" });
   }
 };
 
 export default withAuthMiddleware({
   methods: ["GET"],
   handler,
-  isAuth: false,
+  isAuth: true,
 });

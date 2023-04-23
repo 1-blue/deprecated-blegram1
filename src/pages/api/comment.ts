@@ -7,30 +7,31 @@ import withAuthMiddleware from "@src/lib/middleware";
 // type
 import type { NextApiHandler } from "next";
 import type {
-  ApiDeletePostResponse,
-  ApiUploadPostRequest,
-  ApiUploadPostResponse,
+  ApiUploadCommentResponse,
+  ApiUploadCommentRequest,
+  ApiDeleteCommentResponse,
+  ApiUpdateCommentRequest,
 } from "@src/types/api";
 
-/** 2023/04/08 - 게시글 관련 엔드포인트 - by 1-blue */
+/** 2023/04/18 - 댓글 관련 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<
-  ApiUploadPostResponse | ApiDeletePostResponse
+  ApiUploadCommentResponse | ApiDeleteCommentResponse
 > = async (req, res) => {
   try {
-    // 게시글 업로드 요청
+    // 댓글 업로드 요청
     if (req.method === "POST") {
-      const { content, photoPaths } = req.body as ApiUploadPostRequest;
+      const { postIdx, content } = req.body as ApiUploadCommentRequest;
 
       if (!req.user) {
         return res.status(401).json({ message: "로그인후에 접근해주세요!" });
       }
 
-      const createdPost = await prisma.post.create({
+      const createdComment = await prisma.comment.create({
         data: {
           content,
-          photos: photoPaths.join("|"),
           createdAt: new Date(),
-          userIdx: req.user?.idx,
+          postIdx: +postIdx,
+          userIdx: req.user.idx,
         },
         include: {
           user: {
@@ -40,10 +41,9 @@ const handler: NextApiHandler<
               nickname: true,
             },
           },
-          comments: {},
-          postLiker: {
+          commentLiker: {
             select: {
-              postLiker: {
+              commentLiker: {
                 select: {
                   idx: true,
                   avatar: true,
@@ -54,20 +54,30 @@ const handler: NextApiHandler<
           },
           _count: {
             select: {
-              comments: true,
-              postLiker: true,
-              bookMarker: true,
+              commentLiker: true,
             },
           },
         },
       });
 
       return res.status(200).json({
-        message: "게시글을 업로드했습니다.\n메인 페이지로 이동됩니다.",
-        createdPost,
+        message: "댓글을 업로드했습니다.",
+        createdComment,
       });
     }
-    // 게시글 삭제 요청
+    // 댓글 수정 요청
+    if (req.method === "PATCH") {
+      const { idx, content } = req.body as ApiUpdateCommentRequest;
+
+      if (!req.user) {
+        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+      }
+
+      await prisma.comment.update({ where: { idx }, data: { content } });
+
+      return res.status(200).json({ message: "댓글을 수정했습니다." });
+    }
+    // 댓글 제거 요청
     if (req.method === "DELETE") {
       const idx = +req.query.idx!;
 
@@ -75,9 +85,9 @@ const handler: NextApiHandler<
         return res.status(401).json({ message: "로그인후에 접근해주세요!" });
       }
 
-      await prisma.post.delete({ where: { idx } });
+      await prisma.comment.delete({ where: { idx } });
 
-      return res.status(204).json({ message: "게시글을 삭제했습니다." });
+      return res.status(204).json({ message: "댓글을 삭제했습니다." });
     }
   } catch (error) {
     console.error("/api/user error >> ", error);
@@ -89,7 +99,7 @@ const handler: NextApiHandler<
 };
 
 export default withAuthMiddleware({
-  methods: ["POST", "DELETE"],
+  methods: ["POST", "PATCH", "DELETE"],
   handler,
   isAuth: true,
 });

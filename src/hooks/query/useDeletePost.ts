@@ -8,10 +8,11 @@ import { apiServicePost } from "@src/apis";
 import { queryKeys } from ".";
 
 // type
-import type { UseMutateFunction } from "react-query";
+import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
   ApiDeletePostRequest,
   ApiDeletePostResponse,
+  ApiFetchPostsResponse,
 } from "@src/types/api";
 
 /** 2023/04/11 - 게시글 제거 훅 ( 서버 ) - by 1-blue */
@@ -24,8 +25,19 @@ const useDeletePost = (): UseMutateFunction<
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServicePost.apiDeletePost, {
-    onSuccess(data, variables, context) {
-      queryClient.invalidateQueries(queryKeys.post);
+    onSuccess(data, { idx }, context) {
+      queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
+        [queryKeys.post],
+        (prev) =>
+          prev && {
+            ...prev,
+            pages: prev.pages.map((page) => ({
+              ...page,
+              posts:
+                page.posts && page.posts.filter((post) => post.idx !== idx),
+            })),
+          }
+      );
 
       toast.success(data.message);
     },

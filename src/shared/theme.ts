@@ -288,12 +288,14 @@ const size = {
 
 /** 유틸리티 */
 const util = {
+  /** "..." */
   truncate: () => css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
 
+  /** 스크롤 바 디자인 변경 */
   scroll: () => css`
     &::-webkit-scrollbar {
       /** 스크롤바의 너비 */
@@ -312,13 +314,23 @@ const util = {
     }
   `,
 
-  /** 2023/03/10 - 텍스트 라인 제한 - by 1-blue */
-  lineClamp: (line: number) => css`
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: ${() => line};
-    overflow: hidden;
+  /** 스크롤 바 숨기기 */
+  noScroll: () => css`
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
+
+  /** 2023/03/10 - 텍스트 라인 제한 - by 1-blue */
+  lineClamp: (line: number) => () =>
+    css`
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: ${line};
+      overflow: hidden;
+    `,
 };
 
 /** 애니메이션 */

@@ -41,7 +41,11 @@ const Post = () => {
               <li key={post.idx}>
                 <PostHeader user={post.user} postIdx={post.idx} />
                 <PostPhotos photos={splitPhotoURL(post.photos)} />
-                <PostFooter contents={post.contents} />
+                <PostFooter
+                  content={post.content}
+                  postIdx={post.idx}
+                  commentCount={post._count.comments}
+                />
               </li>
             ))
           )}

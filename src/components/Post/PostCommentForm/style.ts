@@ -13,8 +13,8 @@ const StyledPostCommentForm = styled.form`
 
   /* 로그인한 유저 아바타 */
   & > figure {
-    width: 2em;
-    height: 2em;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   /* 댓글 입력창 */

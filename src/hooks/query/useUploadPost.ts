@@ -9,8 +9,9 @@ import { apiServicePost } from "@src/apis";
 import { queryKeys } from ".";
 
 // type
-import type { UseMutateFunction } from "react-query";
+import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
+  ApiFetchPostsResponse,
   ApiUploadPostRequest,
   ApiUploadPostResponse,
 } from "@src/types/api";
@@ -27,7 +28,17 @@ const useUploadPost = (): UseMutateFunction<
 
   const { mutate } = useMutation(apiServicePost.apiUploadPost, {
     onSuccess(data, variables, context) {
-      queryClient.setQueriesData(queryKeys.post, data.createdPost);
+      queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
+        [queryKeys.post],
+        (prev) =>
+          prev && {
+            ...prev,
+            pages: prev.pages.map((page) => ({
+              ...page,
+              posts: page.posts && [...page.posts, data.createdPost],
+            })),
+          }
+      );
 
       toast.success(data.message);
 

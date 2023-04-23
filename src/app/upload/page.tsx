@@ -20,7 +20,7 @@ import StyledPostUploadPage from "./style";
 
 // type
 interface PostForm {
-  contents: string;
+  content: string;
 }
 
 /** 2023/04/08 - 게시글 업로드 페이지 - by 1-blue  */
@@ -43,7 +43,7 @@ const PostUploadPage = () => {
   /** 2023/04/08 - 게시글 업로드 핸들러 - by 1-blue */
   const onUploadPost: React.FormEventHandler<HTMLFormElement> = handleSubmit(
     useCallback(
-      async ({ contents }) => {
+      async ({ content }) => {
         if (!photos?.length) return toast.warning("이미지를 등록해주세요!");
 
         try {
@@ -70,7 +70,7 @@ const PostUploadPage = () => {
           );
 
           // 게시글 업로드
-          uploadPostMudate({ contents, photoPaths });
+          uploadPostMudate({ content, photoPaths });
         } catch (error) {
           console.error("게시글 업로드 에러 >> ", error);
         } finally {
@@ -98,8 +98,8 @@ const PostUploadPage = () => {
           <FormToolkit.Textarea
             id="문구 입력"
             placeholder="문구를 입력해주세요!"
-            subText={errors.contents?.message}
-            {...register("contents", {
+            subText={errors.content?.message}
+            {...register("content", {
               required: "문구를 입력해주세요!",
               maxLength: {
                 value: 2000,

@@ -8,7 +8,7 @@ import { queryKeys } from ".";
 
 // type
 import type { ApiFetchMeResponse } from "@src/types/api";
-type UseMeHandler = (once?: boolean) => {
+type UseMeHandler = () => {
   me?: ApiFetchMeResponse["user"];
   isFetchingMe: boolean;
 };
