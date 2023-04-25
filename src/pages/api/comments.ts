@@ -20,10 +20,6 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
       const take = +(req.query.take as string);
       const lastIdx = +(req.query.lastIdx as string);
 
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
-
       const comments = await prisma.comment.findMany({
         where: { postIdx },
         take,
@@ -38,7 +34,7 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
               nickname: true,
             },
           },
-          commentLiker: {
+          commentLikers: {
             select: {
               commentLiker: {
                 select: {
@@ -51,7 +47,7 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
           },
           _count: {
             select: {
-              commentLiker: true,
+              commentLikers: true,
             },
           },
         },
@@ -74,5 +70,5 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
 export default withAuthMiddleware({
   methods: ["GET"],
   handler,
-  isAuth: true,
+  isAuth: false,
 });

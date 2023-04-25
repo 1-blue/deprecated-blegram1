@@ -30,23 +30,13 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
               nickname: true,
             },
           },
-          comments: {},
-          postLiker: {
-            select: {
-              postLiker: {
-                select: {
-                  idx: true,
-                  avatar: true,
-                  nickname: true,
-                },
-              },
-            },
-          },
+          // 로그인한 유저가 좋아요 눌렀는지 판단
+          postLikers: { where: { postLikerIdx: req.user?.idx || -1 } },
           _count: {
             select: {
               comments: true,
-              postLiker: true,
-              bookMarker: true,
+              postLikers: true,
+              bookMarkers: true,
             },
           },
         },

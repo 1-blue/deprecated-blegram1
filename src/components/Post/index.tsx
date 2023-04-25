@@ -44,7 +44,8 @@ const Post = () => {
                 <PostFooter
                   content={post.content}
                   postIdx={post.idx}
-                  commentCount={post._count.comments}
+                  count={post._count}
+                  likers={post.postLikers}
                 />
               </li>
             ))

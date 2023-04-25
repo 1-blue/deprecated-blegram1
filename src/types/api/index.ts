@@ -15,3 +15,4 @@ export * from "./post";
 export * from "./posts";
 export * from "./comment";
 export * from "./comments";
+export * from "./like";

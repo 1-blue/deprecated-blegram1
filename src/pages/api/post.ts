@@ -41,7 +41,7 @@ const handler: NextApiHandler<
             },
           },
           comments: {},
-          postLiker: {
+          postLikers: {
             select: {
               postLiker: {
                 select: {
@@ -55,8 +55,8 @@ const handler: NextApiHandler<
           _count: {
             select: {
               comments: true,
-              postLiker: true,
-              bookMarker: true,
+              postLikers: true,
+              bookMarkers: true,
             },
           },
         },

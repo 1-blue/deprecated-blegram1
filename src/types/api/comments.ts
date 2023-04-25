@@ -4,8 +4,8 @@ import type { Comment } from "@prisma/client";
 /** 2023/04/19 - 응답받을 댓글의 타입 - by 1-blue */
 export interface CommentsWithData extends Comment {
   user: SimpleUser;
-  commentLiker: { commentLiker: SimpleUser }[];
-  _count: { commentLiker: number };
+  commentLikers: { commentLiker: SimpleUser }[];
+  _count: { commentLikers: number };
 }
 
 // ============================== 댓글들 가져오기 요청 ==============================
