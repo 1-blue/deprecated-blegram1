@@ -29,7 +29,7 @@ const useUploadPost = (): UseMutateFunction<
   const { mutate } = useMutation(apiServicePost.apiUploadPost, {
     onSuccess(data, variables, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.post],
+        [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

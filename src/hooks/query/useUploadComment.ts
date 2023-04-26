@@ -28,7 +28,7 @@ const useUploadComment = (): UseMutateFunction<
     onSuccess(data, { postIdx }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
-      >([queryKeys.comment, postIdx], (prev) => ({
+      >([queryKeys.comments, postIdx], (prev) => ({
         pageParams: [],
         ...prev,
         pages: prev!.pages.map((page, index) => {

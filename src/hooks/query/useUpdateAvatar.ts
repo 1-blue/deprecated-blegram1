@@ -25,7 +25,7 @@ const useUpdateAvatar = (): UseMutateFunction<
 
   const { mutate } = useMutation(apiServicePhoto.apiUpdatePhoto, {
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries([queryKeys.user]);
+      queryClient.invalidateQueries([queryKeys.users]);
 
       toast.success(data.message);
     },

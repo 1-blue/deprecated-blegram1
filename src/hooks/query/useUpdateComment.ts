@@ -31,7 +31,7 @@ const useUpdateComment = (
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
       >(
-        [queryKeys.comment, postIdx],
+        [queryKeys.comments, postIdx],
         (prev) =>
           prev && {
             ...prev,

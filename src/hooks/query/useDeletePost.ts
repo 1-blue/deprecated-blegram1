@@ -27,7 +27,7 @@ const useDeletePost = (): UseMutateFunction<
   const { mutate } = useMutation(apiServicePost.apiDeletePost, {
     onSuccess(data, { idx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.post],
+        [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

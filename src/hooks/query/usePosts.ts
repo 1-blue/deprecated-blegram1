@@ -17,7 +17,7 @@ interface Props {
 const usePosts = ({ take, lastIdx = -1 }: Props) => {
   const { data, fetchNextPage, hasNextPage } =
     useInfiniteQuery<ApiFetchPostsResponse>(
-      [queryKeys.post],
+      [queryKeys.posts],
       ({ pageParam = lastIdx }) =>
         apiServicePosts.apiFetchPosts({ take, lastIdx: pageParam }),
       {

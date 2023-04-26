@@ -29,7 +29,7 @@ const useDeleteLikeOfPost = (): UseMutateFunction<
   const { mutate } = useMutation(apiServiceLike.apiDeleteLikeOfPost, {
     onSuccess(data, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.post],
+        [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

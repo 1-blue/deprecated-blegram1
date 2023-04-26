@@ -18,7 +18,7 @@ interface Props {
 const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
   const { data, fetchNextPage, hasNextPage } =
     useInfiniteQuery<ApiFetchCommentsResponse>(
-      [queryKeys.comment, postIdx],
+      [queryKeys.comments, postIdx],
       ({ pageParam = lastIdx }) =>
         apiServiceComments.apiFetchComments({
           postIdx,

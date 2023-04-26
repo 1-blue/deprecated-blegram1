@@ -5,9 +5,6 @@ import { toast } from "react-toastify";
 // api
 import { apiServiceMe } from "@src/apis";
 
-// key
-import { queryKeys } from ".";
-
 // type
 import type { UseMutateFunction } from "react-query";
 import type {
