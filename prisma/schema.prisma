@@ -67,6 +67,8 @@ model PostLikes {
   postLikerIdx Int
   postLiked Post @relation(fields: [postLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   postLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([postLikedIdx, postLikerIdx])
 }
@@ -96,6 +98,8 @@ model CommentLikes {
   commentLikerIdx Int
   commentLiked Comment @relation(fields: [commentLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   commentLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([commentLikedIdx, commentLikerIdx])
 }
@@ -106,6 +110,8 @@ model Bookmark {
   bookmarkerIdx Int
   bookmarked Post @relation(fields: [bookmarkedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   bookmarkedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([bookmarkerIdx, bookmarkedIdx])
 }

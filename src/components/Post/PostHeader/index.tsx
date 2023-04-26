@@ -1,6 +1,6 @@
 // hook
 import useMe from "@src/hooks/query/useMe";
-import useModalOfPost from "@src/hooks/recoil/useModalOfPost";
+import usePostModal from "@src/hooks/recoil/usePostModal";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -21,7 +21,7 @@ const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
   const { me } = useMe();
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
-  const { openModal } = useModalOfPost();
+  const { openPostModal } = usePostModal();
 
   return (
     <StyledPostHeader>
@@ -35,7 +35,7 @@ const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
       <button
         type="button"
         className="option"
-        onClick={() => openModal(me?.idx === user.idx, postIdx)}
+        onClick={() => openPostModal(me?.idx === user.idx, postIdx)}
       >
         <Icon shape="ellipsis-vertical" />
       </button>

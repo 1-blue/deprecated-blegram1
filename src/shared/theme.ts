@@ -371,6 +371,17 @@ const animation = {
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   `,
+  gradient: keyframes`
+    0% {
+      background-color: rgba(165, 165, 165, 0.5);
+    }
+    50% {
+      background-color: rgba(165, 165, 165, 0.8);
+    }
+    100% {
+      background-color: rgba(165, 165, 165, 0.5);
+    }
+  `,
 };
 
 /** 현재 상태 ( true: "dark" ) / ( false: "light" ) */

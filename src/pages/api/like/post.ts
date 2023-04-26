@@ -30,6 +30,7 @@ const handler: NextApiHandler<
         data: {
           postLiker: { connect: { idx: req.user.idx } },
           postLiked: { connect: { idx: postIdx } },
+          createdAt: new Date(),
         },
       });
 

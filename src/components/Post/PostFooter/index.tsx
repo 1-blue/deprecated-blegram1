@@ -46,7 +46,9 @@ const PostFooter: React.FC<Props> = ({ content, postIdx, count, likers }) => {
         commentTextareaRef={commentTextareaRef}
         isCommentFocus={isCommentFocus}
       />
-      {!!count.postLikers && <PostLikers likerCount={count.postLikers} />}
+      {!!count.postLikers && (
+        <PostLikers postIdx={postIdx} likerCount={count.postLikers} />
+      )}
       <PostContent content={content} />
       <PostComments postIdx={postIdx} commentCount={count.comments} />
       {me ? (

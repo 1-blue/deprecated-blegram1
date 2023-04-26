@@ -11,6 +11,8 @@ const StyledModal = styled.section`
   justify-content: center;
   align-items: center;
 
+  animation: ${({ theme }) => theme.animation.fadeIn} 0.4s;
+
   & > div {
     width: 200px;
 

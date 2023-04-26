@@ -1,4 +1,4 @@
-import type { ApiResponse, SimpleUser } from ".";
+import type { ApiResponse } from ".";
 
 // ============================== 게시글 좋아요 추가 요청 ==============================
 /** 2023/04/24 - 게시글 좋아요 추가 요청 송신 타입 - by 1-blue */

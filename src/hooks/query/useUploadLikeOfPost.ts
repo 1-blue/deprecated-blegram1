@@ -30,7 +30,7 @@ const useUploadLikeOfPost = (): UseMutateFunction<
   const { mutate } = useMutation(apiServiceLike.apiUploadLikeOfPost, {
     onSuccess({ message, postLikerIdx }, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.post],
+        [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,
@@ -45,7 +45,12 @@ const useUploadLikeOfPost = (): UseMutateFunction<
                     ...post,
                     postLikers: [
                       ...post.postLikers,
-                      { postLikerIdx, postLikedIdx: postIdx },
+                      {
+                        postLikerIdx,
+                        postLikedIdx: postIdx,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                      },
                     ],
                     _count: {
                       ...post._count,
