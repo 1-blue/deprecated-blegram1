@@ -16,7 +16,7 @@ import type {
   ApiFetchPostsResponse,
 } from "@src/types/api";
 
-/** 2023/04/24 - 게시글에 좋아요 추가 훅 ( 서버 ) - by 1-blue */
+/** 2023/04/24 - 게시글에 좋아요 제거 훅 ( 서버 ) - by 1-blue */
 const useDeleteLikeOfPost = (): UseMutateFunction<
   ApiDeleteLikeOfPostResponse,
   unknown,
@@ -43,7 +43,8 @@ const useDeleteLikeOfPost = (): UseMutateFunction<
                   return {
                     ...post,
                     postLikers: post.postLikers.filter(
-                      (post) => post.postLikerIdx !== data.postLikerIdx
+                      (postLiker) =>
+                        postLiker.postLikerIdx !== data.postLikerIdx
                     ),
                     _count: {
                       ...post._count,

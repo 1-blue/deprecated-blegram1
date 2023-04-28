@@ -40,18 +40,8 @@ const handler: NextApiHandler<
               nickname: true,
             },
           },
-          comments: {},
-          postLikers: {
-            select: {
-              postLiker: {
-                select: {
-                  idx: true,
-                  avatar: true,
-                  nickname: true,
-                },
-              },
-            },
-          },
+          // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
+          postLikers: { where: { postLikerIdx: req.user?.idx || -1 } },
           _count: {
             select: {
               comments: true,

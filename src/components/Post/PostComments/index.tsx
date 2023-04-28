@@ -82,6 +82,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
             page.comments?.map((comment) => (
               <PostComment
                 key={comment.idx}
+                postIdx={postIdx}
                 comment={comment}
                 onUpdateComment={onUpdateComment}
               />

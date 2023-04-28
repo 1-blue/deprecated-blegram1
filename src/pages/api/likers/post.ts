@@ -45,7 +45,7 @@ const handler: NextApiHandler<
       });
 
       return res.status(200).json({
-        message: "좋아요를 누른 유저들을 가져왔습니다.",
+        message: "게시글에 좋아요를 누른 유저들을 가져왔습니다.",
         likers,
       });
     }

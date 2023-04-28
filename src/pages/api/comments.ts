@@ -34,17 +34,8 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
               nickname: true,
             },
           },
-          commentLikers: {
-            select: {
-              commentLiker: {
-                select: {
-                  idx: true,
-                  avatar: true,
-                  nickname: true,
-                },
-              },
-            },
-          },
+          // 로그인한 댓글에 유저가 좋아요 눌렀는지 판단
+          commentLikers: { where: { commentLikerIdx: req.user?.idx || -1 } },
           _count: {
             select: {
               commentLikers: true,
