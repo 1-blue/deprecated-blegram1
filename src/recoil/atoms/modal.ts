@@ -15,15 +15,30 @@ export const atomModalOfPost = atom<AtomModalOfPost>({
   },
 });
 
-interface AtomModalOfLiker {
+interface AtomModalOfPostLiker {
   isOpen: boolean;
   postIdx: null | number;
 }
-/** 2023/04/25 - liker modal atom - by 1-blue */
-export const atomModalOfLiker = atom<AtomModalOfLiker>({
-  key: "AtomModalOfLiker",
+/** 2023/04/25 - post liker modal atom - by 1-blue */
+export const atomModalOfPostLiker = atom<AtomModalOfPostLiker>({
+  key: "AtomModalOfPostLiker",
   default: {
     isOpen: false,
     postIdx: null,
+  },
+});
+
+interface AtomModalOfCommentLiker {
+  isOpen: boolean;
+  postIdx: null | number;
+  commentIdx: null | number;
+}
+/** 2023/04/28 - comment liker modal atom - by 1-blue */
+export const atomModalOfCommentLiker = atom<AtomModalOfCommentLiker>({
+  key: "AtomModalOfCommentLiker",
+  default: {
+    isOpen: false,
+    postIdx: null,
+    commentIdx: null,
   },
 });

@@ -7,6 +7,7 @@ import { dateOrTimeFormat } from "@src/utils";
 import useResizeTextarea from "@src/hooks/useResizeTextarea";
 import useUploadLikeOfComment from "@src/hooks/query/useUploadLikeOfComment";
 import useDeleteLikeOfComment from "@src/hooks/query/useDeleteLikeOfComment";
+import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -17,6 +18,7 @@ import StyledPostComment from "./style";
 
 // type
 import type { CommentsWithData } from "@src/types/api";
+
 interface Props {
   postIdx: number;
   comment: CommentsWithData;
@@ -76,6 +78,9 @@ const PostComment: React.FC<Props> = ({
     mutateUploadLikeOfComment,
   ]);
 
+  /** 2023/04/28 - 댓글에 좋아요 누른 사람들 모달 열기 - by 1-blue */
+  const { openLikerModal } = useCommentLikerModal();
+
   return (
     <StyledPostComment>
       {/* 좌측 아바타 */}
@@ -129,7 +134,12 @@ const PostComment: React.FC<Props> = ({
         <button type="button" onClick={onClickLike}>
           <Icon shape="heart" size="sm" fill={isLiked} color="#ef4444" />
         </button>
-        <span>{comment._count.commentLikers}</span>
+        <button
+          type="button"
+          onClick={() => openLikerModal(postIdx, comment.idx)}
+        >
+          {comment._count.commentLikers}
+        </button>
       </section>
     </StyledPostComment>
   );

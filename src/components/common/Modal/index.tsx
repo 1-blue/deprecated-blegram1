@@ -1,11 +1,13 @@
 // component
 import Post from "@src/components/common/Modal/Post";
-import Liker from "@src/components/common/Modal/Liker";
+import PostLiker from "@src/components/common/Modal/PostLiker";
+import CommentLiker from "@src/components/common/Modal/CommentLiker";
 
 /** 2023/04/14 - 모달 - by 1-blue */
 const Modal = {
   Post,
-  Liker,
+  PostLiker,
+  CommentLiker,
 };
 
 export default Modal;

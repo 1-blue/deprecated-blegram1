@@ -7,7 +7,8 @@ import { splitPhotoURL } from "@src/utils";
 // hook
 import usePosts from "@src/hooks/query/usePosts";
 import usePostModal from "@src/hooks/recoil/usePostModal";
-import useLikerModal from "@src/hooks/recoil/useLikerModal";
+import usePostLikerModal from "@src/hooks/recoil/usePostLikerModal";
+import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
 
 // component
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
@@ -33,20 +34,22 @@ const Post = () => {
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
   const { postModalData } = usePostModal();
-  /** 2023/04/25 - 좋아요 누른 사람들관련 모달 훅 - by 1-blue */
-  const { likerModalData } = useLikerModal();
+  /** 2023/04/25 - 게시글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
+  const { postLikerModalData } = usePostLikerModal();
+  /** 2023/04/28 - 댓글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
+  const { commentLikerModalData } = useCommentLikerModal();
 
   /** 2023/04/25 - 외부 스크롤 금지 - by 1-blue */
   useEffect(() => {
     // 모달이 열려있다면
-    if (postModalData.isOpen || likerModalData.isOpen) {
+    if (postModalData.isOpen || postLikerModalData.isOpen) {
       document.body.style.overflow = "hidden";
     }
     // 모달이 닫혀있다면
     else {
       document.body.style.overflow = "auto";
     }
-  }, [postModalData, likerModalData]);
+  }, [postModalData, postLikerModalData]);
 
   return (
     <>
@@ -70,7 +73,8 @@ const Post = () => {
       </InfiniteScrollContainer>
 
       {postModalData.isOpen && <Modal.Post />}
-      {likerModalData.isOpen && <Modal.Liker />}
+      {postLikerModalData.isOpen && <Modal.PostLiker />}
+      {commentLikerModalData.isOpen && <Modal.CommentLiker />}
     </>
   );
 };

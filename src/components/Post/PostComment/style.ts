@@ -76,8 +76,15 @@ const StyledPostComment = styled.li`
     align-items: center;
     margin-left: auto;
 
-    & > button[type="button"] {
-      margin-left: auto;
+    & > button[type="button"]:last-child {
+      padding: 0.2em;
+
+      font-weight: 500;
+      color: ${({ theme }) => theme.colors.fg};
+
+      &:hover {
+        font-weight: bold;
+      }
     }
   }
 `;
