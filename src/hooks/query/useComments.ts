@@ -16,7 +16,7 @@ interface Props {
 
 /** 2023/04/19 - 댓글들을 얻는 훅 - by 1-blue ( 2023/04/10 ) */
 const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
-  const { data, fetchNextPage, hasNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetching } =
     useInfiniteQuery<ApiFetchCommentsResponse>(
       [queryKeys.comments, postIdx],
       ({ pageParam = lastIdx }) =>
@@ -35,7 +35,7 @@ const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
       }
     );
 
-  return { data, fetchNextPage, hasNextPage };
+  return { data, fetchNextPage, hasNextPage, isFetching };
 };
 
 export default useComments;

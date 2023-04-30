@@ -15,7 +15,7 @@ interface Props {
 
 /** 2023/04/08 - 게시글들을 얻는 훅 - by 1-blue ( 2023/04/10 ) */
 const usePosts = ({ take, lastIdx = -1 }: Props) => {
-  const { data, fetchNextPage, hasNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetching } =
     useInfiniteQuery<ApiFetchPostsResponse>(
       [queryKeys.posts],
       ({ pageParam = lastIdx }) =>
@@ -28,7 +28,7 @@ const usePosts = ({ take, lastIdx = -1 }: Props) => {
       }
     );
 
-  return { data, fetchNextPage, hasNextPage };
+  return { data, fetchNextPage, hasNextPage, isFetching };
 };
 
 export default usePosts;

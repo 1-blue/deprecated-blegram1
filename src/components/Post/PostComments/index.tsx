@@ -7,6 +7,7 @@ import useDeleteComment from "@src/hooks/query/useDeleteComment";
 
 // component
 import PostComment from "@src/components/Post/PostComment";
+import Skeleton from "@src/components/common/Skeleton";
 
 // style
 import StyledPostComments from "./style";
@@ -23,7 +24,7 @@ const take = 2;
 /** 2023/04/09 - 게시글의 댓글들 - by 1-blue */
 const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   /** 2023/04/19 - 댓글들 더 불러오기 - by 1-blue */
-  const { data, hasNextPage, fetchNextPage } = useComments({
+  const { data, hasNextPage, fetchNextPage, isFetching } = useComments({
     postIdx,
     take,
   });
@@ -69,7 +70,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
           </button>
         )}
         {/* 댓글 더 불러오기 */}
-        {isOpen && hasNextPage && count > 0 && (
+        {isOpen && !isFetching && hasNextPage && count > 0 && (
           <button type="button" onClick={() => fetchNextPage()}>
             {count}댓글 더 불러오기...
           </button>
@@ -90,6 +91,8 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
           )}
         </ul>
       )}
+
+      {isOpen && isFetching && <Skeleton.Comment />}
     </StyledPostComments>
   );
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -16,6 +18,7 @@ import PostHeader from "@src/components/Post/PostHeader";
 import PostPhotos from "@src/components/Post/PostPhotos";
 import PostFooter from "@src/components/Post/PostFooter";
 import Modal from "@src/components/common/Modal";
+import Skeleton from "@src/components/common/Skeleton";
 
 // style
 import StyledPost from "./style";
@@ -27,7 +30,7 @@ const Post = () => {
   const postIdx = searchParams?.get("postIdx");
 
   /** 2023/04/10 - 무한 스크롤링을 적용한 게시글들의 데이터 - by 1-blue */
-  const { data, hasNextPage, fetchNextPage } = usePosts({
+  const { data, hasNextPage, fetchNextPage, isFetching } = usePosts({
     take: 10,
     lastIdx: postIdx ? +postIdx : undefined,
   });
@@ -53,7 +56,10 @@ const Post = () => {
 
   return (
     <>
-      <InfiniteScrollContainer hasMore={hasNextPage} fetchMore={fetchNextPage}>
+      <InfiniteScrollContainer
+        hasMore={hasNextPage && !isFetching}
+        fetchMore={fetchNextPage}
+      >
         <StyledPost>
           {data?.pages?.map((page) =>
             page.posts?.map((post) => (
@@ -71,6 +77,8 @@ const Post = () => {
           )}
         </StyledPost>
       </InfiniteScrollContainer>
+
+      {isFetching && <Skeleton.Post />}
 
       {postModalData.isOpen && <Modal.Post />}
       {postLikerModalData.isOpen && <Modal.PostLiker />}
