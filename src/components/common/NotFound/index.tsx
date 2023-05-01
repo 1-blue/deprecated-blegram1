@@ -38,7 +38,7 @@ const NotFound: React.FC<Props> = ({ text }) => {
       </section>
       <section className="bottom">
         <Icon shape="chevron-double-down" size="2xl" />
-        <Link href="/">홈 페이지로 이동</Link>
+        <Link href="/">메인 페이지로 이동</Link>
       </section>
     </StyledNotFound>
   );

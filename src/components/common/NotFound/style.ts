@@ -14,11 +14,11 @@ const StyledNotFound = styled.article`
     align-items: center;
 
     color: ${({ theme }) => theme.colors.fg};
-    font-size: 90px;
+    font-size: 4.8rem;
 
     & > svg {
-      width: 70px;
-      height: 70px;
+      width: 3.4rem;
+      height: 3.4rem;
 
       fill: ${({ theme }) => theme.colors.fg};
     }

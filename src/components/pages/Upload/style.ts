@@ -6,7 +6,7 @@ interface StyledProps {
 }
 
 /** 2023/04/08 - 게시글 업로드 페이지 스타일 */
-const StyledPostUploadPage = styled.article<StyledProps>`
+const StyledPostUpload = styled.article<StyledProps>`
   width: ${({ width }) => width}px;
   padding: 0 1em;
   margin: 0 auto;
@@ -46,4 +46,4 @@ const StyledPostUploadPage = styled.article<StyledProps>`
   }
 `;
 
-export default StyledPostUploadPage;
+export default StyledPostUpload;

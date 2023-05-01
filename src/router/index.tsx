@@ -31,7 +31,7 @@ export const getNavRouter: GetNavRouterHandler = (nickname) => {
   // 로그인한 경우
   if (nickname) {
     myNavRouter.push({
-      path: "/" + nickname,
+      path: ("/" + nickname) as __next_route_internal_types__.RouteImpl<string>,
       label: "내 정보",
       icon: "user",
       withAuth: false,

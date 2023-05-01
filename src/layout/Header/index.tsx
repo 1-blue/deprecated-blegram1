@@ -1,3 +1,5 @@
+"use client";
+
 // component
 import NavBar from "@src/layout/NavBar";
 

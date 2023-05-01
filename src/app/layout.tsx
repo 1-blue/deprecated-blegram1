@@ -40,7 +40,10 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         />
         <link rel="manifest" href="/favicon/site.webmanifest" />
         <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="black" />
+
+        {/* 문자 */}
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       </head>
 
       <body>
