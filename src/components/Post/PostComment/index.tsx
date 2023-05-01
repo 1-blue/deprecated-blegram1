@@ -5,8 +5,7 @@ import { dateOrTimeFormat } from "@src/utils";
 
 // hook
 import useResizeTextarea from "@src/hooks/useResizeTextarea";
-import useUploadLikeOfComment from "@src/hooks/query/useUploadLikeOfComment";
-import useDeleteLikeOfComment from "@src/hooks/query/useDeleteLikeOfComment";
+import { useLike } from "@src/hooks/query";
 import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
 
 // component
@@ -58,10 +57,10 @@ const PostComment: React.FC<Props> = ({
   const isLiked = !!comment.commentLikers.length;
 
   /** 2023/04/27 - 댓글 좋아요 추가 뮤테이트 훅 - by 1-blue */
-  const mutateUploadLikeOfComment = useUploadLikeOfComment();
+  const mutateUploadLikeOfComment = useLike.useUploadLikeOfComment();
 
   /** 2023/04/27 - 댓글 좋아요 제거 뮤테이트 훅 - by 1-blue */
-  const mutateDeleteLikeOfComment = useDeleteLikeOfComment();
+  const mutateDeleteLikeOfComment = useLike.useDeleteLikeOfComment();
 
   /** 2023/04/27 - 댓글에 좋아요 추가/제거 - by 1-blue */
   const onClickLike = useCallback(() => {
@@ -87,6 +86,9 @@ const PostComment: React.FC<Props> = ({
       <Avatar
         src={comment.user.avatar}
         alt={`${comment.user.nickname}님의 아바타 이미지`}
+        href={
+          `/${comment.user.nickname}` as __next_route_internal_types__.RouteImpl<string>
+        }
       />
       {/* 중간 내용 */}
       <section className="comment-wrapper">

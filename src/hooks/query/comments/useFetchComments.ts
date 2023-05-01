@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import { apiServiceComments } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { ApiFetchCommentsResponse } from "@src/types/api";
@@ -14,8 +14,8 @@ interface Props {
   lastIdx?: number;
 }
 
-/** 2023/04/19 - 댓글들을 얻는 훅 - by 1-blue ( 2023/04/10 ) */
-const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
+/** 2023/04/19 - 댓글들을 얻는 훅 - by 1-blue */
+const useFetchComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetching } =
     useInfiniteQuery<ApiFetchCommentsResponse>(
       [queryKeys.comments, postIdx],
@@ -38,4 +38,4 @@ const useComments = ({ postIdx, take, lastIdx = -1 }: Props) => {
   return { data, fetchNextPage, hasNextPage, isFetching };
 };
 
-export default useComments;
+export default useFetchComments;

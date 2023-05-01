@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { apiServicePhoto } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { UseMutateFunction } from "react-query";
@@ -14,7 +14,7 @@ import type {
   ApiUpdatePhotoResponse,
 } from "@src/types/api";
 
-/** 2023/04/01 - 프로필 이미지 추가 훅 ( 서버 ) - by 1-blue */
+/** 2023/04/01 - 프로필 이미지 추가 훅 - by 1-blue */
 const useUpdateAvatar = (): UseMutateFunction<
   ApiUpdatePhotoResponse,
   unknown,

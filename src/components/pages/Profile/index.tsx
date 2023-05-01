@@ -4,10 +4,7 @@ import { useCallback, useState } from "react";
 import Link from "next/link";
 
 // hook
-import useMe from "@src/hooks/query/useMe";
-import useUser from "@src/hooks/query/useUser";
-import useLogOut from "@src/hooks/query/useLogOut";
-import useUpdateAvatar from "@src/hooks/query/useUpdateAvatar";
+import { useMe, useUser, useAuth } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -29,13 +26,16 @@ interface Props {
 
 /** 2023/03/27 - 프로필 페이지 - by 1-blue */
 const Profile: React.FC<Props> = ({ nickname, initialData }) => {
-  const { me } = useMe();
-  const { user, isFetchingUser } = useUser({ nickname, initialData });
+  const { me } = useMe.useFetchMe();
+  const { user, isFetchingUser } = useUser.useFetchUser({
+    nickname,
+    initialData,
+  });
 
   /** 2023/03/31 - 로그아웃 훅 - by 1-blue */
-  const logoutMutate = useLogOut();
+  const logoutMutate = useAuth.useLogOut();
   /** 2023/04/01 - 프로필 이미지 서버에 업로드 훅 - by 1-blue */
-  const updateAvatarMutata = useUpdateAvatar();
+  const updateAvatarMutata = useMe.useUpdateAvatar();
 
   /** 2023/04/02 - 이미지 등록중인지 판단할 변수 - by 1-blue */
   const [isUploadAvatar, setIsUploadAvatar] = useState(false);

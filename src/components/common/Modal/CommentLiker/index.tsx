@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // hook
 import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
-import useCommentLikers from "@src/hooks/query/useCommentLikers";
+import { useLikers } from "@src/hooks/query";
 
 // component
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
@@ -22,10 +22,11 @@ const CommentLiker = () => {
   const { commentLikerModalData, closeLikerModal } = useCommentLikerModal();
 
   /** 2023/04/28 - 게시글에 좋아요를 누른 유저들 불러오는 훅 - by 1-blue */
-  const { data, fetchNextPage, hasNextPage, isLoading } = useCommentLikers({
-    commentIdx: commentLikerModalData.commentIdx || -1,
-    take: 20,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading } =
+    useLikers.useCommentLikers({
+      commentIdx: commentLikerModalData.commentIdx || -1,
+      take: 20,
+    });
 
   /** 2023/04/28 - 외부 클릭 시 모달 닫기 - by 1-blue */
   useEffect(() => {

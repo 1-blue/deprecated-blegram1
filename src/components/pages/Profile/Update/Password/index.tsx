@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { getRegExp } from "@src/utils";
 
 // hook
-import useUpdatePassword from "@src/hooks/query/useUpdatePassword";
+import { useMe } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -23,7 +23,7 @@ import type { PasswordUpdateForm } from "@src/types";
 /** 2023/03/31 - 비밀번호 수정 페이지 - by 1-blue */
 const PasswordUpdate = () => {
   /** 2023/03/31 - 로그인한 유저 비밀번호 수정 훅 - by 1-blue */
-  const updatePasswordMutate = useUpdatePassword();
+  const updatePasswordMutate = useMe.useUpdatePassword();
 
   const {
     register,

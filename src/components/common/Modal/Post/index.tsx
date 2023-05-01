@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { toast } from "react-toastify";
 
 // hook
-import useDeletePost from "@src/hooks/query/useDeletePost";
+import { usePost } from "@src/hooks/query";
 import usePostModal from "@src/hooks/recoil/usePostModal";
 
 // component
@@ -14,7 +14,7 @@ import StyledModal from "./style";
 /** 2023/04/14 - 게시글의 모달 ( 수정, 삭제, 북마크, 링크복사 ) - by 1-blue */
 const Post = () => {
   /** 2023/04/11 - 게시글 제거 훅 - by 1-blue */
-  const deletePostMutate = useDeletePost();
+  const deletePostMutate = usePost.useDeletePost();
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
   const { postModalData, closePostModal } = usePostModal();

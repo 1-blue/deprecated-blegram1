@@ -4,12 +4,12 @@ import { useQuery } from "react-query";
 import { apiServiceUser } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { ApiFetchUserResponse } from "@src/types/api";
 
-interface UseUserHandler {
+interface UseFetchHandler {
   ({
     nickname,
     initialData,
@@ -23,7 +23,7 @@ interface UseUserHandler {
 }
 
 /** 2023/03/29 - 특정 유저 정보를 얻는 훅 - by 1-blue */
-const useUser: UseUserHandler = ({ nickname, initialData }) => {
+const useFetchUser: UseFetchHandler = ({ nickname, initialData }) => {
   const { data, isLoading } = useQuery<ApiFetchUserResponse>(
     [queryKeys.user, nickname],
     () => apiServiceUser.apiFetchUser({ nickname }),
@@ -33,4 +33,4 @@ const useUser: UseUserHandler = ({ nickname, initialData }) => {
   return { user: data?.user, isFetchingUser: isLoading };
 };
 
-export default useUser;
+export default useFetchUser;

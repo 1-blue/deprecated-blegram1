@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 // hook
-import useMe from "@src/hooks/query/useMe";
+import { useMe } from "@src/hooks/query";
 import useResizeTextarea from "@src/hooks/useResizeTextarea";
 
 // component
@@ -26,7 +26,7 @@ interface Props {
 
 /** 2023/04/09 - 게시글 하단부 ( 버튼들, 내용, 댓글, 댓글폼 ) - by 1-blue */
 const PostFooter: React.FC<Props> = ({ content, postIdx, count, likers }) => {
-  const { me } = useMe();
+  const { me } = useMe.useFetchMe();
 
   /** 2023/04/24 - 댓글 입력창 포커싱 여부 - by 1-blue */
   const [isCommentFocus, setIsCommentFocus] = useState(false);

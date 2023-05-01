@@ -12,10 +12,7 @@ import { apiServicePhoto } from "@src/apis";
 import { getRegExp } from "@src/utils";
 
 // hook
-import useMe from "@src/hooks/query/useMe";
-import useUser from "@src/hooks/query/useUser";
-import useUpdateMe from "@src/hooks/query/useUpdateMe";
-import useUpdateAvatar from "@src/hooks/query/useUpdateAvatar";
+import { useMe, useUser } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -35,13 +32,13 @@ const ProfileUpdate: React.FC<Props> = ({ nickname }) => {
   const router = useRouter();
 
   /** 2023/03/30 - 로그인한 유저 정보 - by 1-blue */
-  const { me, isFetchingMe } = useMe();
+  const { me, isFetchingMe } = useMe.useFetchMe();
   /** 2023/03/30 - 현재 페이지의 유저 정보 - by 1-blue */
-  const { user, isFetchingUser } = useUser({ nickname });
+  const { user, isFetchingUser } = useUser.useFetchUser({ nickname });
   /** 2023/03/30 - 로그인한 유저 정보 수정 뮤테이트 훅 - by 1-blue */
-  const updateMeMudate = useUpdateMe();
+  const updateMeMudate = useMe.useUpdateMe();
   /** 2023/04/02 - 프로필 이미지 서버에 업로드 훅 - by 1-blue */
-  const updateAvatarMutata = useUpdateAvatar();
+  const updateAvatarMutata = useMe.useUpdateAvatar();
 
   /** 2023/04/02 - 이미지 등록중인지 판단할 변수 - by 1-blue */
   const [isUploadAvatar, setIsUploadAvatar] = useState(false);

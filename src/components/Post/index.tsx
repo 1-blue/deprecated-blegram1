@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { splitPhotoURL } from "@src/utils";
 
 // hook
-import usePosts from "@src/hooks/query/usePosts";
+import { usePosts } from "@src/hooks/query";
 import usePostModal from "@src/hooks/recoil/usePostModal";
 import usePostLikerModal from "@src/hooks/recoil/usePostLikerModal";
 import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
@@ -30,10 +30,11 @@ const Post = () => {
   const postIdx = searchParams?.get("postIdx");
 
   /** 2023/04/10 - 무한 스크롤링을 적용한 게시글들의 데이터 - by 1-blue */
-  const { data, hasNextPage, fetchNextPage, isFetching } = usePosts({
-    take: 10,
-    lastIdx: postIdx ? +postIdx : undefined,
-  });
+  const { data, hasNextPage, fetchNextPage, isFetching } =
+    usePosts.useFetchPosts({
+      take: 10,
+      lastIdx: postIdx ? +postIdx : undefined,
+    });
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
   const { postModalData } = usePostModal();

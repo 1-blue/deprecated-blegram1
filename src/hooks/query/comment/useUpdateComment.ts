@@ -5,29 +5,29 @@ import { toast } from "react-toastify";
 import { apiServiceComment } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
-  ApiDeleteCommentRequest,
-  ApiDeleteCommentResponse,
+  ApiUpdateCommentRequest,
+  ApiUpdateCommentResponse,
   ApiFetchCommentsResponse,
 } from "@src/types/api";
 
-/** 2023/04/21 - 댓글 제거 훅 ( 서버 ) - by 1-blue */
-const useDeleteComment = (
+/** 2023/04/21 - 댓글 수정 훅 ( 서버 ) - by 1-blue */
+const useUpdateComment = (
   postIdx: number
 ): UseMutateFunction<
-  ApiDeleteCommentResponse,
+  ApiUpdateCommentResponse,
   unknown,
-  ApiDeleteCommentRequest,
+  ApiUpdateCommentRequest,
   unknown
 > => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(apiServiceComment.apiDeleteComment, {
-    onSuccess(data, { idx }, context) {
+  const { mutate } = useMutation(apiServiceComment.apiUpdateComment, {
+    onSuccess(data, { idx, content }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
       >(
@@ -39,7 +39,9 @@ const useDeleteComment = (
               ...page,
               comments:
                 page.comments &&
-                page.comments.filter((comment) => comment.idx !== idx),
+                page.comments.map((comment) =>
+                  comment.idx === idx ? { ...comment, content } : comment
+                ),
             })),
           }
       );
@@ -51,4 +53,4 @@ const useDeleteComment = (
   return mutate;
 };
 
-export default useDeleteComment;
+export default useUpdateComment;

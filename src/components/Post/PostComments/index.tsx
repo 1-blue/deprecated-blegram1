@@ -1,9 +1,7 @@
 import { useCallback, useState } from "react";
 
 // hooks
-import useComments from "@src/hooks/query/useComments";
-import useUpdateComment from "@src/hooks/query/useUpdateComment";
-import useDeleteComment from "@src/hooks/query/useDeleteComment";
+import { useComments, useComment } from "@src/hooks/query";
 
 // component
 import PostComment from "@src/components/Post/PostComment";
@@ -24,16 +22,17 @@ const take = 2;
 /** 2023/04/09 - 게시글의 댓글들 - by 1-blue */
 const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   /** 2023/04/19 - 댓글들 더 불러오기 - by 1-blue */
-  const { data, hasNextPage, fetchNextPage, isFetching } = useComments({
-    postIdx,
-    take,
-  });
+  const { data, hasNextPage, fetchNextPage, isFetching } =
+    useComments.useFetchComments({
+      postIdx,
+      take,
+    });
 
   /** 2023/04/19 - 댓글들 접기 - by 1-blue */
   const [isOpen, setIsOpen] = useState(true);
 
   /** 2023/04/21 - 댓글 수정 훅 - by 1-blue */
-  const updateCommentMutate = useUpdateComment(postIdx);
+  const updateCommentMutate = useComment.useUpdateComment(postIdx);
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
   const onUpdateComment = useCallback(
@@ -42,7 +41,7 @@ const PostComments: React.FC<Props> = ({ postIdx, commentCount }) => {
   );
 
   /** 2023/04/21 - 댓글 삭제 훅 - by 1-blue */
-  const deleteCommentMutate = useDeleteComment(postIdx);
+  const deleteCommentMutate = useComment.useDeleteComment(postIdx);
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
   const onDeleteComment: React.MouseEventHandler<HTMLUListElement> =

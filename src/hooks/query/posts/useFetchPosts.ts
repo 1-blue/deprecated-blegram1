@@ -4,7 +4,7 @@ import { type InfiniteData, useInfiniteQuery } from "react-query";
 import { apiServicePosts } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { ApiFetchPostsResponse } from "@src/types/api";
@@ -14,8 +14,8 @@ interface Props {
   initialData?: InfiniteData<ApiFetchPostsResponse>;
 }
 
-/** 2023/04/08 - 게시글들을 얻는 훅 - by 1-blue ( 2023/04/10 ) */
-const usePosts = ({ take, lastIdx = -1, initialData }: Props) => {
+/** 2023/04/08 - 게시글들을 얻는 훅 - by 1-blue */
+const useFetchPosts = ({ take, lastIdx = -1, initialData }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetching } =
     useInfiniteQuery<ApiFetchPostsResponse>(
       [queryKeys.posts],
@@ -34,4 +34,4 @@ const usePosts = ({ take, lastIdx = -1, initialData }: Props) => {
   return { data, fetchNextPage, hasNextPage, isFetching };
 };
 
-export default usePosts;
+export default useFetchPosts;

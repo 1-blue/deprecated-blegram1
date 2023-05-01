@@ -1,8 +1,7 @@
 import { useCallback } from "react";
 
 // hook
-import useUploadLikeOfPost from "@src/hooks/query/useUploadLikeOfPost";
-import useDeleteLikeOfPost from "@src/hooks/query/useDeleteLikeOfPost";
+import { useLike } from "@src/hooks/query";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -26,10 +25,10 @@ const PostButtons: React.FC<Props> = ({
   isCommentFocus,
 }) => {
   /** 2023/04/24 - 게시글 좋아요 추가 뮤테이트 훅 - by 1-blue */
-  const mutateUploadLikeOfPost = useUploadLikeOfPost();
+  const mutateUploadLikeOfPost = useLike.useUploadLikeOfPost();
 
   /** 2023/04/24 - 게시글 좋아요 제거 뮤테이트 훅 - by 1-blue */
-  const mutateDeleteLikeOfPost = useDeleteLikeOfPost();
+  const mutateDeleteLikeOfPost = useLike.useDeleteLikeOfPost();
 
   /** 2023/04/24 - 게시글에 좋아요 추가/제거 - by 1-blue */
   const onClickLike = useCallback(() => {

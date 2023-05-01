@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 // hook
-import useLogIn from "@src/hooks/query/useLogIn";
+import { useAuth } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -25,7 +25,7 @@ const LogIn = () => {
     formState: { errors },
   } = useForm<LogInForm>();
   /** 2023/03/30 - 로그인 요청 뮤테이트 얻는 훅 - by 1-blue */
-  const logInMudate = useLogIn();
+  const logInMudate = useAuth.useLogIn();
 
   /** 2023/03/25 - 로그인 수행 핸들러 - by 1-blue */
   const onLogIn: React.FormEventHandler<HTMLFormElement> = handleSubmit(

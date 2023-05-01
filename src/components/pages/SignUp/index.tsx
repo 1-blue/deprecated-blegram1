@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { getRegExp } from "@src/utils";
 
 // hook
-import useSignUp from "@src/hooks/query/useSignUp";
+import { useAuth } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -30,7 +30,7 @@ const SignUp = () => {
     setValue,
   } = useForm<SignUpForm>();
   /** 2023/03/30 - 회원가입 요청 뮤테이트를 얻는 훅 - by 1-blue */
-  const signUpMudate = useSignUp();
+  const signUpMudate = useAuth.useSignUp();
 
   /** 2023/03/25 - 회원가입 수행 핸들러 - by 1-blue */
   const onSignUp: React.FormEventHandler<HTMLFormElement> = handleSubmit(

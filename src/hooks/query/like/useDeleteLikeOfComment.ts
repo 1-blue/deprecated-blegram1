@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
@@ -5,27 +6,28 @@ import { toast } from "react-toastify";
 import { apiServiceLike } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
+  ApiDeleteLikeOfCommentRequest,
+  ApiDeleteLikeOfCommentResponse,
   ApiFetchCommentsResponse,
-  ApiUploadLikeOfCommentRequest,
-  ApiUploadLikeOfCommentResponse,
 } from "@src/types/api";
 
-/** 2023/04/27 - 댓글에 좋아요 추가 훅 ( 서버 ) - by 1-blue */
-const useUploadLikeOfComment = (): UseMutateFunction<
-  ApiUploadLikeOfCommentResponse,
+/** 2023/04/27 - 댓글에 좋아요 제거 훅 - by 1-blue */
+const useDeleteLikeOfComment = (): UseMutateFunction<
+  ApiDeleteLikeOfCommentResponse,
   unknown,
-  ApiUploadLikeOfCommentRequest,
+  ApiDeleteLikeOfCommentRequest,
   unknown
 > => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(apiServiceLike.apiUploadLikeOfComment, {
-    onSuccess({ message, commentLikerIdx }, { postIdx, commentIdx }, context) {
+  const { mutate } = useMutation(apiServiceLike.apiDeleteLikeOfComment, {
+    onSuccess(data, { postIdx, commentIdx }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
       >(
@@ -42,18 +44,13 @@ const useUploadLikeOfComment = (): UseMutateFunction<
 
                   return {
                     ...comment,
-                    commentLikers: [
-                      ...comment.commentLikers,
-                      {
-                        commentLikerIdx,
-                        commentLikedIdx: commentIdx,
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
-                      },
-                    ],
+                    commentLikers: comment.commentLikers.filter(
+                      (commentLiker) =>
+                        commentLiker.commentLikerIdx !== data.commentLikerIdx
+                    ),
                     _count: {
                       ...comment._count,
-                      commentLikers: comment._count.commentLikers + 1,
+                      commentLikers: comment._count.commentLikers - 1,
                     },
                   };
                 }),
@@ -61,11 +58,13 @@ const useUploadLikeOfComment = (): UseMutateFunction<
           }
       );
 
-      toast.success(message);
+      toast.success(data.message);
+
+      router.replace("/");
     },
   });
 
   return mutate;
 };
 
-export default useUploadLikeOfComment;
+export default useDeleteLikeOfComment;

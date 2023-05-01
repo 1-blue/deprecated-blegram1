@@ -4,31 +4,31 @@ import { useInfiniteQuery } from "react-query";
 import { apiServiceLikers } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchCommentLikersResponse } from "@src/types/api";
+import type { ApiFetchPostLikersResponse } from "@src/types/api";
 interface Props {
-  commentIdx: number;
+  postIdx: number;
   take: number;
   lastIdx?: number;
 }
 
-/** 2023/04/28 - 댓글에 좋아요를 누른 유저들을 얻는 훅 - by 1-blue ( 2023/04/10 ) */
-const usePostLikers = ({ commentIdx, take, lastIdx = -1 }: Props) => {
+/** 2023/04/25 - 게시글에 좋아요를 누른 유저들을 얻는 훅 - by 1-blue */
+const usePostLikers = ({ postIdx, take, lastIdx = -1 }: Props) => {
   const { data, fetchNextPage, hasNextPage, isLoading } =
-    useInfiniteQuery<ApiFetchCommentLikersResponse>(
-      [queryKeys.commentLikers, commentIdx],
+    useInfiniteQuery<ApiFetchPostLikersResponse>(
+      [queryKeys.postLikers, postIdx],
       ({ pageParam = lastIdx }) =>
-        apiServiceLikers.apiFetchCommentLikers({
+        apiServiceLikers.apiFetchPostLikers({
           take,
           lastIdx: pageParam,
-          commentIdx,
+          postIdx,
         }),
       {
         getNextPageParam: (lastPage, allPage) =>
           lastPage.likers?.length === take
-            ? lastPage.likers[lastPage.likers.length - 1].commentLikerIdx
+            ? lastPage.likers[lastPage.likers.length - 1].postLikerIdx
             : null,
       }
     );

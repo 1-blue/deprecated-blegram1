@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
@@ -5,27 +6,28 @@ import { toast } from "react-toastify";
 import { apiServicePost } from "@src/apis";
 
 // key
-import { queryKeys } from ".";
+import { queryKeys } from "@src/hooks/query";
 
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
-  ApiDeletePostRequest,
-  ApiDeletePostResponse,
   ApiFetchPostsResponse,
+  ApiUploadPostRequest,
+  ApiUploadPostResponse,
 } from "@src/types/api";
 
-/** 2023/04/11 - 게시글 제거 훅 ( 서버 ) - by 1-blue */
-const useDeletePost = (): UseMutateFunction<
-  ApiDeletePostResponse,
+/** 2023/04/08 - 게시글 업로드 훅 - by 1-blue */
+const useUploadPost = (): UseMutateFunction<
+  ApiUploadPostResponse,
   unknown,
-  ApiDeletePostRequest,
+  ApiUploadPostRequest,
   unknown
 > => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(apiServicePost.apiDeletePost, {
-    onSuccess(data, { idx }, context) {
+  const { mutate } = useMutation(apiServicePost.apiUploadPost, {
+    onSuccess(data, variables, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
         [queryKeys.posts],
         (prev) =>
@@ -33,17 +35,18 @@ const useDeletePost = (): UseMutateFunction<
             ...prev,
             pages: prev.pages.map((page) => ({
               ...page,
-              posts:
-                page.posts && page.posts.filter((post) => post.idx !== idx),
+              posts: page.posts && [...page.posts, data.createdPost],
             })),
           }
       );
 
       toast.success(data.message);
+
+      router.replace("/");
     },
   });
 
   return mutate;
 };
 
-export default useDeletePost;
+export default useUploadPost;

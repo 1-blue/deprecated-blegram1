@@ -9,7 +9,7 @@ import { apiServicePhoto, apiServicePhotos } from "@src/apis";
 
 // hook
 import useInnerSize from "@src/hooks/useInnerSize";
-import useUploadPost from "@src/hooks/query/useUploadPost";
+import { usePost } from "@src/hooks/query";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -28,7 +28,7 @@ const PostUpload = () => {
   /** 2023/04/08 - 현재 브라우저 width - by 1-blue */
   const [innerWidth] = useInnerSize();
   /** 2023/04/08 - 게시글 업로드 훅 - by 1-blue */
-  const uploadPostMudate = useUploadPost();
+  const uploadPostMudate = usePost.useUploadPost();
   /** 2023/04/08 - 게시글 업로드중인지 판단할 변수 - by 1-blue */
   const [isUploadPost, setIsUploadPost] = useState(false);
   /** 2023/04/08 - 이미지 input value - by 1-blue */
