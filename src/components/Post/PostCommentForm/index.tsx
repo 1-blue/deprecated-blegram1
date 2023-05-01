@@ -2,8 +2,7 @@ import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 
 // hook
-import useMe from "@src/hooks/query/useMe";
-import useUploadComment from "@src/hooks/query/useUploadComment";
+import { useMe, useComment } from "@src/hooks/query";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -29,10 +28,10 @@ const PostCommentForm: React.FC<Props> = ({
   setIsCommentFocus,
 }) => {
   /** 2023/04/18 - 로그인한 유저 정보 - by 1-blue */
-  const { me } = useMe();
+  const { me } = useMe.useFetchMe();
 
   /** 2023/04/18 - 댓글 업로드 훅 - by 1-blue */
-  const uploadComment = useUploadComment();
+  const uploadComment = useComment.useUploadComment();
 
   /** 2023/04/18 - 댓글 업로드 - by 1-blue */
   const onUploadComment: React.FormEventHandler<HTMLFormElement> = useCallback(
@@ -62,7 +61,13 @@ const PostCommentForm: React.FC<Props> = ({
 
   return (
     <StyledPostCommentForm onSubmit={onUploadComment}>
-      <Avatar src={me?.avatar || null} alt="로그인한 유저의 아바타 이미지" />
+      <Avatar
+        src={me?.avatar || null}
+        alt="로그인한 유저의 아바타 이미지"
+        href={
+          `/${me?.nickname}` as __next_route_internal_types__.RouteImpl<string>
+        }
+      />
       <textarea
         placeholder="댓글추가"
         ref={commentTextareaRef}

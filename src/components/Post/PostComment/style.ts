@@ -15,7 +15,7 @@ const StyledPostComment = styled.li`
   }
 
   /* 댓글 작성자 및 내용 wrapper */
-  & > div {
+  & > .comment-wrapper {
     & > * + * {
       margin-top: 0.4em;
     }
@@ -65,6 +65,25 @@ const StyledPostComment = styled.li`
       }
       &:disabled {
         border: 2px solid transparent;
+      }
+    }
+  }
+
+  /* 댓글 좋아요 버튼 */
+  & > .comment-like-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin-left: auto;
+
+    & > button[type="button"]:last-child {
+      padding: 0.2em;
+
+      font-weight: 500;
+      color: ${({ theme }) => theme.colors.fg};
+
+      &:hover {
+        font-weight: bold;
       }
     }
   }

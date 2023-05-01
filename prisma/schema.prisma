@@ -26,16 +26,16 @@ model User {
   posts Post[]
 
   // 유저와 게시글 ( 좋아요 ) N : M
-  postLiked PostLikes[]
+  postLikeds PostLikes[]
 
   // 유저와 댓글 1 : N
   comments Comment[]
 
   // 유저와 댓글 ( 좋아요 ) N : M
-  commentLiked CommentLikes[]
+  commentLikeds CommentLikes[]
 
   // 유저와 게시글 ( 북마크 ) N : M
-  bookmarked Bookmark[]
+  bookmarkeds Bookmark[]
 }
 
 // 게시글 테이블
@@ -52,10 +52,10 @@ model Post {
   user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
 
   // 유저와 게시글 ( 좋아요 ) N : M
-  postLiker PostLikes[]
+  postLikers PostLikes[]
 
   // 유저와 게시글 ( 북마크 ) N : M
-  bookMarker Bookmark[]
+  bookMarkers Bookmark[]
 
   // 게시글과 댓글 N : M
   comments Comment[]
@@ -67,6 +67,8 @@ model PostLikes {
   postLikerIdx Int
   postLiked Post @relation(fields: [postLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   postLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([postLikedIdx, postLikerIdx])
 }
@@ -87,15 +89,17 @@ model Comment {
   post Post @relation(fields: [postIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
 
   // 유저와 댓글 ( 좋아요 ) N : M
-  commentLiker CommentLikes[]
+  commentLikers CommentLikes[]
 }
 
-// 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
+// 댓글 좋아요 테이블 ( 유저와 댓글 중간 테이블 )
 model CommentLikes {
   commentLiker User @relation(fields: [commentLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   commentLikerIdx Int
   commentLiked Comment @relation(fields: [commentLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   commentLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([commentLikedIdx, commentLikerIdx])
 }
@@ -106,6 +110,8 @@ model Bookmark {
   bookmarkerIdx Int
   bookmarked Post @relation(fields: [bookmarkedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   bookmarkedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@id([bookmarkerIdx, bookmarkedIdx])
 }

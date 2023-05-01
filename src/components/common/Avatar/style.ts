@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledAvatar = styled.figure`
   position: relative;
 
-  & > img {
+  & img {
     border-radius: 50%;
   }
 `;

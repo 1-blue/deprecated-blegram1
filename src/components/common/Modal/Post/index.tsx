@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { toast } from "react-toastify";
 
 // hook
-import useDeletePost from "@src/hooks/query/useDeletePost";
-import useModalOfPost from "@src/hooks/recoil/useModalOfPost";
+import { usePost } from "@src/hooks/query";
+import usePostModal from "@src/hooks/recoil/usePostModal";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -14,20 +14,20 @@ import StyledModal from "./style";
 /** 2023/04/14 - 게시글의 모달 ( 수정, 삭제, 북마크, 링크복사 ) - by 1-blue */
 const Post = () => {
   /** 2023/04/11 - 게시글 제거 훅 - by 1-blue */
-  const deletePostMutate = useDeletePost();
+  const deletePostMutate = usePost.useDeletePost();
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
-  const { modalData, closeModal } = useModalOfPost();
+  const { postModalData, closePostModal } = usePostModal();
 
   /** 2023/04/11 - copy clipboard - by 1-blue */
   const copyLink = useCallback(() => {
     navigator.clipboard
-      .writeText(window.location.origin + `?postIdx=${modalData.postIdx}`)
+      .writeText(window.location.origin + `?postIdx=${postModalData.postIdx}`)
       .then(() => toast.success("게시글 링크를 복사했습니다."));
-  }, [modalData]);
+  }, [postModalData]);
 
   return (
-    <StyledModal onClick={closeModal}>
+    <StyledModal onClick={closePostModal}>
       <div>
         <button type="button">
           <Icon shape="bookmark" size="xs" color="#000" hover="#FFF" />
@@ -37,7 +37,7 @@ const Post = () => {
           <Icon shape="link" size="xs" color="#000" hover="#FFF" />
           <span>링크</span>
         </button>
-        {modalData.isMine && (
+        {postModalData.isMine && (
           <>
             <button type="button">
               <Icon shape="pencil" size="xs" color="#000" hover="#FFF" />
@@ -46,8 +46,8 @@ const Post = () => {
             <button
               type="button"
               onClick={() =>
-                modalData.postIdx &&
-                deletePostMutate({ idx: modalData.postIdx })
+                postModalData.postIdx &&
+                deletePostMutate({ idx: postModalData.postIdx })
               }
             >
               <Icon shape="trash" size="xs" color="#000" hover="#FFF" />

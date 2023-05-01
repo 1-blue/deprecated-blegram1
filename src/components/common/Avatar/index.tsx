@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 // util
 import { blurDataURL, combinePhotoURL } from "@src/utils";
@@ -6,13 +7,15 @@ import { blurDataURL, combinePhotoURL } from "@src/utils";
 // style
 import StyledAvatar from "./style";
 
+// type
 interface Props {
   src: string | null;
   alt: string;
+  href?: __next_route_internal_types__.RouteImpl<string>;
 }
 
 /** 2023/04/01 - 프로필 이미지 컴포넌트 - by 1-blue */
-const Avatar: React.FC<Props> = ({ src, alt }) => {
+const Avatar: React.FC<Props> = ({ src, alt, href }) => {
   let path = "";
 
   if (src) {
@@ -24,14 +27,27 @@ const Avatar: React.FC<Props> = ({ src, alt }) => {
 
   return (
     <StyledAvatar>
-      <Image
-        src={path ? path : "/photo/user.png"}
-        alt={alt}
-        fill
-        quality={75}
-        placeholder="blur"
-        blurDataURL={blurDataURL}
-      />
+      {href ? (
+        <Link href={href}>
+          <Image
+            src={path ? path : "/photo/user.png"}
+            alt={alt}
+            fill
+            quality={75}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+          />
+        </Link>
+      ) : (
+        <Image
+          src={path ? path : "/photo/user.png"}
+          alt={alt}
+          fill
+          quality={75}
+          placeholder="blur"
+          blurDataURL={blurDataURL}
+        />
+      )}
     </StyledAvatar>
   );
 };
