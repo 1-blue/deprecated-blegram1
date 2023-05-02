@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
@@ -23,7 +22,6 @@ const useUploadLikeOfPost = (): UseMutateFunction<
   ApiUploadLikeOfPostRequest,
   unknown
 > => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceLike.apiUploadLikeOfPost, {
@@ -62,8 +60,6 @@ const useUploadLikeOfPost = (): UseMutateFunction<
       );
 
       toast.success(message);
-
-      router.replace("/");
     },
   });
 

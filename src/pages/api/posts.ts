@@ -49,7 +49,7 @@ const handler: NextApiHandler<ApiFetchPostsResponse> = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/posts error >> ", error);
 
     return res.status(500).json({
       message: "서버측 문제입니다.\n잠시후에 다시 시도해주세요!",

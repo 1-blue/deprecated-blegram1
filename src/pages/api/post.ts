@@ -71,7 +71,7 @@ const handler: NextApiHandler<
       return res.status(204).json({ message: "게시글을 삭제했습니다." });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/post error >> ", error);
 
     return res
       .status(500)

@@ -34,7 +34,7 @@ const handler: NextApiHandler<MyResponseType> = async (req, res) => {
         .json({ message: "presignedURL들을 가져왔습니다.", presignedURLs });
     }
   } catch (error) {
-    console.error("/api/photo error >> ", error);
+    console.error("/api/photos error >> ", error);
 
     return res
       .status(500)

@@ -50,7 +50,7 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
       });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/comments error >> ", error);
 
     return res
       .status(500)
