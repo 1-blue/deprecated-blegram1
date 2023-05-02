@@ -53,7 +53,7 @@ const handler: NextApiHandler<
       });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/likers/comment error >> ", error);
 
     return res
       .status(500)

@@ -81,7 +81,7 @@ const handler: NextApiHandler<
       return res.status(204).json({ message: "댓글을 삭제했습니다." });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/comment error >> ", error);
 
     return res
       .status(500)

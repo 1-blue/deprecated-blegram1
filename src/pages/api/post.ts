@@ -42,11 +42,12 @@ const handler: NextApiHandler<
           },
           // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
           postLikers: { where: { postLikerIdx: req.user?.idx || -1 } },
+          // 로그인한 유저가 게시글에 북마크 눌렀는지 판단
+          bookMarkers: { where: { bookmarkerIdx: req.user?.idx || -1 } },
           _count: {
             select: {
               comments: true,
               postLikers: true,
-              bookMarkers: true,
             },
           },
         },
@@ -70,7 +71,7 @@ const handler: NextApiHandler<
       return res.status(204).json({ message: "게시글을 삭제했습니다." });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/post error >> ", error);
 
     return res
       .status(500)

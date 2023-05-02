@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
 // api
-import { apiServiceLike } from "@src/apis";
+import { apiServiceBookmark } from "@src/apis";
 
 // key
 import { queryKeys } from "@src/hooks/query";
@@ -10,21 +10,21 @@ import { queryKeys } from "@src/hooks/query";
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
-  ApiDeleteLikeOfPostRequest,
-  ApiDeleteLikeOfPostResponse,
+  ApiDeleteBookmarkRequest,
+  ApiDeleteBookmarkResponse,
   ApiFetchPostsResponse,
 } from "@src/types/api";
 
-/** 2023/04/24 - 게시글에 좋아요 제거 훅 - by 1-blue */
-const useDeleteLikeOfPost = (): UseMutateFunction<
-  ApiDeleteLikeOfPostResponse,
+/** 2023/05/02 - 게시글에 북마크 제거 훅 - by 1-blue */
+const useDeleteBookmark = (): UseMutateFunction<
+  ApiDeleteBookmarkResponse,
   unknown,
-  ApiDeleteLikeOfPostRequest,
+  ApiDeleteBookmarkRequest,
   unknown
 > => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(apiServiceLike.apiDeleteLikeOfPost, {
+  const { mutate } = useMutation(apiServiceBookmark.apiDeleteBookmark, {
     onSuccess(data, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
         [queryKeys.posts],
@@ -40,14 +40,10 @@ const useDeleteLikeOfPost = (): UseMutateFunction<
 
                   return {
                     ...post,
-                    postLikers: post.postLikers.filter(
-                      (postLiker) =>
-                        postLiker.postLikerIdx !== data.postLikerIdx
+                    bookMarkers: post.bookMarkers.filter(
+                      (bookmarker) =>
+                        bookmarker.bookmarkerIdx !== data.bookmarkerIdx
                     ),
-                    _count: {
-                      ...post._count,
-                      postLikers: post._count.postLikers - 1,
-                    },
                   };
                 }),
             })),
@@ -61,4 +57,4 @@ const useDeleteLikeOfPost = (): UseMutateFunction<
   return mutate;
 };
 
-export default useDeleteLikeOfPost;
+export default useDeleteBookmark;
