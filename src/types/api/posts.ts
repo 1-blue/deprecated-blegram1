@@ -1,14 +1,14 @@
 import type { ApiResponse, SimpleUser } from ".";
-import type { Post, PostLikes } from "@prisma/client";
+import type { Bookmark, Post, PostLikes } from "@prisma/client";
 
 /** 2023/04/19 - 응답받을 게시글의 타입 - by 1-blue */
 export interface PostWithData extends Post {
   user: SimpleUser;
   postLikers: PostLikes[];
+  bookMarkers: Bookmark[];
   _count: {
     comments: number;
     postLikers: number;
-    bookMarkers: number;
   };
 }
 

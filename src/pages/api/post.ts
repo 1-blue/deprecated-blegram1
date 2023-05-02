@@ -42,11 +42,12 @@ const handler: NextApiHandler<
           },
           // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
           postLikers: { where: { postLikerIdx: req.user?.idx || -1 } },
+          // 로그인한 유저가 게시글에 북마크 눌렀는지 판단
+          bookMarkers: { where: { bookmarkerIdx: req.user?.idx || -1 } },
           _count: {
             select: {
               comments: true,
               postLikers: true,
-              bookMarkers: true,
             },
           },
         },
