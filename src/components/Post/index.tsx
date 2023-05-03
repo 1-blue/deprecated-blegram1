@@ -71,7 +71,8 @@ const Post = () => {
                   content={post.content}
                   postIdx={post.idx}
                   count={post._count}
-                  likers={post.postLikers}
+                  postLikers={post.postLikers}
+                  bookmarkers={post.bookMarkers}
                 />
               </li>
             ))

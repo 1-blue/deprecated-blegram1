@@ -21,11 +21,18 @@ interface Props {
   postIdx: number;
   content: string;
   count: PostWithData["_count"];
-  likers: PostWithData["postLikers"];
+  postLikers: PostWithData["postLikers"];
+  bookmarkers: PostWithData["bookMarkers"];
 }
 
 /** 2023/04/09 - 게시글 하단부 ( 버튼들, 내용, 댓글, 댓글폼 ) - by 1-blue */
-const PostFooter: React.FC<Props> = ({ content, postIdx, count, likers }) => {
+const PostFooter: React.FC<Props> = ({
+  content,
+  postIdx,
+  count,
+  postLikers,
+  bookmarkers,
+}) => {
   const { me } = useMe.useFetchMe();
 
   /** 2023/04/24 - 댓글 입력창 포커싱 여부 - by 1-blue */
@@ -36,13 +43,17 @@ const PostFooter: React.FC<Props> = ({ content, postIdx, count, likers }) => {
     useResizeTextarea();
 
   /** 2023/04/25 - 로그인한 유저가 좋아요 눌렀는지 여부 - by 1-blue */
-  const isLiked = !!likers.length;
+  const isPostLiked = !!postLikers.length;
+
+  /** 2023/05/02 - 로그인한 유저가 북마크 눌렀는지 여부 - by 1-blue */
+  const isBookmarked = !!bookmarkers.length;
 
   return (
     <>
       <PostButtons
         postIdx={postIdx}
-        isLiked={isLiked}
+        isPostLiked={isPostLiked}
+        isBookmarked={isBookmarked}
         commentTextareaRef={commentTextareaRef}
         isCommentFocus={isCommentFocus}
       />

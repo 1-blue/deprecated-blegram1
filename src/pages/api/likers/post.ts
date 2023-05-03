@@ -50,7 +50,7 @@ const handler: NextApiHandler<
       });
     }
   } catch (error) {
-    console.error("/api/user error >> ", error);
+    console.error("/api/likers/post error >> ", error);
 
     return res
       .status(500)

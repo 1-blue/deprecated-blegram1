@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
 // api
-import { apiServiceLike } from "@src/apis";
+import { apiServiceBookmark } from "@src/apis";
 
 // key
 import { queryKeys } from "@src/hooks/query";
@@ -11,21 +11,21 @@ import { queryKeys } from "@src/hooks/query";
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
   ApiFetchPostsResponse,
-  ApiUploadLikeOfPostRequest,
-  ApiUploadLikeOfPostResponse,
+  ApiUploadBookmarkRequest,
+  ApiUploadBookmarkResponse,
 } from "@src/types/api";
 
-/** 2023/04/24 - 게시글에 좋아요 추가 훅 - by 1-blue */
-const useUploadLikeOfPost = (): UseMutateFunction<
-  ApiUploadLikeOfPostResponse,
+/** 2023/05/02 - 게시글에 북마크 추가 훅 - by 1-blue */
+const useUploadBookmark = (): UseMutateFunction<
+  ApiUploadBookmarkResponse,
   unknown,
-  ApiUploadLikeOfPostRequest,
+  ApiUploadBookmarkRequest,
   unknown
 > => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(apiServiceLike.apiUploadLikeOfPost, {
-    onSuccess({ message, postLikerIdx }, { postIdx }, context) {
+  const { mutate } = useMutation(apiServiceBookmark.apiUploadBookmark, {
+    onSuccess({ message, bookmarkedIdx, bookmarkerIdx }, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
         [queryKeys.posts],
         (prev) =>
@@ -40,19 +40,15 @@ const useUploadLikeOfPost = (): UseMutateFunction<
 
                   return {
                     ...post,
-                    postLikers: [
-                      ...post.postLikers,
+                    bookMarkers: [
+                      ...post.bookMarkers,
                       {
-                        postLikerIdx,
-                        postLikedIdx: postIdx,
+                        bookmarkedIdx,
+                        bookmarkerIdx: bookmarkerIdx,
                         createdAt: new Date(),
                         updatedAt: new Date(),
                       },
                     ],
-                    _count: {
-                      ...post._count,
-                      postLikers: post._count.postLikers + 1,
-                    },
                   };
                 }),
             })),
@@ -66,4 +62,4 @@ const useUploadLikeOfPost = (): UseMutateFunction<
   return mutate;
 };
 
-export default useUploadLikeOfPost;
+export default useUploadBookmark;
