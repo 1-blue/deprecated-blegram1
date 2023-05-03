@@ -59,9 +59,12 @@ model Post {
 
   // 게시글과 댓글 N : M
   comments Comment[]
+
+  // 게시글과 해시태그 N : M
+  postHashtageds PostHashtag[]
 }
 
-// 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
+// TODO: "s" 빼기; 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
 model PostLikes {
   postLiker User @relation(fields: [postLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   postLikerIdx Int
@@ -92,7 +95,7 @@ model Comment {
   commentLikers CommentLikes[]
 }
 
-// 댓글 좋아요 테이블 ( 유저와 댓글 중간 테이블 )
+// TODO: "s" 빼기; 댓글 좋아요 테이블 ( 유저와 댓글 중간 테이블 )
 model CommentLikes {
   commentLiker User @relation(fields: [commentLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
   commentLikerIdx Int
@@ -116,5 +119,22 @@ model Bookmark {
   @@id([bookmarkerIdx, bookmarkedIdx])
 }
 
+// 해시태그
+model Hashtag {
+  content String @id @unique
+
+  // 게시글과 해시태그 N : M
+  postHashtagers PostHashtag[]
+}
+
+// 게시글과 해시태그 ( N : M )
+model PostHashtag {
+  postHashtager Post @relation(fields: [postHashtagerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postHashtagerIdx Int
+  postHashtaged Hashtag @relation(fields: [postHashtagedIdx], references: [content], onUpdate: Cascade, onDelete: Cascade) 
+  postHashtagedIdx String
+
+  @@id([postHashtagerIdx, postHashtagedIdx])
+}
+
 // 알림
-// 태그

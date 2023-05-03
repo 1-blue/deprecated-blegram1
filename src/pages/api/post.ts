@@ -4,6 +4,9 @@ import { prisma } from "@src/prisma";
 // lib
 import withAuthMiddleware from "@src/lib/middleware";
 
+// util
+import { getRegExp } from "@src/utils";
+
 // type
 import type { NextApiHandler } from "next";
 import type {
@@ -51,6 +54,29 @@ const handler: NextApiHandler<
           },
         },
       });
+
+      // 해시태그 추출
+      const hashtags = content
+        .split(getRegExp("hashtag"))
+        .filter((hashtag) => hashtag.startsWith("#") && hashtag.length >= 2);
+
+      // 해시태그가 존재한다면
+      if (hashtags.length > 0) {
+        // 해시태그가 있다면 해시태그들 생성
+        await prisma.hashtag.createMany({
+          data: hashtags.map((hashtag) => ({ content: hashtag })),
+          skipDuplicates: true,
+        });
+
+        // 게시글과 해시태그 연결
+        await prisma.postHashtag.createMany({
+          data: hashtags.map((hashtag) => ({
+            postHashtagerIdx: createdPost.idx,
+            postHashtagedIdx: hashtag,
+          })),
+          skipDuplicates: true,
+        });
+      }
 
       return res.status(200).json({
         message: "게시글을 업로드했습니다.\n메인 페이지로 이동됩니다.",
