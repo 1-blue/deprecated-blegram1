@@ -59,7 +59,8 @@ const handler: NextApiHandler<
       // 해시태그 추출
       const hashtags = content
         .split(getRegExp("hashtag"))
-        .filter((hashtag) => hashtag.startsWith("#") && hashtag.length >= 2);
+        .filter((hashtag) => hashtag.startsWith("#") && hashtag.length >= 2)
+        .map((hashtag) => hashtag.slice(1));
 
       // 해시태그가 존재한다면
       if (hashtags.length > 0) {

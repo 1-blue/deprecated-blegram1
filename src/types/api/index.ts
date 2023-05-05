@@ -24,3 +24,4 @@ export * from "./comments";
 export * from "./like";
 export * from "./likers";
 export * from "./bookmark";
+export * from "./search";
