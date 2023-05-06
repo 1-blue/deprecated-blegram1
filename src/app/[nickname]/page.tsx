@@ -3,7 +3,6 @@ import Profile from "@src/components/pages/Profile";
 
 // ssr
 import { defaultMatadata } from "@src/shared/metadata";
-import { ssrInstance } from "@src/apis";
 import { combinePhotoURL } from "@src/utils";
 import type { ApiFetchUserResponse } from "@src/types/api";
 import type { Metadata } from "next";
@@ -15,7 +14,8 @@ interface Props {
 export const generateMetadata = async ({
   params: { nickname },
 }: Props): Promise<Metadata> => {
-  if (nickname.includes("favicon.ico")) {
+  // "favicon.ico", "android-chrome-192x192.png" 같은 요청이 들어와서 제외
+  if (nickname.includes(".")) {
     return {
       ...defaultMatadata,
       title: `blegram | ${nickname}`,
@@ -32,13 +32,10 @@ export const generateMetadata = async ({
     };
   }
 
-  const { data } = await ssrInstance.get<ApiFetchUserResponse>(
-    process.env.BASE_URL + "/api/user",
-    {
-      params: { nickname },
-      headers: { "Cache-Control": "force-cache" },
-    }
-  );
+  const data = (await fetch(
+    process.env.BASE_URL + `/api/user?nickname=${nickname}`,
+    { cache: "default" }
+  ).then((res) => res.json())) as ApiFetchUserResponse;
 
   return {
     ...defaultMatadata,
@@ -73,15 +70,13 @@ export const generateMetadata = async ({
 
 /** 2023/03/27 - 프로필 페이지 - by 1-blue */
 const ProfilePage = async ({ params: { nickname } }: Props) => {
-  if (nickname.includes("favicon.ico")) return <Profile nickname={nickname} />;
+  // "favicon.ico", "android-chrome-192x192.png" 같은 요청이 들어와서 제외
+  if (nickname.includes(".")) return <Profile nickname={nickname} />;
 
-  const { data } = await ssrInstance.get<ApiFetchUserResponse>(
-    process.env.BASE_URL + "/api/user",
-    {
-      params: { nickname },
-      headers: { "Cache-Control": "force-cache" },
-    }
-  );
+  const data = (await fetch(
+    process.env.BASE_URL + `/api/user?nickname=${nickname}`,
+    { cache: "default" }
+  ).then((res) => res.json())) as ApiFetchUserResponse;
 
   return <Profile nickname={nickname} initialData={data} />;
 };

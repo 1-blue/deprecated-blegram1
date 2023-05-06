@@ -144,4 +144,34 @@ export const StyledSuggestedList = styled.ul`
   }
 `;
 
+/** 2023/05/06 - 추천 검색어가 없는 스타일 - by 1-blue */
+export const StyledNotSuggested = styled.section`
+  margin-top: 0.1em;
+  padding: 2em;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+
+  width: 100%;
+
+  background-color: #fff;
+  color: ${({ theme }) => theme.colors.gray500};
+  border-bottom-left-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+
+  box-shadow: 0 0 4px ${({ theme }) => theme.colors.fg};
+
+  & > span {
+    margin-top: 0.4em;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  & > p {
+    margin-top: 0.8em;
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+`;
+
 export default StyledSearchFromWrapper;

@@ -27,4 +27,5 @@ export type IconShape =
   | "chat-bubble-oval-left"
   | "trash"
   | "link"
-  | "pencil";
+  | "pencil"
+  | "exclamation-circle";

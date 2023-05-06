@@ -1,4 +1,4 @@
-import { type InfiniteData, useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 
 // api
 import { apiServicePosts } from "@src/apis";
@@ -11,7 +11,7 @@ import type { ApiFetchPostsResponse } from "@src/types/api";
 interface Props {
   take: number;
   lastIdx?: number;
-  initialData?: InfiniteData<ApiFetchPostsResponse>;
+  initialData?: ApiFetchPostsResponse;
 }
 
 /** 2023/04/08 - 게시글들을 얻는 훅 - by 1-blue */
@@ -27,7 +27,9 @@ const useFetchPosts = ({ take, lastIdx = -1, initialData }: Props) => {
             ? lastPage.posts[lastPage.posts.length - 1].idx
             : null,
         // ssr
-        initialData,
+        ...(initialData && {
+          initialData: { pageParams: [], pages: [initialData] },
+        }),
       }
     );
 

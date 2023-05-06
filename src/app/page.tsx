@@ -3,7 +3,6 @@ import Post from "@src/components/Post";
 
 // ssr
 import { defaultMatadata } from "@src/shared/metadata";
-import { ssrInstance } from "@src/apis";
 import { combinePhotoURL } from "@src/utils";
 import type { ApiFetchPostsResponse } from "@src/types/api";
 import type { Metadata } from "next";
@@ -15,13 +14,10 @@ interface Props {
 export const generateMetadata = async ({
   searchParams: { postIdx },
 }: Props): Promise<Metadata> => {
-  const { data } = await ssrInstance.get<ApiFetchPostsResponse>(
-    process.env.BASE_URL + "/api/posts",
-    {
-      params: { take: 1, lastIdx: postIdx || -1 },
-      headers: { "Cache-Control": "no-cache" },
-    }
-  );
+  const data = (await fetch(
+    process.env.BASE_URL + `/api/posts?take=${1}&lastIdx=${postIdx || -1}`,
+    { cache: "no-cache" }
+  ).then((res) => res.json())) as ApiFetchPostsResponse;
 
   return {
     ...defaultMatadata,
@@ -49,6 +45,13 @@ export const generateMetadata = async ({
 };
 
 /** 2023/03/24 - 홈 페이지 - by 1-blue ( 2023/04/09 ) */
-const Home = () => <Post />;
+const Home = async ({ searchParams: { postIdx } }: Props) => {
+  const initialData = (await fetch(
+    process.env.BASE_URL + `/api/posts?take=${10}&lastIdx=${postIdx || -1}`,
+    { cache: "no-cache" }
+  ).then((res) => res.json())) as ApiFetchPostsResponse;
+
+  return <Post initialData={initialData} />;
+};
 
 export default Home;
