@@ -1,10 +1,10 @@
 // component
-import Profile from "@src/components/pages/Profile";
+import Profile from "./Profile";
 
 // ssr
-import { defaultMatadata } from "@src/shared/metadata";
+import { apiServiceSSR } from "@src/apis";
+import { getMetadata } from "@src/shared/metadata";
 import { combinePhotoURL } from "@src/utils";
-import type { ApiFetchUserResponse } from "@src/types/api";
 import type { Metadata } from "next";
 interface Props {
   params: { nickname: string };
@@ -15,70 +15,27 @@ export const generateMetadata = async ({
   params: { nickname },
 }: Props): Promise<Metadata> => {
   // "favicon.ico", "android-chrome-192x192.png" 같은 요청이 들어와서 제외
-  if (nickname.includes(".")) {
-    return {
-      ...defaultMatadata,
-      title: `blegram | ${nickname}`,
+  if (nickname.includes(".")) return {};
 
-      openGraph: {
-        ...defaultMatadata.openGraph,
-        title: `blegram | ${nickname}`,
-      },
+  const data = await apiServiceSSR.fetchUser({ nickname });
 
-      twitter: {
-        ...defaultMatadata.twitter,
-        title: `blegram | ${nickname}`,
-      },
-    };
-  }
-
-  const data = (await fetch(
-    process.env.BASE_URL + `/api/user?nickname=${nickname}`,
-    { cache: "default" }
-  ).then((res) => res.json())) as ApiFetchUserResponse;
-
-  return {
-    ...defaultMatadata,
-    title: `blegram | ${nickname}`,
+  return getMetadata({
+    title: nickname,
     description: data.user
       ? `${data.user.nickname}\n${data.user.introduction}`
       : "존재하지 않는 유저입니다.",
-
-    openGraph: {
-      ...defaultMatadata.openGraph,
-      title: `blegram | ${nickname}`,
-      description: data.user
-        ? `${data.user.nickname}\n${data.user.introduction}`
-        : "존재하지 않는 유저입니다.",
-      ...(data.user?.avatar && {
-        images: [combinePhotoURL(data.user.avatar)],
-      }),
-    },
-
-    twitter: {
-      ...defaultMatadata.twitter,
-      title: `blegram | ${nickname}`,
-      description: data.user
-        ? `${data.user.nickname}\n${data.user.introduction}`
-        : "존재하지 않는 유저입니다.",
-      ...(data.user?.avatar && {
-        images: [combinePhotoURL(data.user.avatar)],
-      }),
-    },
-  };
+    images: data.user?.avatar ? [combinePhotoURL(data.user.avatar)] : undefined,
+  });
 };
 
 /** 2023/03/27 - 프로필 페이지 - by 1-blue */
 const ProfilePage = async ({ params: { nickname } }: Props) => {
   // "favicon.ico", "android-chrome-192x192.png" 같은 요청이 들어와서 제외
-  if (nickname.includes(".")) return <Profile nickname={nickname} />;
+  if (nickname.includes(".")) return;
 
-  const data = (await fetch(
-    process.env.BASE_URL + `/api/user?nickname=${nickname}`,
-    { cache: "default" }
-  ).then((res) => res.json())) as ApiFetchUserResponse;
+  const initialData = await apiServiceSSR.fetchUser({ nickname });
 
-  return <Profile nickname={nickname} initialData={data} />;
+  return <Profile nickname={nickname} initialData={initialData} />;
 };
 
 export default ProfilePage;

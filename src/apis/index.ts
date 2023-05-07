@@ -7,6 +7,8 @@ export const serverInstance = axios.create({
   timeout: 4000,
 });
 
+export * from "./ssr";
+
 export * from "./auth";
 export * from "./me";
 export * from "./user";

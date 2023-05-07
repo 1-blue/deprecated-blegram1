@@ -1,4 +1,4 @@
-import { defaultMatadata } from "@src/shared/metadata";
+import { getMetadata } from "@src/shared/metadata";
 
 // component
 import HashtagPosts from "./HashtagPosts";
@@ -8,7 +8,8 @@ import { combinePhotoURL } from "@src/utils";
 
 // type
 import type { Metadata } from "next";
-import type { ApiFetchHashtagPostsResponse } from "@src/types/api";
+import { apiServiceSSR } from "@src/apis";
+import Title from "@src/components/common/Title";
 interface Props {
   searchParams: { hashtag: string };
 }
@@ -17,55 +18,35 @@ interface Props {
 export const generateMetadata = async ({
   searchParams: { hashtag },
 }: Props): Promise<Metadata> => {
-  const data = (await fetch(
-    process.env.BASE_URL + `/api/search/post/${hashtag}`,
-    { next: { revalidate: 60 } }
-  )
-    .then((res) => res.json())
-    .catch(console.error)) as ApiFetchHashtagPostsResponse;
+  const data = await apiServiceSSR.fetchHashtagPosts({
+    hashtag,
+    take: 10,
+    skip: 0,
+  });
 
-  return {
-    ...defaultMatadata,
-    title: `blegram | #${hashtag}`,
+  return getMetadata({
+    title: "#" + hashtag,
     description:
       data?.posts?.[0]?.content || `#${hashtag}를 갖는 게시글이 없습니다.`,
-    openGraph: {
-      ...defaultMatadata.openGraph,
-      title: `blegram | #${hashtag}`,
-      description:
-        data?.posts?.[0]?.content || `#${hashtag}를 갖는 게시글이 없습니다.`,
-      ...(data?.posts?.[0]?.photos[0] && {
-        images: [combinePhotoURL(data.posts[0].photos[0])],
-      }),
-    },
-    twitter: {
-      ...defaultMatadata.twitter,
-      title: `blegram | #${hashtag}`,
-      description:
-        data?.posts?.[0]?.content || `#${hashtag}를 갖는 게시글이 없습니다.`,
-      ...(data?.posts?.[0]?.photos[0] && {
-        images: [combinePhotoURL(data.posts[0].photos[0])],
-      }),
-    },
-  };
+    images: data.posts?.[0].photos[0]
+      ? [combinePhotoURL(data.posts[0].photos[0])]
+      : undefined,
+  });
 };
 
 /** 2023/05/05 - 해시태그 페이지 - by 1-blue */
 const HashtagPage = async ({ searchParams: { hashtag } }: Props) => {
-  const initialData = (await fetch(
-    process.env.BASE_URL + `/api/search/post/${hashtag}`,
-    { next: { revalidate: 60 } }
-  )
-    .then((res) => res.json())
-    .catch(console.error)) as ApiFetchHashtagPostsResponse;
+  const initialData = await apiServiceSSR.fetchHashtagPosts({
+    hashtag,
+    take: 10,
+    skip: 0,
+  });
 
   return (
     <>
-      <section style={{ maxWidth: "500px", margin: "2vh auto 3vh" }}>
-        <h2 style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-          ** 검색된 게시글 {initialData.posts.length}개 ( #{hashtag} ) **
-        </h2>
-      </section>
+      <Title
+        title={`** 검색된 게시글 ${initialData.posts.length}개 ( #${hashtag} ) **`}
+      />
 
       <HashtagPosts hashtag={hashtag} initialData={initialData} />
     </>

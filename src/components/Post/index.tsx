@@ -19,6 +19,7 @@ import PostPhotos from "@src/components/Post/PostPhotos";
 import PostFooter from "@src/components/Post/PostFooter";
 import Modal from "@src/components/common/Modal";
 import Skeleton from "@src/components/common/Skeleton";
+import Title from "@src/components/common/Title";
 
 // style
 import StyledPost from "./style";
@@ -40,8 +41,8 @@ const Post: React.FC<Props> = ({ initialData }) => {
     usePosts.useFetchPosts({
       take: 10,
       lastIdx: postIdx ? +postIdx : undefined,
-      // TODO: 좋아요에 대한 처리가 안됨 ( cookie를 전달해줘야 좋아요 여부를 판단할 수 있는데 SSR에서 쿠키를 어떻게 주는지 모르겠음 )
-      initialData,
+      // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
+      // initialData,
     });
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
@@ -89,6 +90,9 @@ const Post: React.FC<Props> = ({ initialData }) => {
       </InfiniteScrollContainer>
 
       {isFetching && <Skeleton.Post />}
+      {isFetching || (
+        <Title title={`** 더 이상 불러올 게시글이 없습니다! **`} />
+      )}
 
       {postModalData.isOpen && <Modal.Post />}
       {postLikerModalData.isOpen && <Modal.PostLiker />}

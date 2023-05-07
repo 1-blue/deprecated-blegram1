@@ -18,6 +18,7 @@ import PostPhotos from "@src/components/Post/PostPhotos";
 import PostFooter from "@src/components/Post/PostFooter";
 import Modal from "@src/components/common/Modal";
 import Skeleton from "@src/components/common/Skeleton";
+import Title from "@src/components/common/Title";
 
 // style
 import StyledHashtagPosts from "./style";
@@ -35,6 +36,7 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
     useSearch.useFetchHashtagPosts({
       hashtag,
       take: 10,
+      // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
       // initialData,
     });
 
@@ -83,6 +85,9 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
       </InfiniteScrollContainer>
 
       {isFetching && <Skeleton.Post />}
+      {isFetching || (
+        <Title title={`** 더 이상 불러올 게시글이 없습니다! **`} />
+      )}
 
       {postModalData.isOpen && <Modal.Post />}
       {postLikerModalData.isOpen && <Modal.PostLiker />}

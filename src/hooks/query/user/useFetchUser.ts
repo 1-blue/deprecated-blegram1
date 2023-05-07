@@ -27,7 +27,12 @@ const useFetchUser: UseFetchHandler = ({ nickname, initialData }) => {
   const { data, isLoading } = useQuery<ApiFetchUserResponse>(
     [queryKeys.user, nickname],
     () => apiServiceUser.apiFetchUser({ nickname }),
-    { retry: 2, refetchOnWindowFocus: false, initialData }
+    {
+      retry: 2,
+      refetchOnWindowFocus: false,
+      // ssr
+      ...(initialData && { initialData }),
+    }
   );
 
   return { user: data?.user, isFetchingUser: isLoading };
