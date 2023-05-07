@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 
 // util
 import { splitPhotoURL } from "@src/utils";
 
 // hook
-import { usePosts } from "@src/hooks/query";
+import { useSearch } from "@src/hooks/query";
 import usePostModal from "@src/hooks/recoil/usePostModal";
 import usePostLikerModal from "@src/hooks/recoil/usePostLikerModal";
 import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
@@ -22,37 +21,33 @@ import Skeleton from "@src/components/common/Skeleton";
 import Title from "@src/components/common/Title";
 
 // style
-import StyledPost from "./style";
+import StyledHashtagPosts from "./style";
 
 // type
-import type { ApiFetchPostsResponse } from "@src/types/api";
+import type { ApiFetchHashtagPostsResponse } from "@src/types/api";
 interface Props {
-  initialData?: ApiFetchPostsResponse;
+  hashtag: string;
+  initialData: ApiFetchHashtagPostsResponse;
 }
 
-/** 2023/04/09 - 게시글 컴포넌트 - by 1-blue */
-const Post: React.FC<Props> = ({ initialData }) => {
-  /** FIXME: 양방향 스크롤링으로 변경하기 */
-  const searchParams = useSearchParams();
-  const postIdx = searchParams?.get("postIdx");
-
-  /** 2023/04/10 - 무한 스크롤링을 적용한 게시글들의 데이터 - by 1-blue */
+/** 2023/05/06 - 특정 해시태그에 해당하는 게시글들 렌더링 컴포넌트 - by 1-blue */
+const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
   const { data, hasNextPage, fetchNextPage, isFetching } =
-    usePosts.useFetchPosts({
+    useSearch.useFetchHashtagPosts({
+      hashtag,
       take: 10,
-      lastIdx: postIdx ? +postIdx : undefined,
       // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
       // initialData,
     });
 
-  /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
+  /** 2023/05/06 - 게시글의 모달관련 훅 - by 1-blue */
   const { postModalData } = usePostModal();
-  /** 2023/04/25 - 게시글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
+  /** 2023/05/06 - 게시글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
   const { postLikerModalData } = usePostLikerModal();
-  /** 2023/04/28 - 댓글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
+  /** 2023/05/06 - 댓글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
   const { commentLikerModalData } = useCommentLikerModal();
 
-  /** 2023/04/25 - 외부 스크롤 금지 - by 1-blue */
+  /** 2023/05/06 - 외부 스크롤 금지 - by 1-blue */
   useEffect(() => {
     // 모달이 열려있다면
     if (postModalData.isOpen || postLikerModalData.isOpen) {
@@ -70,7 +65,7 @@ const Post: React.FC<Props> = ({ initialData }) => {
         hasMore={hasNextPage && !isFetching}
         fetchMore={fetchNextPage}
       >
-        <StyledPost>
+        <StyledHashtagPosts>
           {data?.pages?.map((page) =>
             page.posts?.map((post) => (
               <li key={post.idx}>
@@ -86,7 +81,7 @@ const Post: React.FC<Props> = ({ initialData }) => {
               </li>
             ))
           )}
-        </StyledPost>
+        </StyledHashtagPosts>
       </InfiniteScrollContainer>
 
       {isFetching && <Skeleton.Post />}
@@ -101,4 +96,4 @@ const Post: React.FC<Props> = ({ initialData }) => {
   );
 };
 
-export default Post;
+export default Hashtag;

@@ -9,6 +9,14 @@ const StyledPostContent = styled.section`
 
     white-space: pre-line;
     line-height: 1.2;
+
+    & > a {
+      color: ${({ theme }) => theme.colors.main500};
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
   }
 
   & > button[type="button"] {

@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 // api
@@ -22,12 +23,13 @@ const useDeleteBookmark = (): UseMutateFunction<
   ApiDeleteBookmarkRequest,
   unknown
 > => {
+  const hashtag = useSearchParams()?.get("hashtag");
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceBookmark.apiDeleteBookmark, {
     onSuccess(data, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.posts],
+        hashtag ? [queryKeys.hashtag, hashtag] : [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

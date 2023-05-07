@@ -7,13 +7,7 @@ export const serverInstance = axios.create({
   timeout: 4000,
 });
 
-/** 2023/04/30 - SSR에 사용하는 axios 인스턴스 - by 1-blue */
-export const ssrInstance = axios.create({
-  baseURL: process.env.BASE_URL + "/api",
-  withCredentials: true,
-  timeout: 1000,
-  headers: { "Cache-Control": "no-cache" },
-});
+export * from "./ssr";
 
 export * from "./auth";
 export * from "./me";
@@ -27,3 +21,4 @@ export * from "./comments";
 export * from "./like";
 export * from "./likers";
 export * from "./bookmark";
+export * from "./search";

@@ -1,7 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 /** 2023/04/30 - 메타 데이터 기본 형태 - by 1-blue */
-export const defaultMatadata: Metadata = {
+export const defaultMetadata: Metadata = {
   generator: "Next.js",
   applicationName: "blegram",
   referrer: "origin-when-cross-origin",
@@ -42,3 +42,43 @@ export const defaultMatadata: Metadata = {
     ],
   },
 };
+
+// type
+interface GetMetadataHandler {
+  ({
+    title,
+    description,
+    images,
+  }: {
+    title: string;
+    description?: string;
+    images?: string[];
+  }): Metadata;
+}
+
+/** 2023/05/07 - 메타데이터 제조기 - by 1-blue */
+export const getMetadata: GetMetadataHandler = ({
+  title,
+  description,
+  images,
+}) => ({
+  ...defaultMetadata,
+  title: "blegram | " + title,
+  description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+
+  // og
+  openGraph: {
+    ...defaultMetadata.openGraph,
+    title: "blegram | " + title,
+    description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+    images: images ? images : ["TODO: 기본 이미지"],
+  },
+
+  // twitter
+  twitter: {
+    ...defaultMetadata.twitter,
+    title: "blegram | " + title,
+    description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+    images: images ? images : ["TODO: 기본 이미지"],
+  },
+});

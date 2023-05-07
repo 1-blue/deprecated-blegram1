@@ -7,6 +7,7 @@ export const queryKeys = {
   postLikers: "postLikers",
   commentLikers: "commentLikers",
   bookmark: "bookmark",
+  hashtag: "hashtag",
 };
 
 export * from "./auth";
@@ -19,3 +20,4 @@ export * from "./post";
 export * from "./posts";
 export * from "./user";
 export * from "./bookmark";
+export * from "./search";

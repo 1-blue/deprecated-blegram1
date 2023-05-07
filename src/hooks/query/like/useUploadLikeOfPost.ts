@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 // api
@@ -22,12 +23,13 @@ const useUploadLikeOfPost = (): UseMutateFunction<
   ApiUploadLikeOfPostRequest,
   unknown
 > => {
+  const hashtag = useSearchParams()?.get("hashtag");
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceLike.apiUploadLikeOfPost, {
     onSuccess({ message, postLikerIdx }, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.posts],
+        hashtag ? [queryKeys.hashtag, hashtag] : [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

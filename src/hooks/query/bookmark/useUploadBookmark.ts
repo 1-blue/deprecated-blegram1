@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 // api
@@ -22,12 +23,13 @@ const useUploadBookmark = (): UseMutateFunction<
   ApiUploadBookmarkRequest,
   unknown
 > => {
+  const hashtag = useSearchParams()?.get("hashtag");
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceBookmark.apiUploadBookmark, {
     onSuccess({ message, bookmarkedIdx, bookmarkerIdx }, { postIdx }, context) {
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
-        [queryKeys.posts],
+        hashtag ? [queryKeys.hashtag, hashtag] : [queryKeys.posts],
         (prev) =>
           prev && {
             ...prev,

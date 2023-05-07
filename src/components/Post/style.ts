@@ -17,6 +17,9 @@ const StyledPost = styled.ul`
     & + li {
       border-top: 1px solid ${({ theme }) => theme.colors.fg};
     }
+    &:last-child {
+      border-bottom: 1px solid ${({ theme }) => theme.colors.fg};
+    }
   }
 `;
 

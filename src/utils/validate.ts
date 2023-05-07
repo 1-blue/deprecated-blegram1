@@ -1,5 +1,11 @@
 // type
-type RegExpType = "id" | "password" | "email" | "phone" | "birthday";
+type RegExpType =
+  | "id"
+  | "password"
+  | "email"
+  | "phone"
+  | "birthday"
+  | "hashtag";
 interface GetRegExpHandler {
   (type: RegExpType): RegExp;
 }
@@ -30,5 +36,8 @@ export const getRegExp: GetRegExpHandler = (type) => {
     case "birthday":
       // 숫자만 8자리
       return /[0-9]{8}/;
+
+    case "hashtag":
+      return /(#[^\s#]+)/gm;
   }
 };
