@@ -10,9 +10,9 @@ import Avatar from "@src/components/common/Avatar";
 import StyledPostHeader from "./style";
 
 // type
-import type { SimpleUser } from "@src/types/api";
+import type { PostWithData } from "@src/types/api";
 interface Props {
-  user: SimpleUser;
+  user: PostWithData["user"];
   postIdx: number;
 }
 
@@ -20,8 +20,11 @@ interface Props {
 const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
   const { me } = useMe.useFetchMe();
 
-  /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
+  /** 2023/04/11 - FIXME: 상위에서 버블링으로 처리하기 게시글의 모달관련 훅 - by 1-blue */
   const { openPostModal } = usePostModal();
+
+  /** 2023/05/09 - 팔로우했는지 여부 - by 1-blue */
+  const isFollowed = user.followings.length > 0;
 
   return (
     <StyledPostHeader>
@@ -33,9 +36,15 @@ const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
         }
       />
       <span>{user.nickname}</span>
-      {me && (
-        <button type="button" className="follow">
-          팔로우
+      {me && me.idx !== user.idx && (
+        <button
+          type="button"
+          className="follow"
+          data-user-idx={user.idx}
+          data-post-idx={postIdx}
+          data-followed={isFollowed}
+        >
+          {isFollowed ? "언팔로우" : "팔로우"}
         </button>
       )}
       <button

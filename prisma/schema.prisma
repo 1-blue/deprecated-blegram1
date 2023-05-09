@@ -36,6 +36,20 @@ model User {
 
   // 유저와 게시글 ( 북마크 ) N : M
   bookmarkeds Bookmark[]
+
+  // 유저와 유저 팔로워/팔로잉 ( N : M )
+  followers Follow[] @relation("followings")
+  followings Follow[] @relation("followers")
+}
+
+// 팔로우 테이블
+model Follow {
+  follower    User @relation("followers", fields: [followerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followerIdx  Int
+  following   User @relation("followings", fields: [followingIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followingIdx Int
+
+  @@id([followerIdx, followingIdx])
 }
 
 // 게시글 테이블
