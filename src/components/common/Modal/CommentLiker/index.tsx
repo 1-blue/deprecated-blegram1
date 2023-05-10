@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 // hook
 import useCommentLikerModal from "@src/hooks/recoil/useCommentLikerModal";
-import { useLikers } from "@src/hooks/query";
+import { useFollow, useLikers, useMe } from "@src/hooks/query";
 
 // component
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
@@ -44,12 +45,44 @@ const CommentLiker = () => {
     return () => window.removeEventListener("click", modalCloseHandler);
   }, [commentLikerModalData, closeLikerModal]);
 
+  /** 2023/05/10 - 로그인한 유저의 정보 - by 1-blue */
+  const { me } = useMe.useFetchMe();
+
+  /** 2023/05/10 - 팔로우 요청 훅 - by 1-blue */
+  const mutateFollow = useFollow.useCreateFollow();
+  /** 2023/05/10 - 언팔로우 요청 훅 - by 1-blue */
+  const mutateUnfollow = useFollow.useDeleteFollow();
+
+  /** 2023/05/10 - 팔로우/언팔로우 요청 - by 1-blue */
+  const onFollowOrUnfollow: React.MouseEventHandler<HTMLUListElement> =
+    useCallback(
+      (e) => {
+        if (!me) return toast.error("로그인후에 접근해주세요!");
+        if (!(e.target instanceof HTMLButtonElement)) return;
+        if (!e.target.dataset.userIdx) return;
+        if (!e.target.dataset.followed) return;
+        if (!commentLikerModalData.postIdx) return;
+        if (!commentLikerModalData.commentIdx) return;
+
+        // 팔로우/언팔로우를 위해 필요한 데이터들
+        const userIdx = +e.target.dataset.userIdx;
+        const { postIdx, commentIdx } = commentLikerModalData;
+        const isFollowed = JSON.parse(e.target.dataset.followed);
+
+        // 언팔로우 요청
+        if (isFollowed) mutateUnfollow({ userIdx, postIdx, commentIdx });
+        // 팔로우 요청
+        else mutateFollow({ userIdx, postIdx, commentIdx });
+      },
+      [me, commentLikerModalData, mutateFollow, mutateUnfollow]
+    );
+
   return (
     <StyledModal>
       {isLoading ? (
         <Skeleton.LikerModal />
       ) : (
-        <ul ref={modalRef}>
+        <ul ref={modalRef} onClick={onFollowOrUnfollow}>
           <InfiniteScrollContainer
             fetchMore={fetchNextPage}
             hasMore={hasNextPage}
@@ -70,7 +103,18 @@ const CommentLiker = () => {
                     </Link>
                     <span>{commentLiker.name}</span>
                   </div>
-                  <button type="button">팔로우</button>
+                  {me && me.idx !== commentLiker.idx && (
+                    <button
+                      type="button"
+                      className="follow"
+                      data-user-idx={commentLiker.idx}
+                      data-followed={commentLiker.followings.length > 0}
+                    >
+                      {commentLiker.followings.length > 0
+                        ? "언팔로우"
+                        : "팔로우"}
+                    </button>
+                  )}
                 </li>
               ))
             )}

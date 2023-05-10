@@ -19,14 +19,14 @@ import type {
 const handler: NextApiHandler<
   ApiUploadPostResponse | ApiDeletePostResponse
 > = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+  }
+
   try {
     // 게시글 업로드 요청
     if (req.method === "POST") {
       const { content, photoPaths } = req.body as ApiUploadPostRequest;
-
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
 
       const createdPost = await prisma.post.create({
         data: {
@@ -41,12 +41,14 @@ const handler: NextApiHandler<
               idx: true,
               avatar: true,
               nickname: true,
+              // 로그인한 유저가 게시글 작성자를 팔로우했는지 판단
+              followings: { where: { followingIdx: req.user?.idx } },
             },
           },
           // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
-          postLikers: { where: { postLikerIdx: req.user?.idx || -1 } },
+          postLikers: { where: { postLikerIdx: req.user?.idx } },
           // 로그인한 유저가 게시글에 북마크 눌렀는지 판단
-          bookMarkers: { where: { bookmarkerIdx: req.user?.idx || -1 } },
+          bookMarkers: { where: { bookmarkerIdx: req.user?.idx } },
           _count: {
             select: {
               comments: true,
@@ -88,10 +90,6 @@ const handler: NextApiHandler<
     // 게시글 삭제 요청
     if (req.method === "DELETE") {
       const idx = +req.query.idx!;
-
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
 
       await prisma.post.delete({ where: { idx } });
 
