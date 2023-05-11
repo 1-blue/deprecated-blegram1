@@ -7,7 +7,7 @@ import type {
 /** 2023/05/07 - 게시글들 가져오기 요청 - by 1-blue */
 const fetchPosts: ApiFetchPostsHandler = async ({ take, lastIdx = -1 }) =>
   fetch(process.env.BASE_URL + `/api/posts?take=${take}&lastIdx=${lastIdx}`, {
-    cache: "no-store",
+    cache: "no-cache",
   }).then((res) => res.json());
 
 /** 2023/05/07 - 특정 유저 정보 요청 - by 1-blue */

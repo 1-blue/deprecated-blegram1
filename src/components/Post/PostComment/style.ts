@@ -16,6 +16,11 @@ const StyledPostComment = styled.li`
 
   /* 댓글 작성자 및 내용 wrapper */
   & > .comment-wrapper {
+    flex: 1;
+
+    display: flex;
+    flex-flow: column nowrap;
+
     & > * + * {
       margin-top: 0.4em;
     }
@@ -47,7 +52,7 @@ const StyledPostComment = styled.li`
 
     /* 작성 내용 */
     & > textarea {
-      padding: 0.4em;
+      padding: 0.2em 0;
       background-color: transparent;
       border: 0;
 
@@ -74,7 +79,6 @@ const StyledPostComment = styled.li`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-left: auto;
 
     & > button[type="button"]:last-child {
       padding: 0.2em;

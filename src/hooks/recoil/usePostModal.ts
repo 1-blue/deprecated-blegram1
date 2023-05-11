@@ -16,8 +16,14 @@ const usePostModal = () => {
 
   /** 2023/04/14 - 모달 열기 핸들러 - by 1-blue */
   const openPostModal = useCallback(
-    (isMine: boolean, postIdx: number) =>
-      setPostModalData((prev) => ({ ...prev, isOpen: true, isMine, postIdx })),
+    (isMine: boolean, postIdx: number, isBookmarked: boolean) =>
+      setPostModalData((prev) => ({
+        ...prev,
+        isOpen: true,
+        isMine,
+        postIdx,
+        isBookmarked,
+      })),
     [setPostModalData]
   );
 

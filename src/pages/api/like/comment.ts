@@ -17,16 +17,16 @@ import type {
 const handler: NextApiHandler<
   ApiUploadLikeOfCommentResponse | ApiDeleteLikeOfCommentResponse | ApiResponse
 > = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-    }
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+  }
 
+  try {
     // 댓글 좋아요 추가 요청
     if (req.method === "POST") {
       const { commentIdx } = req.body as ApiUploadLikeOfCommentRequest;
 
-      await prisma.commentLikes.create({
+      await prisma.commentLike.create({
         data: {
           commentLiker: { connect: { idx: req.user.idx } },
           commentLiked: { connect: { idx: commentIdx } },
@@ -43,7 +43,7 @@ const handler: NextApiHandler<
     if (req.method === "DELETE") {
       const commentIdx = +req.query.commentIdx!;
 
-      await prisma.commentLikes.delete({
+      await prisma.commentLike.delete({
         where: {
           commentLikedIdx_commentLikerIdx: {
             commentLikerIdx: req.user.idx,

@@ -10,6 +10,10 @@ import type { ApiLogOutResponse } from "@src/types/api";
 
 /** 2023/03/31 - 로그아웃 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiLogOutResponse> = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+  }
+
   try {
     // 쿠키에서 인증/리프래쉬 토큰 갖고오기
     const { bat, brt } = req.cookies;

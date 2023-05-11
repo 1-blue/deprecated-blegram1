@@ -57,11 +57,11 @@ const PostLiker = () => {
   const onFollowOrUnfollow: React.MouseEventHandler<HTMLUListElement> =
     useCallback(
       (e) => {
-        if (!me) return toast.error("로그인후에 접근해주세요!");
         if (!(e.target instanceof HTMLButtonElement)) return;
         if (!e.target.dataset.userIdx) return;
         if (!e.target.dataset.followed) return;
         if (!postLikerModalData.postIdx) return;
+        if (!me) return toast.warning("로그인후에 접근해주세요!");
 
         // 팔로우/언팔로우를 위해 필요한 데이터들
         const userIdx = +e.target.dataset.userIdx;

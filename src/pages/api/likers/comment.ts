@@ -22,7 +22,7 @@ const handler: NextApiHandler<
       const lastIdx = +(req.query.lastIdx as string);
       const commentIdx = +(req.query.commentIdx as string);
 
-      const likers = await prisma.commentLikes.findMany({
+      const likers = await prisma.commentLike.findMany({
         where: { commentLikedIdx: commentIdx },
         include: {
           commentLiker: {
@@ -32,7 +32,7 @@ const handler: NextApiHandler<
               avatar: true,
               name: true,
               // 로그인한 유저가 게시글 작성자를 팔로우했는지 판단
-              followings: { where: { followingIdx: req.user?.idx } },
+              followings: { where: { followingIdx: req.user?.idx || -1 } },
             },
           },
         },

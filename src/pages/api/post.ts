@@ -33,7 +33,7 @@ const handler: NextApiHandler<
           content,
           photos: photoPaths.join("|"),
           createdAt: new Date(),
-          userIdx: req.user?.idx,
+          userIdx: req.user.idx,
         },
         include: {
           user: {
@@ -42,13 +42,13 @@ const handler: NextApiHandler<
               avatar: true,
               nickname: true,
               // 로그인한 유저가 게시글 작성자를 팔로우했는지 판단
-              followings: { where: { followingIdx: req.user?.idx } },
+              followings: { where: { followingIdx: req.user.idx } },
             },
           },
           // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
-          postLikers: { where: { postLikerIdx: req.user?.idx } },
+          postLikers: { where: { postLikerIdx: req.user.idx } },
           // 로그인한 유저가 게시글에 북마크 눌렀는지 판단
-          bookMarkers: { where: { bookmarkerIdx: req.user?.idx } },
+          bookMarkers: { where: { bookmarkerIdx: req.user.idx } },
           _count: {
             select: {
               comments: true,

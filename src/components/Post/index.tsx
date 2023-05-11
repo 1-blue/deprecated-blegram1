@@ -47,7 +47,7 @@ const Post: React.FC<Props> = ({ initialData }) => {
     });
 
   /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
-  const { postModalData } = usePostModal();
+  const { postModalData, openPostModal } = usePostModal();
   /** 2023/04/25 - 게시글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
   const { postLikerModalData } = usePostLikerModal();
   /** 2023/04/28 - 댓글에 좋아요 누른 사람들 모달 훅 - by 1-blue */
@@ -73,27 +73,51 @@ const Post: React.FC<Props> = ({ initialData }) => {
   /** 2023/05/09 - 언팔로우 요청 훅 - by 1-blue */
   const mutateUnfollow = useFollow.useDeleteFollow();
 
-  /** 2023/05/09 - 팔로우/언팔로우 요청 - by 1-blue */
-  const onFollowOrUnfollow: React.MouseEventHandler<HTMLUListElement> =
+  /** 2023/05/09 - 팔로우/언팔로우 요청 || 전역 게시글 모달 열기 - by 1-blue */
+  const onClickBubblingHanlder: React.MouseEventHandler<HTMLUListElement> =
     useCallback(
       (e) => {
-        if (!me) return toast.error("로그인후에 접근해주세요!");
         if (!(e.target instanceof HTMLButtonElement)) return;
-        if (!e.target.dataset.userIdx) return;
-        if (!e.target.dataset.postIdx) return;
-        if (!e.target.dataset.followed) return;
+        if (!e.target.dataset.type) return;
 
-        // 팔로우/언팔로우를 위해 필요한 데이터들
-        const userIdx = +e.target.dataset.userIdx;
-        const postIdx = +e.target.dataset.postIdx;
-        const isFollowed = JSON.parse(e.target.dataset.followed);
+        // "follow" or "modal"
+        const { type } = e.target.dataset;
 
-        // 언팔로우 요청
-        if (isFollowed) mutateUnfollow({ userIdx, postIdx });
-        // 팔로우 요청
-        else mutateFollow({ userIdx, postIdx });
+        // 팔로우 요청에 대한 처리
+        if (type === "follow") {
+          if (!e.target.dataset.userIdx) return;
+          if (!e.target.dataset.postIdx) return;
+          if (!e.target.dataset.followed) return;
+          if (!me) {
+            return toast.warning("로그인을 해야 접근 가능한 기능입니다!");
+          }
+
+          // 팔로우/언팔로우를 위해 필요한 데이터들
+          const userIdx = +e.target.dataset.userIdx;
+          const postIdx = +e.target.dataset.postIdx;
+          const isFollowed = JSON.parse(e.target.dataset.followed);
+
+          // 언팔로우 요청
+          if (isFollowed) mutateUnfollow({ userIdx, postIdx });
+          // 팔로우 요청
+          else mutateFollow({ userIdx, postIdx });
+        }
+
+        // 게시글 모달에 대한 처리
+        if (type === "modal") {
+          if (!e.target.dataset.isMine) return;
+          if (!e.target.dataset.postIdx) return;
+          if (!e.target.dataset.isBookmarked) return;
+
+          // 모달을 열기 위해 필요한 데이터들
+          const isMine = JSON.parse(e.target.dataset.isMine);
+          const postIdx = +e.target.dataset.postIdx;
+          const isBookmarked = JSON.parse(e.target.dataset.isBookmarked);
+
+          openPostModal(isMine, postIdx, isBookmarked);
+        }
       },
-      [me, mutateFollow, mutateUnfollow]
+      [me, mutateFollow, mutateUnfollow, openPostModal]
     );
 
   return (
@@ -102,15 +126,20 @@ const Post: React.FC<Props> = ({ initialData }) => {
         hasMore={hasNextPage && !isFetching}
         fetchMore={fetchNextPage}
       >
-        <StyledPost onClick={onFollowOrUnfollow}>
+        <StyledPost onClick={onClickBubblingHanlder}>
           {data?.pages?.map((page) =>
             page.posts?.map((post) => (
               <li key={post.idx}>
-                <PostHeader user={post.user} postIdx={post.idx} />
+                <PostHeader
+                  user={post.user}
+                  postIdx={post.idx}
+                  bookmarkers={post.bookMarkers}
+                />
                 <PostPhotos photos={splitPhotoURL(post.photos)} />
                 <PostFooter
                   content={post.content}
                   postIdx={post.idx}
+                  userIdx={post.userIdx}
                   count={post._count}
                   postLikers={post.postLikers}
                   bookmarkers={post.bookMarkers}

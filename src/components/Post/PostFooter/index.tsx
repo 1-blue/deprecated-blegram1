@@ -19,6 +19,7 @@ import { StyledNotLoggedInText } from "./style";
 import type { PostWithData } from "@src/types/api";
 interface Props {
   postIdx: number;
+  userIdx: number;
   content: string;
   count: PostWithData["_count"];
   postLikers: PostWithData["postLikers"];
@@ -29,6 +30,7 @@ interface Props {
 const PostFooter: React.FC<Props> = ({
   content,
   postIdx,
+  userIdx,
   count,
   postLikers,
   bookmarkers,
@@ -61,7 +63,11 @@ const PostFooter: React.FC<Props> = ({
         <PostLikers postIdx={postIdx} likerCount={count.postLikers} />
       )}
       <PostContent content={content} />
-      <PostComments postIdx={postIdx} commentCount={count.comments} />
+      <PostComments
+        postIdx={postIdx}
+        userIdx={userIdx}
+        commentCount={count.comments}
+      />
       {me ? (
         <PostCommentForm
           postIdx={postIdx}

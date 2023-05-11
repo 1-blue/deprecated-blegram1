@@ -36,6 +36,7 @@ const StyledModal = styled.section`
       display: flex;
       align-items: center;
 
+      color: #000;
       font-size: 1rem;
       font-weight: bold;
       text-align: left;

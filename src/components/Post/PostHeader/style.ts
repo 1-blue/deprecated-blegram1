@@ -16,7 +16,7 @@ const StyledPostHeader = styled.section`
   }
 
   /* 닉네임 */
-  & > span {
+  & > a {
     margin-right: auto;
   }
 
@@ -27,11 +27,17 @@ const StyledPostHeader = styled.section`
 
     border-radius: 0.2em;
 
-    color: ${({ theme }) => theme.colors.bg};
-    background-color: ${({ theme }) => theme.colors.fg};
+    font-size: 0.8rem;
 
-    font-weight: bold;
-    font-size: 0.85rem;
+    color: #fff;
+    background-color: ${({ theme }) => theme.colors.blue500};
+
+    transition: all 0.2s;
+
+    &:hover {
+      font-weight: bold;
+      background-color: ${({ theme }) => theme.colors.blue600};
+    }
   }
 `;
 

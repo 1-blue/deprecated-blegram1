@@ -17,14 +17,14 @@ import type {
 const handler: NextApiHandler<
   ApiUploadCommentResponse | ApiDeleteCommentResponse
 > = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+  }
+
   try {
     // 댓글 업로드 요청
     if (req.method === "POST") {
       const { postIdx, content } = req.body as ApiUploadCommentRequest;
-
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
 
       const createdComment = await prisma.comment.create({
         data: {
@@ -42,7 +42,7 @@ const handler: NextApiHandler<
             },
           },
           // 로그인한 댓글에 유저가 좋아요 눌렀는지 판단
-          commentLikers: { where: { commentLikerIdx: req.user?.idx || -1 } },
+          commentLikers: { where: { commentLikerIdx: req.user.idx } },
           _count: {
             select: {
               commentLikers: true,
@@ -60,10 +60,6 @@ const handler: NextApiHandler<
     if (req.method === "PATCH") {
       const { idx, content } = req.body as ApiUpdateCommentRequest;
 
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
-
       await prisma.comment.update({ where: { idx }, data: { content } });
 
       return res.status(200).json({ message: "댓글을 수정했습니다." });
@@ -71,10 +67,6 @@ const handler: NextApiHandler<
     // 댓글 제거 요청
     if (req.method === "DELETE") {
       const idx = +req.query.idx!;
-
-      if (!req.user) {
-        return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-      }
 
       await prisma.comment.delete({ where: { idx } });
 
