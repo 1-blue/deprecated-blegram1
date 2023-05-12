@@ -4,6 +4,7 @@ interface AtomModalOfPost {
   isOpen: boolean;
   isMine: boolean;
   postIdx: null | number;
+  isBookmarked: boolean;
 }
 /** 2023/04/14 - post modal atom - by 1-blue */
 export const atomModalOfPost = atom<AtomModalOfPost>({
@@ -12,6 +13,7 @@ export const atomModalOfPost = atom<AtomModalOfPost>({
     isOpen: false,
     isMine: false,
     postIdx: null,
+    isBookmarked: false,
   },
 });
 

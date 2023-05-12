@@ -25,3 +25,4 @@ export * from "./like";
 export * from "./likers";
 export * from "./bookmark";
 export * from "./search";
+export * from "./follow";

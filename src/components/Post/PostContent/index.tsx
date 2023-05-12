@@ -26,7 +26,7 @@ const PostContent: React.FC<Props> = ({ content }) => {
       if (text[0] !== "#") return text;
 
       return (
-        <Link key={text} href={`/hashtag?hashtag=${text.slice(1)}`}>
+        <Link key={text} href={`/hashtag?hashtag=${encodeURI(text.slice(1))}`}>
           {text}
         </Link>
       );

@@ -18,6 +18,10 @@ interface MyResponseType
 
 /** 2023/04/01 - "AWS-S3"에 이미지 생성 요청 관련 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<MyResponseType> = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+  }
+
   try {
     // "presignedURL" 요청
     if (req.method === "POST") {

@@ -1,6 +1,7 @@
+import Link from "next/link";
+
 // hook
 import { useMe } from "@src/hooks/query";
-import usePostModal from "@src/hooks/recoil/usePostModal";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -10,18 +11,22 @@ import Avatar from "@src/components/common/Avatar";
 import StyledPostHeader from "./style";
 
 // type
-import type { SimpleUser } from "@src/types/api";
+import type { PostWithData } from "@src/types/api";
 interface Props {
-  user: SimpleUser;
+  user: PostWithData["user"];
   postIdx: number;
+  bookmarkers: PostWithData["bookMarkers"];
 }
 
 /** 2023/04/09 - 게시글 상단부 ( 작성자, 팔로우버튼, 옵션버튼 ) - by 1-blue */
-const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
+const PostHeader: React.FC<Props> = ({ user, postIdx, bookmarkers }) => {
   const { me } = useMe.useFetchMe();
 
-  /** 2023/04/11 - 게시글의 모달관련 훅 - by 1-blue */
-  const { openPostModal } = usePostModal();
+  /** 2023/05/09 - 팔로우했는지 여부 - by 1-blue */
+  const isFollowed = user.followings.length > 0;
+
+  /** 2023/05/11 - 로그인한 유저가 북마크 눌렀는지 여부 - by 1-blue */
+  const isBookmarked = !!bookmarkers.length;
 
   return (
     <StyledPostHeader>
@@ -29,19 +34,32 @@ const PostHeader: React.FC<Props> = ({ user, postIdx }) => {
         src={user.avatar}
         alt={`${user.nickname}님의 프로필 이미지`}
         href={
-          `/${user.nickname}` as __next_route_internal_types__.RouteImpl<string>
+          `/${encodeURI(
+            user.nickname
+          )}` as __next_route_internal_types__.RouteImpl<string>
         }
       />
-      <span>{user.nickname}</span>
-      {me && (
-        <button type="button" className="follow">
-          팔로우
+      <Link href={`/${encodeURI(user.nickname)}`}>
+        <span>{user.nickname}</span>
+      </Link>
+      {me && me.idx !== user.idx && (
+        <button
+          type="button"
+          className="follow"
+          data-type="follow"
+          data-user-idx={user.idx}
+          data-post-idx={postIdx}
+          data-followed={isFollowed}
+        >
+          {isFollowed ? "언팔로우" : "팔로우"}
         </button>
       )}
       <button
         type="button"
-        className="option"
-        onClick={() => openPostModal(me?.idx === user.idx, postIdx)}
+        data-type="modal"
+        data-is-mine={me?.idx === user.idx}
+        data-post-idx={postIdx}
+        data-is-bookmarked={isBookmarked}
       >
         <Icon shape="ellipsis-vertical" />
       </button>
