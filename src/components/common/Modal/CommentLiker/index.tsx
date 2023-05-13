@@ -108,9 +108,9 @@ const CommentLiker = () => {
                       type="button"
                       className="follow"
                       data-user-idx={commentLiker.idx}
-                      data-followed={commentLiker.followings.length > 0}
+                      data-followed={commentLiker.followers.length > 0}
                     >
-                      {commentLiker.followings.length > 0
+                      {commentLiker.followers.length > 0
                         ? "언팔로우"
                         : "팔로우"}
                     </button>

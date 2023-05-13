@@ -14,7 +14,7 @@ import Skeleton from "@src/components/common/Skeleton";
 // style
 import StyledModal from "./style";
 
-/** 2023/04/25 - 게시글에 좋아요 누른 사람들의 모달 ( 수정, 삭제, 북마크, 링크복사 ) - by 1-blue */
+/** 2023/04/25 - 게시글에 좋아요 누른 사람들의 모달 - by 1-blue */
 const PostLiker = () => {
   /** 2023/04/25 - modal ref - by 1-blue */
   const modalRef = useRef<null | HTMLUListElement>(null);
@@ -107,9 +107,9 @@ const PostLiker = () => {
                       type="button"
                       className="follow"
                       data-user-idx={postLiker.idx}
-                      data-followed={postLiker.followings.length > 0}
+                      data-followed={postLiker.followers.length > 0}
                     >
-                      {postLiker.followings.length > 0 ? "언팔로우" : "팔로우"}
+                      {postLiker.followers.length > 0 ? "언팔로우" : "팔로우"}
                     </button>
                   )}
                 </li>
