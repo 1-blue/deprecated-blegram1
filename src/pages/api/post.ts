@@ -42,7 +42,7 @@ const handler: NextApiHandler<
               avatar: true,
               nickname: true,
               // 로그인한 유저가 게시글 작성자를 팔로우했는지 판단
-              followings: { where: { followingIdx: req.user.idx } },
+              followers: { where: { followingIdx: req.user.idx } },
             },
           },
           // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단

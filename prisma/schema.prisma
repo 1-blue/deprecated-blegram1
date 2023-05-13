@@ -38,8 +38,8 @@ model User {
   bookmarkeds Bookmark[]
 
   // 유저와 유저 팔로워/팔로잉 ( N : M )
-  followers Follow[] @relation("followings")
-  followings Follow[] @relation("followers")
+  followers Follow[] @relation("followers")
+  followings Follow[] @relation("followings")
 }
 
 // 팔로우 테이블

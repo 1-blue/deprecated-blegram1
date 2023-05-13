@@ -23,7 +23,7 @@ const PostHeader: React.FC<Props> = ({ user, postIdx, bookmarkers }) => {
   const { me } = useMe.useFetchMe();
 
   /** 2023/05/09 - 팔로우했는지 여부 - by 1-blue */
-  const isFollowed = user.followings.length > 0;
+  const isFollowed = user.followers.length > 0;
 
   /** 2023/05/11 - 로그인한 유저가 북마크 눌렀는지 여부 - by 1-blue */
   const isBookmarked = !!bookmarkers.length;
