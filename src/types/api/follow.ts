@@ -6,6 +6,9 @@ export interface ApiCreateFollowRequest {
   userIdx: number;
   postIdx?: number;
   commentIdx?: number;
+  followerIdx?: number;
+  followingIdx?: number;
+  nickname?: string;
 }
 /** 2023/05/09 - 팔로우 요청 수신 타입 - by 1-blue */
 export interface ApiCreateFollowResponse extends ApiResponse {
@@ -23,6 +26,9 @@ export interface ApiDeleteFollowRequest {
   userIdx: number;
   postIdx?: number;
   commentIdx?: number;
+  followerIdx?: number;
+  followingIdx?: number;
+  nickname?: string;
 }
 /** 2023/05/09 - 언팔로우 요청 수신 타입 - by 1-blue */
 export interface ApiDeleteFollowResponse extends ApiResponse {

@@ -32,6 +32,7 @@ const useFetchUser: UseFetchHandler = ({ nickname, initialData }) => {
       refetchOnWindowFocus: false,
       // ssr
       ...(initialData && { initialData }),
+      onSuccess() {},
     }
   );
 

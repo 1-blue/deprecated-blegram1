@@ -16,6 +16,10 @@ const StyledProfile = styled.article`
     flex-flow: column nowrap;
     justify-content: space-between;
 
+    & > * + * {
+      margin-top: 0.8em;
+    }
+
     & > ul {
       display: flex;
       justify-content: space-between;
@@ -29,6 +33,8 @@ const StyledProfile = styled.article`
     /** 유저 이름 / 프로필 편집 / 로그아웃 */
     & > .wrapper-header {
       & > li {
+        height: 100%;
+
         /* 이름 */
         & > h2 {
           font-size: 1.4rem;
@@ -38,6 +44,8 @@ const StyledProfile = styled.article`
         /* 프로필 편집, 로그아웃 */
         & > a,
         & > button[type="button"] {
+          height: inherit;
+
           display: inline-block;
 
           padding: 0.6em 0.8em;
@@ -48,6 +56,9 @@ const StyledProfile = styled.article`
           font-size: 0.8rem;
           font-weight: bold;
           border-radius: 0.4em;
+
+          text-align: center;
+          line-height: 1;
 
           transition: all 0.3s;
 
@@ -60,6 +71,13 @@ const StyledProfile = styled.article`
 
     /** 게시물 / 팔로잉 / 팔로워 버튼 */
     & > .wrapper-buttons {
+      & > li {
+        & > button,
+        & > span {
+          font-size: 1rem;
+          line-height: 1;
+        }
+      }
     }
 
     /** 닉네임 / 자기소개 */
@@ -82,7 +100,4 @@ const StyledProfile = styled.article`
 /** 2023/03/29 - 프로필 네비게이션 스타일 - by 1-blue */
 const StyledProfileNav = styled.nav``;
 
-/** 2023/03/29 - 프로필 리스트 스타일 ( 나의 게시글들, 태그한 게시글들 ) - by 1-blue */
-const StyledListWrapper = styled.ul``;
-
-export { StyledProfile, StyledProfileNav, StyledListWrapper };
+export { StyledProfile, StyledProfileNav };

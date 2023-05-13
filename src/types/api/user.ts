@@ -8,7 +8,13 @@ export interface ApiFetchUserRequest {
 }
 /** 2023/03/29 - 특정 유저 정보 요청 수신 타입 - by 1-blue */
 export interface ApiFetchUserResponse extends ApiResponse {
-  user?: Pick<User, "idx" | "name" | "nickname" | "introduction" | "avatar">;
+  user?: Pick<User, "idx" | "name" | "nickname" | "introduction" | "avatar"> & {
+    _count: {
+      posts: number;
+      followers: number;
+      followings: number;
+    };
+  };
 }
 /** 2023/03/29 - 특정 유저 정보 요청 핸들러 - by 1-blue */
 export interface ApiFetchUserHandler {

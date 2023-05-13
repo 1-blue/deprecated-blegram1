@@ -9,6 +9,8 @@ export const queryKeys = {
   bookmark: "bookmark",
   hashtag: "hashtag",
   follow: "follow",
+  followers: "followers",
+  followings: "followings",
 };
 
 export * from "./auth";
@@ -23,3 +25,5 @@ export * from "./user";
 export * from "./bookmark";
 export * from "./search";
 export * from "./follow";
+export * from "./followers";
+export * from "./followings";

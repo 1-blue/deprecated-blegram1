@@ -26,3 +26,5 @@ export * from "./likers";
 export * from "./bookmark";
 export * from "./search";
 export * from "./follow";
+export * from "./followers";
+export * from "./followings";

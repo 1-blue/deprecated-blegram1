@@ -14,9 +14,12 @@ import type {
   ApiCreateFollowRequest,
   ApiCreateFollowResponse,
   ApiFetchCommentLikersResponse,
+  ApiFetchFollowersResponse,
+  ApiFetchFollowingsResponse,
   ApiFetchHashtagPostsResponse,
   ApiFetchPostLikersResponse,
   ApiFetchPostsResponse,
+  ApiFetchUserResponse,
 } from "@src/types/api";
 
 /** 2023/05/09 - 팔로우 요청 훅 - by 1-blue */
@@ -32,7 +35,7 @@ const useCreateFollow = (): UseMutateFunction<
   const { mutate } = useMutation(apiServiceFollow.apiCreateFollow, {
     onSuccess(
       { followerIdx, followingIdx, message },
-      { userIdx, postIdx, commentIdx },
+      { userIdx, postIdx, commentIdx, ...user },
       context
     ) {
       // 게시글 작성자와의 관계 수정
@@ -50,7 +53,7 @@ const useCreateFollow = (): UseMutateFunction<
                   ...post,
                   user: {
                     ...post.user,
-                    followings: [{ followerIdx, followingIdx }],
+                    followers: [{ followerIdx, followingIdx }],
                   },
                 };
               }),
@@ -76,7 +79,7 @@ const useCreateFollow = (): UseMutateFunction<
                     ...liker,
                     postLiker: {
                       ...liker.postLiker,
-                      followings: [{ followerIdx, followingIdx }],
+                      followers: [{ followerIdx, followingIdx }],
                     },
                   };
                 }),
@@ -103,7 +106,7 @@ const useCreateFollow = (): UseMutateFunction<
                     ...liker,
                     commentLiker: {
                       ...liker.commentLiker,
-                      followings: [{ followerIdx, followingIdx }],
+                      followers: [{ followerIdx, followingIdx }],
                     },
                   };
                 }),
@@ -137,6 +140,90 @@ const useCreateFollow = (): UseMutateFunction<
               })),
             }
         );
+      }
+
+      // 특정 유저의 팔로워들 관계 수정
+      if (user.followerIdx) {
+        queryClient.setQueryData<
+          InfiniteData<ApiFetchFollowersResponse> | undefined
+        >(
+          [queryKeys.followers, user.followerIdx],
+          (prev) =>
+            prev && {
+              ...prev,
+              pages: prev.pages.map((page) => ({
+                ...page,
+                followers: page.followers?.map((follower) => {
+                  if (follower.idx !== userIdx) return follower;
+
+                  return {
+                    ...follower,
+                    followers: [{ followerIdx, followingIdx }],
+                  };
+                }),
+              })),
+            }
+        );
+      }
+      // 특정 유저의 팔로잉들 관계 수정
+      if (user.followingIdx) {
+        queryClient.setQueryData<
+          InfiniteData<ApiFetchFollowingsResponse> | undefined
+        >(
+          [queryKeys.followings, user.followingIdx],
+          (prev) =>
+            prev && {
+              ...prev,
+              pages: prev.pages.map((page) => ({
+                ...page,
+                followings: page.followings?.map((following) => {
+                  if (following.idx !== userIdx) return following;
+
+                  return {
+                    ...following,
+                    followers: [{ followerIdx, followingIdx }],
+                  };
+                }),
+              })),
+            }
+        );
+      }
+      // 특정 유저의 팔로워/팔로잉 인원 수정
+      if (user.nickname) {
+        // 팔로워 증가
+        if (user.followerIdx) {
+          queryClient.setQueryData<ApiFetchUserResponse | undefined>(
+            [queryKeys.user, user.nickname],
+            (prev) =>
+              prev && {
+                ...prev,
+                user: prev.user && {
+                  ...prev.user,
+                  _count: {
+                    ...prev.user._count,
+                    followers: prev.user._count.followers + 1,
+                  },
+                },
+              }
+          );
+        }
+        // 팔로잉 증가
+        if (user.followingIdx) {
+          queryClient.setQueryData<ApiFetchUserResponse | undefined>(
+            [queryKeys.user, user.nickname],
+            (prev) =>
+              prev && {
+                ...prev,
+                user: prev.user && {
+                  ...prev.user,
+                  _count: {
+                    ...prev.user._count,
+                    followings: prev.user._count.followings + 1,
+                  },
+                },
+              }
+          );
+        }
       }
 
       toast.success(message);

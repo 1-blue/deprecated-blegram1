@@ -5,20 +5,24 @@ import Link from "next/link";
 
 // hook
 import { useMe, useUser, useAuth } from "@src/hooks/query";
+import useFollowerModal from "@src/hooks/recoil/useFollowerModal";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
 import Spinner from "@src/components/common/Spinner";
 import NotFound from "@src/components/common/NotFound";
+import Modal from "@src/components/common/Modal";
 
 // api
 import { apiServicePhoto } from "@src/apis";
 
 // style
-import { StyledProfile, StyledProfileNav, StyledListWrapper } from "./style";
+import { StyledProfile, StyledProfileNav } from "./style";
 
 // type
 import type { ApiFetchUserResponse } from "@src/types/api";
+import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
+import { toast } from "react-toastify";
 interface Props {
   nickname: string;
   initialData?: ApiFetchUserResponse;
@@ -29,8 +33,7 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
   const { me } = useMe.useFetchMe();
   const { user, isFetchingUser } = useUser.useFetchUser({
     nickname,
-    // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
-    // initialData,
+    initialData,
   });
 
   /** 2023/03/31 - 로그아웃 훅 - by 1-blue */
@@ -76,6 +79,11 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
     [updateAvatarMutata]
   );
 
+  /** 2023/05/12 - 팔로워 모달관련 훅 - by 1-blue */
+  const { followerModalData, openFollowerModal } = useFollowerModal();
+  /** 2023/05/13 - 팔로잉 모달관련 훅 - by 1-blue */
+  const { followingModalData, openFollowingModal } = useFollowingModal();
+
   // 데이터 패칭중인 경우
   if (isFetchingUser) return <Spinner.Page />;
 
@@ -105,7 +113,13 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
             {isMine ? (
               <>
                 <li>
-                  <Link href={`/${me.nickname}/update`}>프로필 편집</Link>
+                  <Link
+                    href={
+                      `/${me.nickname}/update` as __next_route_internal_types__.RouteImpl<string>
+                    }
+                  >
+                    프로필 편집
+                  </Link>
                 </li>
                 <li>
                   <button type="button" onClick={() => logoutMutate({})}>
@@ -121,10 +135,37 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
             )}
           </ul>
           <ul className="wrapper-buttons">
-            {/* FIXME: 서버로 받아온 데이터 채우기 */}
-            <li>게시물 0</li>
-            <li>팔로워 0</li>
-            <li>팔로잉 0</li>
+            <li>
+              <span>게시물 {user._count.posts}</span>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  if (user._count.followers === 0) {
+                    return toast.warning("팔로워가 없습니다.");
+                  }
+
+                  openFollowerModal(user.idx, user.nickname);
+                }}
+              >
+                팔로워 {user._count.followers}
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  if (user._count.followings === 0) {
+                    return toast.warning("팔로잉이 없습니다.");
+                  }
+
+                  openFollowingModal(user.idx, user.nickname);
+                }}
+              >
+                팔로잉 {user._count.followings}
+              </button>
+            </li>
           </ul>
           <section className="wrapper-info">
             <h2>{user.name}</h2>
@@ -134,15 +175,26 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
       </StyledProfile>
 
       <StyledProfileNav>
-        <li>게시물</li>
-        <li>저장됨</li>
+        <Link
+          href={
+            `/${user.nickname}` as __next_route_internal_types__.RouteImpl<string>
+          }
+        >
+          게시물
+        </Link>
+        <Link
+          href={
+            `/${user.nickname}?type=bookmark` as __next_route_internal_types__.RouteImpl<string>
+          }
+        >
+          저장됨
+        </Link>
       </StyledProfileNav>
 
-      <StyledListWrapper>
-        <li>게시글 리스트 - 1</li>
-        <li>게시글 리스트 - 2</li>
-        <li>게시글 리스트 - 3</li>
-      </StyledListWrapper>
+      {/* 팔로워 모달 */}
+      {followerModalData.isOpen && <Modal.Follower />}
+      {/* 팔로잉 모달 */}
+      {followingModalData.isOpen && <Modal.Following />}
 
       {/* 아바타 업로드중 스피너 */}
       {isUploadAvatar && <Spinner.Page />}
