@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledProfile = styled.article`
   display: flex;
   justify-content: center;
-  margin-top: 1em;
+  margin-top: 2em;
 
   & > * + * {
     margin-left: 2em;
@@ -17,7 +17,7 @@ const StyledProfile = styled.article`
     justify-content: space-between;
 
     & > * + * {
-      margin-top: 0.8em;
+      margin-top: 1.2em;
     }
 
     & > ul {
@@ -76,6 +76,8 @@ const StyledProfile = styled.article`
         & > span {
           font-size: 1rem;
           line-height: 1;
+
+          color: ${({ theme }) => theme.colors.fg};
         }
       }
     }
@@ -97,7 +99,4 @@ const StyledProfile = styled.article`
   }
 `;
 
-/** 2023/03/29 - 프로필 네비게이션 스타일 - by 1-blue */
-const StyledProfileNav = styled.nav``;
-
-export { StyledProfile, StyledProfileNav };
+export default StyledProfile;
