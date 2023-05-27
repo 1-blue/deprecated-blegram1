@@ -24,7 +24,7 @@ const take = 2;
 
 /** 2023/04/09 - 게시글의 댓글들 - by 1-blue */
 const PostComments: React.FC<Props> = ({ postIdx, userIdx, commentCount }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/04/19 - 댓글들 더 불러오기 - by 1-blue */
   const { data, hasNextPage, fetchNextPage, isFetching } =

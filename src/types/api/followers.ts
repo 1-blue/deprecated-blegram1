@@ -1,12 +1,10 @@
 import type { Follow } from "@prisma/client";
-import type { ApiResponse, SimpleUserWithName } from ".";
+import type { ApiResponse, PageInfo, SimpleUserWithName } from ".";
 
 // ============================== 팔로워들 ==============================
 /** 2023/05/12 - 팔로워들 요청 송신 타입 - by 1-blue */
-export interface ApiFetchFollowersRequest {
+export interface ApiFetchFollowersRequest extends PageInfo {
   followerIdx: number;
-  take: number;
-  lastIdx: number;
 }
 /** 2023/05/12 - 팔로워들 요청 수신 타입 - by 1-blue */
 export interface ApiFetchFollowersResponse extends ApiResponse {

@@ -26,7 +26,7 @@ const Following = () => {
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useFollowings.useFetchFollowings({
       followingIdx: followingModalData.followingIdx || -1,
-      take: 1,
+      take: 20,
       lastIdx: -1,
     });
 
@@ -47,7 +47,7 @@ const Following = () => {
   }, [followingModalData, closeFollowingModal]);
 
   /** 2023/05/10 - 로그인한 유저의 정보 - by 1-blue */
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/05/10 - 팔로우 요청 훅 - by 1-blue */
   const mutateFollow = useFollow.useCreateFollow();
@@ -80,7 +80,6 @@ const Following = () => {
 
   return (
     <StyledModal>
-      {/* FIXME: Skeleton UI 작성 */}
       {isLoading ? (
         <Skeleton.LikerModal />
       ) : (
@@ -90,39 +89,33 @@ const Following = () => {
             hasMore={hasNextPage}
           >
             {data?.pages.map((page) =>
-              page.followings.map((following) =>
-                Array(10)
-                  .fill(null)
-                  .map((v, i) => (
-                    <li key={following.idx}>
-                      <Avatar
-                        src={following.avatar}
-                        alt={`${following.nickname}님의 프로필 이미지`}
-                        href={
-                          `/${following.nickname}` as __next_route_internal_types__.RouteImpl<string>
-                        }
-                      />
-                      <div>
-                        <Link href={`/${following.nickname}`}>
-                          {following.nickname}
-                        </Link>
-                        <span>{following.name}</span>
-                      </div>
-                      {me && me.idx !== following.idx && (
-                        <button
-                          type="button"
-                          className="follow"
-                          data-user-idx={following.idx}
-                          data-followed={following.followers.length > 0}
-                        >
-                          {following.followers.length > 0
-                            ? "언팔로우"
-                            : "팔로우"}
-                        </button>
-                      )}
-                    </li>
-                  ))
-              )
+              page.followings.map((following) => (
+                <li key={following.idx}>
+                  <Avatar
+                    src={following.avatar}
+                    alt={`${following.nickname}님의 프로필 이미지`}
+                    href={
+                      `/${following.nickname}` as __next_route_internal_types__.RouteImpl<string>
+                    }
+                  />
+                  <div>
+                    <Link href={`/${following.nickname}`}>
+                      {following.nickname}
+                    </Link>
+                    <span>{following.name}</span>
+                  </div>
+                  {me && me.idx !== following.idx && (
+                    <button
+                      type="button"
+                      className="follow"
+                      data-user-idx={following.idx}
+                      data-followed={following.followers.length > 0}
+                    >
+                      {following.followers.length > 0 ? "언팔로우" : "팔로우"}
+                    </button>
+                  )}
+                </li>
+              ))
             )}
           </InfiniteScrollContainer>
         </ul>

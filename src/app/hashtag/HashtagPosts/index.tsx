@@ -69,10 +69,15 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
           {data?.pages?.map((page) =>
             page.posts?.map((post) => (
               <li key={post.idx}>
-                <PostHeader user={post.user} postIdx={post.idx} />
+                <PostHeader
+                  user={post.user}
+                  postIdx={post.idx}
+                  bookmarkers={post.bookMarkers}
+                />
                 <PostPhotos photos={splitPhotoURL(post.photos)} />
                 <PostFooter
                   content={post.content}
+                  userIdx={post.userIdx}
                   postIdx={post.idx}
                   count={post._count}
                   postLikers={post.postLikers}

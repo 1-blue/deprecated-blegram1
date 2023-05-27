@@ -12,12 +12,10 @@ import type {
   ApiFetchFollowingsResponse,
 } from "@src/types/api";
 
+interface Props extends ApiFetchFollowingsRequest {}
+
 /** 2023/05/12 - 특정 유저의 팔로잉들을 얻는 훅 - by 1-blue */
-const useFetchFollowings = ({
-  take,
-  lastIdx = -1,
-  followingIdx,
-}: ApiFetchFollowingsRequest) => {
+const useFetchFollowings = ({ take, lastIdx = -1, followingIdx }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useInfiniteQuery<ApiFetchFollowingsResponse>(
       [queryKeys.followings, followingIdx],

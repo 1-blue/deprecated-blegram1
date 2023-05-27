@@ -28,7 +28,7 @@ const PostCommentForm: React.FC<Props> = ({
   setIsCommentFocus,
 }) => {
   /** 2023/04/18 - 로그인한 유저 정보 - by 1-blue */
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/04/18 - 댓글 업로드 훅 - by 1-blue */
   const uploadComment = useComment.useUploadComment();

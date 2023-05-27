@@ -2,10 +2,12 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 // hook
 import { useMe, useUser, useAuth } from "@src/hooks/query";
 import useFollowerModal from "@src/hooks/recoil/useFollowerModal";
+import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
 
 // component
 import FormToolkit from "@src/components/common/FormToolkit";
@@ -17,12 +19,10 @@ import Modal from "@src/components/common/Modal";
 import { apiServicePhoto } from "@src/apis";
 
 // style
-import { StyledProfile, StyledProfileNav } from "./style";
+import StyledProfile from "./style";
 
 // type
 import type { ApiFetchUserResponse } from "@src/types/api";
-import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
-import { toast } from "react-toastify";
 interface Props {
   nickname: string;
   initialData?: ApiFetchUserResponse;
@@ -30,7 +30,7 @@ interface Props {
 
 /** 2023/03/27 - 프로필 페이지 - by 1-blue */
 const Profile: React.FC<Props> = ({ nickname, initialData }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
   const { user, isFetchingUser } = useUser.useFetchUser({
     nickname,
     initialData,
@@ -173,23 +173,6 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
           </section>
         </section>
       </StyledProfile>
-
-      <StyledProfileNav>
-        <Link
-          href={
-            `/${user.nickname}` as __next_route_internal_types__.RouteImpl<string>
-          }
-        >
-          게시물
-        </Link>
-        <Link
-          href={
-            `/${user.nickname}?type=bookmark` as __next_route_internal_types__.RouteImpl<string>
-          }
-        >
-          저장됨
-        </Link>
-      </StyledProfileNav>
 
       {/* 팔로워 모달 */}
       {followerModalData.isOpen && <Modal.Follower />}

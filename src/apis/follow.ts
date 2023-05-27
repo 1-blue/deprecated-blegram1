@@ -21,9 +21,7 @@ const apiCreateFollow: ApiCreateFollowHandler = async (body) => {
 const apiDeleteFollow: ApiDeleteFollowHandler = async (body) => {
   const { data } = await serverInstance.delete<ApiDeleteFollowResponse>(
     "/follow",
-    {
-      params: body,
-    }
+    { params: body }
   );
 
   return data;

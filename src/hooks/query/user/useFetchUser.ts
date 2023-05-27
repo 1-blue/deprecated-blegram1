@@ -7,23 +7,14 @@ import { apiServiceUser } from "@src/apis";
 import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchUserResponse } from "@src/types/api";
+import type { ApiFetchUserRequest, ApiFetchUserResponse } from "@src/types/api";
 
-interface UseFetchHandler {
-  ({
-    nickname,
-    initialData,
-  }: {
-    nickname: string;
-    initialData?: ApiFetchUserResponse;
-  }): {
-    user?: ApiFetchUserResponse["user"];
-    isFetchingUser: boolean;
-  };
+interface Props extends ApiFetchUserRequest {
+  initialData?: ApiFetchUserResponse;
 }
 
 /** 2023/03/29 - 특정 유저 정보를 얻는 훅 - by 1-blue */
-const useFetchUser: UseFetchHandler = ({ nickname, initialData }) => {
+const useFetchUser = ({ nickname, initialData }: Props) => {
   const { data, isLoading } = useQuery<ApiFetchUserResponse>(
     [queryKeys.user, nickname],
     () => apiServiceUser.apiFetchUser({ nickname }),

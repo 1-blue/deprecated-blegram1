@@ -46,7 +46,7 @@ const CommentLiker = () => {
   }, [commentLikerModalData, closeLikerModal]);
 
   /** 2023/05/10 - 로그인한 유저의 정보 - by 1-blue */
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/05/10 - 팔로우 요청 훅 - by 1-blue */
   const mutateFollow = useFollow.useCreateFollow();

@@ -12,6 +12,12 @@ export type SimpleUserWithName = Pick<
   "idx" | "avatar" | "name" | "nickname"
 >;
 
+/** 2023/05/26 - 페이지네이션을 위한 타입 - by 1-blue */
+export interface PageInfo {
+  take: number;
+  lastIdx?: number;
+}
+
 export * from "./auth";
 export * from "./me";
 export * from "./user";

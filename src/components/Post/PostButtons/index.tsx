@@ -27,7 +27,7 @@ const PostButtons: React.FC<Props> = ({
   commentTextareaRef,
   isCommentFocus,
 }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/04/24 - 게시글 좋아요 추가 뮤테이트 훅 - by 1-blue */
   const mutateUploadLikeOfPost = useLike.useUploadLikeOfPost();

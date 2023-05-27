@@ -13,7 +13,7 @@ const fetchPosts: ApiFetchPostsHandler = async ({ take, lastIdx = -1 }) =>
 /** 2023/05/07 - 특정 유저 정보 요청 - by 1-blue */
 const fetchUser: ApiFetchUserHandler = async ({ nickname }) =>
   fetch(process.env.BASE_URL + `/api/user?nickname=${nickname}`, {
-    cache: "force-cache",
+    cache: "no-cache",
   }).then((res) => res.json());
 
 /** 2023/05/07 - 특정 해시태그를 갖는 게시글들 요청 - by 1-blue */

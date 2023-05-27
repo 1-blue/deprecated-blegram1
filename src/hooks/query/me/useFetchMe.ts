@@ -7,14 +7,11 @@ import { apiServiceMe } from "@src/apis";
 import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchMeResponse } from "@src/types/api";
-type UseFetchMeHandler = () => {
-  me?: ApiFetchMeResponse["user"];
-  isFetchingMe: boolean;
-};
+import type { ApiFetchMeResponse, ApiFetchMeRequest } from "@src/types/api";
+interface Props extends ApiFetchMeRequest {}
 
 /** 2023/03/29 - 로그인한 유저 정보를 얻는 훅 - by 1-blue */
-const useFetchMe: UseFetchMeHandler = () => {
+const useFetchMe = ({}: Props) => {
   const { data, isLoading } = useQuery<ApiFetchMeResponse>(
     [queryKeys.user, "me"],
     apiServiceMe.apiFetchMe,

@@ -7,12 +7,11 @@ import { apiServiceLikers } from "@src/apis";
 import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchPostLikersResponse } from "@src/types/api";
-interface Props {
-  postIdx: number;
-  take: number;
-  lastIdx?: number;
-}
+import type {
+  ApiFetchPostLikersRequest,
+  ApiFetchPostLikersResponse,
+} from "@src/types/api";
+interface Props extends ApiFetchPostLikersRequest {}
 
 /** 2023/04/25 - 게시글에 좋아요를 누른 유저들을 얻는 훅 - by 1-blue */
 const usePostLikers = ({ postIdx, take, lastIdx = -1 }: Props) => {

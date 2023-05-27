@@ -7,10 +7,11 @@ import { apiServicePosts } from "@src/apis";
 import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchPostsResponse } from "@src/types/api";
-interface Props {
-  take: number;
-  lastIdx?: number;
+import type {
+  ApiFetchPostsRequest,
+  ApiFetchPostsResponse,
+} from "@src/types/api";
+interface Props extends ApiFetchPostsRequest {
   initialData?: ApiFetchPostsResponse;
 }
 
