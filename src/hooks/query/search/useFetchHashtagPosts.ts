@@ -20,16 +20,16 @@ interface Props extends ApiFetchHashtagPostsRequest {
 const useFetchHashtagPosts = ({
   hashtag,
   take,
-  lastIdx = -1,
+  skip = 0,
   initialData,
 }: Props) => {
   const { data, hasNextPage, fetchNextPage, isFetching } =
     useInfiniteQuery<ApiFetchHashtagPostsResponse>(
       [queryKeys.hashtag, hashtag],
-      ({ pageParam = lastIdx }) =>
+      ({ pageParam = skip }) =>
         apiServiceSearch.apiFetchHashtagPosts({
           take,
-          lastIdx: pageParam,
+          skip: pageParam,
           hashtag,
         }),
       {

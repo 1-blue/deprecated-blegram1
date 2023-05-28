@@ -36,6 +36,7 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
     useSearch.useFetchHashtagPosts({
       hashtag,
       take: 10,
+      skip: 0,
       // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
       // initialData,
     });
