@@ -7,12 +7,11 @@ import { apiServiceComments } from "@src/apis";
 import { queryKeys } from "@src/hooks/query";
 
 // type
-import type { ApiFetchCommentsResponse } from "@src/types/api";
-interface Props {
-  postIdx: number;
-  take: number;
-  lastIdx?: number;
-}
+import type {
+  ApiFetchCommentsRequest,
+  ApiFetchCommentsResponse,
+} from "@src/types/api";
+interface Props extends ApiFetchCommentsRequest {}
 
 /** 2023/04/19 - 댓글들을 얻는 훅 - by 1-blue */
 const useFetchComments = ({ postIdx, take, lastIdx = -1 }: Props) => {

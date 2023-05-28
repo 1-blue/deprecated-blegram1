@@ -14,9 +14,12 @@ import type {
   ApiDeleteFollowRequest,
   ApiDeleteFollowResponse,
   ApiFetchCommentLikersResponse,
+  ApiFetchFollowersResponse,
+  ApiFetchFollowingsResponse,
   ApiFetchHashtagPostsResponse,
   ApiFetchPostLikersResponse,
   ApiFetchPostsResponse,
+  ApiFetchUserResponse,
 } from "@src/types/api";
 
 /** 2023/05/09 - 언팔로우 요청 훅 - by 1-blue */
@@ -30,7 +33,7 @@ const useDeleteFollow = (): UseMutateFunction<
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceFollow.apiDeleteFollow, {
-    onSuccess(data, { userIdx, postIdx, commentIdx }, context) {
+    onSuccess(data, { userIdx, postIdx, commentIdx, ...user }, context) {
       // 게시글 작성자와의 관계 수정
       queryClient.setQueryData<InfiniteData<ApiFetchPostsResponse> | undefined>(
         [queryKeys.posts],
@@ -46,7 +49,7 @@ const useDeleteFollow = (): UseMutateFunction<
                   ...post,
                   user: {
                     ...post.user,
-                    followings: [],
+                    followers: [],
                   },
                 };
               }),
@@ -72,7 +75,7 @@ const useDeleteFollow = (): UseMutateFunction<
                     ...postLiker,
                     postLiker: {
                       ...postLiker.postLiker,
-                      followings: [],
+                      followers: [],
                     },
                   };
                 }),
@@ -99,7 +102,7 @@ const useDeleteFollow = (): UseMutateFunction<
                     ...liker,
                     commentLiker: {
                       ...liker.commentLiker,
-                      followings: [],
+                      followers: [],
                     },
                   };
                 }),
@@ -133,6 +136,90 @@ const useDeleteFollow = (): UseMutateFunction<
               })),
             }
         );
+      }
+
+      // 특정 유저의 팔로워들 관계 수정
+      if (user.followerIdx) {
+        queryClient.setQueryData<
+          InfiniteData<ApiFetchFollowersResponse> | undefined
+        >(
+          [queryKeys.followers, user.followerIdx],
+          (prev) =>
+            prev && {
+              ...prev,
+              pages: prev.pages.map((page) => ({
+                ...page,
+                followers: page.followers?.map((follower) => {
+                  if (follower.idx !== userIdx) return follower;
+
+                  return {
+                    ...follower,
+                    followers: [],
+                  };
+                }),
+              })),
+            }
+        );
+      }
+      // 특정 유저의 팔로잉들 관계 수정
+      if (user.followingIdx) {
+        queryClient.setQueryData<
+          InfiniteData<ApiFetchFollowingsResponse> | undefined
+        >(
+          [queryKeys.followings, user.followingIdx],
+          (prev) =>
+            prev && {
+              ...prev,
+              pages: prev.pages.map((page) => ({
+                ...page,
+                followings: page.followings?.map((following) => {
+                  if (following.idx !== userIdx) return following;
+
+                  return {
+                    ...following,
+                    followers: [],
+                  };
+                }),
+              })),
+            }
+        );
+      }
+      // 특정 유저의 팔로워/팔로잉 인원 수정
+      if (user.nickname) {
+        // 팔로워 감소
+        if (user.followerIdx) {
+          queryClient.setQueryData<ApiFetchUserResponse | undefined>(
+            [queryKeys.user, user.nickname],
+            (prev) =>
+              prev && {
+                ...prev,
+                user: prev.user && {
+                  ...prev.user,
+                  _count: {
+                    ...prev.user._count,
+                    followers: prev.user._count.followers - 1,
+                  },
+                },
+              }
+          );
+        }
+        // 팔로잉 감소
+        if (user.followingIdx) {
+          queryClient.setQueryData<ApiFetchUserResponse | undefined>(
+            [queryKeys.user, user.nickname],
+            (prev) =>
+              prev && {
+                ...prev,
+                user: prev.user && {
+                  ...prev.user,
+                  _count: {
+                    ...prev.user._count,
+                    followings: prev.user._count.followings - 1,
+                  },
+                },
+              }
+          );
+        }
       }
 
       toast.success(data.message);

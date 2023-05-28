@@ -32,7 +32,7 @@ const ProfileUpdate: React.FC<Props> = ({ nickname }) => {
   const router = useRouter();
 
   /** 2023/03/30 - 로그인한 유저 정보 - by 1-blue */
-  const { me, isFetchingMe } = useMe.useFetchMe();
+  const { me, isFetchingMe } = useMe.useFetchMe({});
   /** 2023/03/30 - 현재 페이지의 유저 정보 - by 1-blue */
   const { user, isFetchingUser } = useUser.useFetchUser({ nickname });
   /** 2023/03/30 - 로그인한 유저 정보 수정 뮤테이트 훅 - by 1-blue */

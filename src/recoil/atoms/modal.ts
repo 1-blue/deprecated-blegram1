@@ -44,3 +44,33 @@ export const atomModalOfCommentLiker = atom<AtomModalOfCommentLiker>({
     commentIdx: null,
   },
 });
+
+interface AtomModalOfFollower {
+  isOpen: boolean;
+  followerIdx: number | null;
+  nickname: string | null;
+}
+/** 2023/05/12 - follower modal atom - by 1-blue */
+export const atomModalOfFollower = atom<AtomModalOfFollower>({
+  key: "AtomModalOfFollower",
+  default: {
+    isOpen: false,
+    followerIdx: null,
+    nickname: null,
+  },
+});
+
+interface AtomModalOfFollowing {
+  isOpen: boolean;
+  followingIdx: number | null;
+  nickname: string | null;
+}
+/** 2023/05/13 - following modal atom - by 1-blue */
+export const atomModalOfFollowing = atom<AtomModalOfFollowing>({
+  key: "AtomModalOfFollowing",
+  default: {
+    isOpen: false,
+    followingIdx: null,
+    nickname: null,
+  },
+});

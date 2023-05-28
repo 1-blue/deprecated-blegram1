@@ -20,7 +20,7 @@ interface Props {
 
 /** 2023/04/09 - 게시글 상단부 ( 작성자, 팔로우버튼, 옵션버튼 ) - by 1-blue */
 const PostHeader: React.FC<Props> = ({ user, postIdx, bookmarkers }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/05/09 - 팔로우했는지 여부 - by 1-blue */
   const isFollowed = user.followers.length > 0;

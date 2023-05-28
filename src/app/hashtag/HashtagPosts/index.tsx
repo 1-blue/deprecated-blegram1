@@ -36,6 +36,7 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
     useSearch.useFetchHashtagPosts({
       hashtag,
       take: 10,
+      skip: 0,
       // FIXME: 이 값을 그대로 사용하면 좋아요/북마크 등 로그인 시 판단할 데이터를 제대로 판단하지 못함
       // initialData,
     });
@@ -69,10 +70,15 @@ const Hashtag: React.FC<Props> = ({ hashtag, initialData }) => {
           {data?.pages?.map((page) =>
             page.posts?.map((post) => (
               <li key={post.idx}>
-                <PostHeader user={post.user} postIdx={post.idx} />
+                <PostHeader
+                  user={post.user}
+                  postIdx={post.idx}
+                  bookmarkers={post.bookMarkers}
+                />
                 <PostPhotos photos={splitPhotoURL(post.photos)} />
                 <PostFooter
                   content={post.content}
+                  userIdx={post.userIdx}
                   postIdx={post.idx}
                   count={post._count}
                   postLikers={post.postLikers}

@@ -21,8 +21,8 @@ export const generateMetadata = async ({
 
   return getMetadata({
     title: "메인",
-    description: data?.posts?.[0].content || "게시글이 존재하지 않습니다.",
-    images: data.posts?.[0].photos[0]
+    description: data?.posts?.[0]?.content || "게시글이 존재하지 않습니다.",
+    images: data.posts?.[0]?.photos[0]
       ? [combinePhotoURL(data.posts[0].photos[0])]
       : undefined,
   });

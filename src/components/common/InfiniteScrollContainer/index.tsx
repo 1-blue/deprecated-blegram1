@@ -50,7 +50,7 @@ const InfiniteScrollContainer: React.FC<PropsWithChildren<Props>> = ({
   return (
     <>
       {children}
-      <div ref={observerRef} />
+      <div ref={observerRef} style={{ paddingTop: "1px" }} />
     </>
   );
 };

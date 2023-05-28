@@ -42,7 +42,7 @@ const Post = () => {
     else {
       mutateUploadBookmark({ postIdx: postModalData.postIdx });
     }
-  }, []);
+  }, [mutateDeleteBookmark, mutateUploadBookmark, postModalData]);
 
   /** 2023/05/11 - 수정 버튼 핸들러 - by 1-blue */
   const onClickUpdate = useCallback(() => {
@@ -54,7 +54,7 @@ const Post = () => {
     if (!postModalData.postIdx) return;
 
     deletePostMutate({ idx: postModalData.postIdx });
-  }, [postModalData]);
+  }, [postModalData, deletePostMutate]);
 
   return (
     <StyledModal onClick={closePostModal}>

@@ -35,7 +35,7 @@ const PostFooter: React.FC<Props> = ({
   postLikers,
   bookmarkers,
 }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/04/24 - 댓글 입력창 포커싱 여부 - by 1-blue */
   const [isCommentFocus, setIsCommentFocus] = useState(false);

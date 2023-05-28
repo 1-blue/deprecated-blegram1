@@ -29,7 +29,7 @@ const PostComment: React.FC<Props> = ({
   comment,
   onUpdateComment,
 }) => {
-  const { me } = useMe.useFetchMe();
+  const { me } = useMe.useFetchMe({});
 
   /** 2023/04/21 - comment의 content - by 1-blue */
   const [content, setContent] = useState(comment.content);

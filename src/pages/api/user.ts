@@ -19,7 +19,23 @@ const handler: NextApiHandler<ApiFetchUserResponse> = async (req, res) => {
       if (typeof nickname !== "string") return;
 
       // 특정 유저 찾기
-      const exUser = await prisma.user.findUnique({ where: { nickname } });
+      const exUser = await prisma.user.findUnique({
+        where: { nickname },
+        select: {
+          idx: true,
+          name: true,
+          nickname: true,
+          introduction: true,
+          avatar: true,
+          _count: {
+            select: {
+              posts: true,
+              followers: true,
+              followings: true,
+            },
+          },
+        },
+      });
 
       // 찾는 유저가 없는 경우
       if (!exUser) {

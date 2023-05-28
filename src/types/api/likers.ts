@@ -1,12 +1,10 @@
-import type { ApiResponse, SimpleUserWithName } from ".";
+import type { ApiResponse, PageInfo, SimpleUserWithName } from ".";
 import type { CommentLike, Follow, PostLike } from "@prisma/client";
 
 // ============================== 게시글 좋아요 누른 사람들 요청 ==============================
 /** 2023/04/25 - 게시글 좋아요 누른 사람들 요청 송신 타입 - by 1-blue */
-export interface ApiFetchPostLikersRequest {
+export interface ApiFetchPostLikersRequest extends PageInfo {
   postIdx: number;
-  take: number;
-  lastIdx: number;
 }
 /** 2023/04/25 - 게시글 좋아요 누른 사람들 요청 수신 타입 - by 1-blue */
 export interface ApiFetchPostLikersResponse extends ApiResponse {
@@ -21,10 +19,8 @@ export interface ApiFetchPostLikersHandler {
 
 // ============================== 댓글 좋아요 누른 사람들 요청 ==============================
 /** 2023/04/27 - 댓글 좋아요 누른 사람들 요청 송신 타입 - by 1-blue */
-export interface ApiFetchCommentLikersRequest {
+export interface ApiFetchCommentLikersRequest extends PageInfo {
   commentIdx: number;
-  take: number;
-  lastIdx: number;
 }
 /** 2023/04/27 - 댓글 좋아요 누른 사람들 요청 수신 타입 - by 1-blue */
 export interface ApiFetchCommentLikersResponse extends ApiResponse {

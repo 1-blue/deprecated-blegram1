@@ -87,7 +87,7 @@ const handler: NextApiHandler<
       });
     }
   } catch (error) {
-    console.error("/api/search/post/[query] error >> ", error);
+    console.error("/api/search/post/[hashtag] error >> ", error);
 
     return res.status(500).json({
       message: "서버측 문제입니다.\n잠시후에 다시 시도해주세요!",
