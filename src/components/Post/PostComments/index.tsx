@@ -41,7 +41,8 @@ const PostComments: React.FC<Props> = ({ postIdx, userIdx, commentCount }) => {
 
   /** 2023/04/21 - 댓글 수정 및 삭제 ( 버블링 ) - by 1-blue */
   const onUpdateComment = useCallback(
-    (idx: number, content: string) => updateCommentMutate({ idx, content }),
+    (commentIdx: number, content: string) =>
+      updateCommentMutate({ commentIdx, content }),
     [updateCommentMutate]
   );
 
@@ -76,7 +77,7 @@ const PostComments: React.FC<Props> = ({ postIdx, userIdx, commentCount }) => {
           // 댓글 삭제를 위해 필요한 데이터들
           const commentIdx = +e.target.dataset.commentIdx;
 
-          deleteCommentMutate({ idx: commentIdx });
+          deleteCommentMutate({ commentIdx });
         }
 
         // 좋아요/싫어요 처리

@@ -26,6 +26,13 @@ const handler: NextApiHandler<
     if (req.method === "POST") {
       const { commentIdx } = req.body as ApiUploadLikeOfCommentRequest;
 
+      // 존재하지 않는 댓글에 좋아요 추가 요청
+      const exComment = await prisma.comment.findUnique({
+        where: { idx: commentIdx },
+      });
+      if (!exComment)
+        return res.status(404).json({ message: "존재하지 않는 댓글입니다." });
+
       await prisma.commentLike.create({
         data: {
           commentLiker: { connect: { idx: req.user.idx } },
@@ -42,6 +49,13 @@ const handler: NextApiHandler<
     // 댓글 좋아요 삭제 요청
     if (req.method === "DELETE") {
       const commentIdx = +req.query.commentIdx!;
+
+      // 존재하지 않는 댓글에 좋아요 삭제 요청
+      const exComment = await prisma.comment.findUnique({
+        where: { idx: commentIdx },
+      });
+      if (!exComment)
+        return res.status(404).json({ message: "존재하지 않는 댓글입니다." });
 
       await prisma.commentLike.delete({
         where: {

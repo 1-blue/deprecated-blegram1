@@ -49,7 +49,9 @@ const handler: NextApiHandler<
       if (exUserList[1] && exUserList[1].idx !== +body.idx)
         return res.status(409).json({ message: "이메일이 이미 존재합니다." });
       if (exUserList[2] && exUserList[2].idx !== +body.idx)
-        return res.status(409).json({ message: "폰번호가 이미 존재합니다." });
+        return res
+          .status(409)
+          .json({ message: "휴대폰 번호가 이미 존재합니다." });
 
       // 중복된 데이터가 아니라면 유저 정보 수정
       await prisma.user.update({ where: { idx: body.idx }, data: body });

@@ -26,6 +26,11 @@ const handler: NextApiHandler<
     if (req.method === "POST") {
       const { postIdx } = req.body as ApiUploadBookmarkRequest;
 
+      // 존재하지 않는 게시글에 북마크 요청
+      const exPost = await prisma.post.findUnique({ where: { idx: +postIdx } });
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
       await prisma.bookmark.create({
         data: {
           bookmarkerIdx: req.user.idx,
@@ -43,6 +48,11 @@ const handler: NextApiHandler<
     // 북마크 제거 요청
     if (req.method === "DELETE") {
       const postIdx = +req.query.postIdx!;
+
+      // 존재하지 않는 게시글에 북마크 요청
+      const exPost = await prisma.post.findUnique({ where: { idx: +postIdx } });
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
 
       await prisma.bookmark.delete({
         where: {

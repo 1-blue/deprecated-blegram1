@@ -11,7 +11,7 @@ import type { ApiLogOutResponse } from "@src/types/api";
 /** 2023/03/31 - 로그아웃 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiLogOutResponse> = async (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+    return res.status(403).json({ message: "로그인후에 접근해주세요!" });
   }
 
   try {
@@ -24,7 +24,7 @@ const handler: NextApiHandler<ApiLogOutResponse> = async (req, res) => {
       clearCookie("bat", bat),
     ]);
 
-    return res.status(200).json({
+    return res.status(204).json({
       message: "로그아웃되었습니다.\n로그인 페이지로 이동됩니다.",
     });
   } catch (error) {
@@ -37,7 +37,7 @@ const handler: NextApiHandler<ApiLogOutResponse> = async (req, res) => {
 };
 
 export default withAuthMiddleware({
-  methods: ["POST", "PATCH"],
+  methods: ["POST"],
   handler,
   isAuth: true,
 });

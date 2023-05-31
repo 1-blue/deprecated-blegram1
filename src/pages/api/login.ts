@@ -18,6 +18,13 @@ interface LogInBody extends LogInForm {}
 
 /** 2023/03/29 - 로그인 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiLogInResponse> = async (req, res) => {
+  // 로그인하고 로그인 요청을 보낸 경우
+  if (req.user) {
+    return res
+      .status(403)
+      .json({ message: "로그인을 하지 않은 경우에만 로그인이 가능합니다." });
+  }
+
   try {
     // 로그인
     if (req.method === "POST") {
@@ -31,14 +38,14 @@ const handler: NextApiHandler<ApiLogInResponse> = async (req, res) => {
 
       // 아이디에 해당하는 유저가 존재하지 않음
       if (!exUser)
-        return res.status(403).json({ message: "존재하는 유저가 없습니다." });
+        return res.status(401).json({ message: "존재하는 유저가 없습니다." });
 
       // 비밀번호 일치 여부 확인
       const isValidated = await bcrypt.compare(password, exUser.password);
       // 비밀번호 불일치
       if (!isValidated) {
         return res
-          .status(403)
+          .status(401)
           .json({ message: "비밀번호가 일치하지 않습니다." });
       }
 

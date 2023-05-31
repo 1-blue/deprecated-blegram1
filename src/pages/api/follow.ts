@@ -26,6 +26,12 @@ const handler: NextApiHandler<
     if (req.method === "POST") {
       const { userIdx } = req.body as ApiCreateFollowRequest;
 
+      const exUser = await prisma.user.findUnique({ where: { idx: userIdx } });
+
+      // 존재하지 않는 유저에게 팔로우 요청
+      if (!exUser)
+        return res.status(404).json({ message: "존재하지 않는 유저입니다." });
+
       await prisma.follow.create({
         data: {
           followerIdx: userIdx,
@@ -42,6 +48,12 @@ const handler: NextApiHandler<
     // 언팔로우
     if (req.method === "DELETE") {
       const userIdx = +req.query.userIdx!;
+
+      const exUser = await prisma.user.findUnique({ where: { idx: userIdx } });
+
+      // 존재하지 않는 유저에게 팔로우 요청
+      if (!exUser)
+        return res.status(404).json({ message: "존재하지 않는 유저입니다." });
 
       await prisma.follow.delete({
         where: {

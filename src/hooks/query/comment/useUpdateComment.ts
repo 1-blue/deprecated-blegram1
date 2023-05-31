@@ -27,7 +27,7 @@ const useUpdateComment = (
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceComment.apiUpdateComment, {
-    onSuccess(data, { idx, content }, context) {
+    onSuccess(data, { commentIdx, content }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
       >(
@@ -40,7 +40,7 @@ const useUpdateComment = (
               comments:
                 page.comments &&
                 page.comments.map((comment) =>
-                  comment.idx === idx ? { ...comment, content } : comment
+                  comment.idx === commentIdx ? { ...comment, content } : comment
                 ),
             })),
           }

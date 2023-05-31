@@ -20,6 +20,11 @@ const handler: NextApiHandler<ApiFetchCommentsResponse | ApiResponse> = async (
       const take = +(req.query.take as string);
       const lastIdx = +(req.query.lastIdx as string);
 
+      // 존재하지 않는 게시글의 댓글들 요청
+      const exPost = await prisma.post.findUnique({ where: { idx: postIdx } });
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
       const comments = await prisma.comment.findMany({
         where: { postIdx },
         take,
