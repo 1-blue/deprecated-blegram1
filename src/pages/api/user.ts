@@ -34,6 +34,7 @@ const handler: NextApiHandler<ApiFetchUserResponse> = async (req, res) => {
               followings: true,
             },
           },
+          followers: { where: { followingIdx: req.user?.idx || -1 } },
         },
       });
 

@@ -195,10 +195,13 @@ const useDeleteFollow = (): UseMutateFunction<
                 ...prev,
                 user: prev.user && {
                   ...prev.user,
+                  // 팔로잉/팔로워 개수
                   _count: {
                     ...prev.user._count,
                     followers: prev.user._count.followers - 1,
                   },
+                  // 팔로우/언팔로우 버튼
+                  followers: [],
                 },
               }
           );
@@ -212,10 +215,13 @@ const useDeleteFollow = (): UseMutateFunction<
                 ...prev,
                 user: prev.user && {
                   ...prev.user,
+                  // 팔로잉/팔로워 개수
                   _count: {
                     ...prev.user._count,
                     followings: prev.user._count.followings - 1,
                   },
+                  // 팔로우/언팔로우 버튼
+                  followers: [],
                 },
               }
           );
