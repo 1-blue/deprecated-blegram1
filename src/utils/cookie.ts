@@ -9,7 +9,8 @@ interface GenerateCookieHandler {
  * @returns 쿠키 헤더 값
  */
 export const generateCookie: GenerateCookieHandler = (name, value, maxAge) => {
-  const domain = process.env.NODE_ENV === "development" ? "localhost" : "TODO:";
+  const domain =
+    process.env.NODE_ENV === "development" ? "localhost" : "blegram.vercel.app";
   const path = "/";
   const sameSite = "Strict";
 
@@ -27,7 +28,8 @@ interface ClearCookieHandler {
  * @returns 쿠키 유효기한 없애기
  */
 export const clearCookie: ClearCookieHandler = (name, value) => {
-  const domain = process.env.NODE_ENV === "development" ? "localhost" : "TODO:";
+  const domain =
+    process.env.NODE_ENV === "development" ? "localhost" : "blegram.vercel.app";
   const path = "/";
   const sameSite = "Strict";
 
