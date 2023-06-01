@@ -5,7 +5,7 @@ const StyledPostComment = styled.li`
   display: flex;
 
   & > * + * {
-    margin-left: 0.4em;
+    margin-left: 0.6em;
   }
 
   /* 댓글 작성자 아바타 */
@@ -22,24 +22,30 @@ const StyledPostComment = styled.li`
     flex-flow: column nowrap;
 
     & > * + * {
-      margin-top: 0.4em;
+      margin-top: 0.6em;
     }
 
     /* 작성자와 작성시간 수정/삭제 버튼 */
     & > div {
-      font-size: 0.8rem;
-
       & > * + * {
         margin-left: 0.6em;
       }
 
+      /* 작성자 */
+      & > span {
+        font-size: 1rem;
+      }
+
       /* 작성 시간 */
       & > time {
+        font-size: 0.7rem;
+        font-weight: 100;
         color: ${({ theme }) => theme.colors.gray400};
       }
 
       /* 수정 | 삭제 버튼 */
       & > button[type="button"] {
+        font-size: 0.7rem;
         color: ${({ theme }) => theme.colors.gray500};
 
         &:hover {
@@ -52,13 +58,14 @@ const StyledPostComment = styled.li`
 
     /* 작성 내용 */
     & > textarea {
-      padding: 0.2em 0;
+      padding: 0.8em 1em;
       background-color: transparent;
       border: 0;
 
       color: ${({ theme }) => theme.colors.fg};
 
       font-size: 0.9rem;
+      font-weight: 600;
       line-height: 1.2;
       resize: none;
       border: 2px solid ${({ theme }) => theme.colors.fg};
@@ -70,6 +77,8 @@ const StyledPostComment = styled.li`
       }
       &:disabled {
         border: 2px solid transparent;
+        padding: 0em;
+        font-weight: 500;
       }
     }
   }

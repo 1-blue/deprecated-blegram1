@@ -10,9 +10,10 @@ import { useFollow, useFollowers, useMe } from "@src/hooks/query";
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
 import Avatar from "@src/components/common/Avatar";
 import Skeleton from "@src/components/common/Skeleton";
+import Icon from "@src/components/common/Icon";
 
 // style
-import StyledModal from "./style";
+import StyledFollowerModal from "./style";
 
 /** 2023/05/12 - 팔로워들 모달 - by 1-blue */
 const Follower = () => {
@@ -78,11 +79,17 @@ const Follower = () => {
     );
 
   return (
-    <StyledModal>
+    <StyledFollowerModal>
       {isFetching ? (
         <Skeleton.LikerModal />
       ) : (
         <ul ref={modalRef} onClick={onFollowOrUnfollow}>
+          <li>
+            <h3>{followerModalData.nickname}님의 팔로워들</h3>
+            <div>
+              <Icon shape="light-bulb" reverse size="2xl" />
+            </div>
+          </li>
           <InfiniteScrollContainer
             fetchMore={fetchNextPage}
             hasMore={hasNextPage}
@@ -119,7 +126,7 @@ const Follower = () => {
           </InfiniteScrollContainer>
         </ul>
       )}
-    </StyledModal>
+    </StyledFollowerModal>
   );
 };
 

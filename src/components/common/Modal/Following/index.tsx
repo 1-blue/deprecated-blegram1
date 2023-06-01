@@ -10,11 +10,12 @@ import { useFollow, useFollowings, useMe } from "@src/hooks/query";
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
 import Avatar from "@src/components/common/Avatar";
 import Skeleton from "@src/components/common/Skeleton";
+import Icon from "@src/components/common/Icon";
 
 // style
-import StyledModal from "./style";
+import StyledFollowingModal from "./style";
 
-/** 2023/05/13 - 팔로워들 모달 - by 1-blue */
+/** 2023/05/13 - 팔로잉들 모달 - by 1-blue */
 const Following = () => {
   /** 2023/05/13 - modal ref - by 1-blue */
   const modalRef = useRef<null | HTMLUListElement>(null);
@@ -23,7 +24,7 @@ const Following = () => {
   const { followingModalData, closeFollowingModal } = useFollowingModal();
 
   /** 2023/05/13 - 특정 유저를 팔로잉하는 사람들 불러오는 훅 - by 1-blue */
-  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isLoading } =
     useFollowings.useFetchFollowings({
       followingIdx: followingModalData.followingIdx || -1,
       take: 20,
@@ -79,11 +80,17 @@ const Following = () => {
     );
 
   return (
-    <StyledModal>
+    <StyledFollowingModal>
       {isLoading ? (
         <Skeleton.LikerModal />
       ) : (
         <ul ref={modalRef} onClick={onFollowOrUnfollow}>
+          <li>
+            <h3>{followingModalData.nickname}님의 팔로잉들</h3>
+            <div>
+              <Icon shape="light-bulb" reverse size="2xl" />
+            </div>
+          </li>
           <InfiniteScrollContainer
             fetchMore={fetchNextPage}
             hasMore={hasNextPage}
@@ -120,7 +127,7 @@ const Following = () => {
           </InfiniteScrollContainer>
         </ul>
       )}
-    </StyledModal>
+    </StyledFollowingModal>
   );
 };
 

@@ -50,8 +50,9 @@ const PostComment: React.FC<Props> = ({
       else setTimeout(() => commentRef.current?.focus(), 0);
 
       setDisabled((prev) => !prev);
+      setTimeout(() => handleResizeHeight(), 0);
     },
-    [onUpdateComment, content, disabled, commentRef]
+    [onUpdateComment, content, disabled, commentRef, handleResizeHeight]
   );
 
   /** 2023/04/25 - 로그인한 유저가 좋아요 눌렀는지 여부 - by 1-blue */
