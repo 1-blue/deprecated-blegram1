@@ -30,11 +30,45 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  /** https://noonnu.cc/font_page/1127 */
+  /**
+   * https://noonnu.cc/font_page/1127
+   * https://company.lottemart.com/company/font_jamsil.asp
+   */
   @font-face {
-    font-family: 'TheJamsil5Bold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-family: "TheJamsil5";
     font-style: normal;
+    font-weight: 100;
+    src: url("/fonts/The Jamsil 1 Thin.ttf") format("woff2");
+  }
+  @font-face {
+    font-family: "TheJamsil5";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/fonts/The Jamsil 2 Light.ttf") format("woff2");
+  }
+  @font-face {
+    font-family: "TheJamsil5";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/The Jamsil 3 Regular.ttf") format("woff2");
+  }
+  @font-face {
+    font-family: "TheJamsil5";
+    font-style: normal;
+    font-weight: 500;
+    src: url("/fonts/The Jamsil 4 Medium.ttf") format("woff2");
+  }
+  @font-face {
+    font-family: "TheJamsil5";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/fonts/The Jamsil 5 Bold.ttf") format("woff2");
+  }
+  @font-face {
+    font-family: "TheJamsil5";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/fonts/The Jamsil 6 ExtraBold.ttf") format("woff2");
   }
 
   html {
@@ -43,7 +77,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
-    font-family: "TheJamsil5Bold", "Noto Sans KR", sans-serif;
+    font-family: "TheJamsil5", "Noto Sans KR", sans-serif;
 
     color: ${({ theme }) => theme.colors.fg};
     background-color: ${({ theme }) => theme.colors.bg};
