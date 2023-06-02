@@ -85,7 +85,7 @@ const CommentLiker = () => {
       ) : (
         <ul ref={modalRef} onClick={onFollowOrUnfollow}>
           <li>
-            <h3>게시글에 좋아요를 누른 사람들</h3>
+            <h3>댓글에 좋아요를 누른 사람들</h3>
             <div>
               <Icon shape="heart" reverse size="2xl" />
             </div>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 /** 2023/05/05 - 검색창 스타일 - by 1-blue */
 const StyledSearchFromWrapper = styled.article`
-  max-width: 300px;
+  max-width: 400px;
   width: 50vw;
   min-width: 200px;
 
@@ -40,6 +40,9 @@ export const StyledSearchBar = styled.section`
       border-top-left-radius: 0.2em;
       border-bottom-left-radius: 0.2em;
 
+      color: ${({ theme }) => theme.colors.bg};
+      background-color: ${({ theme }) => theme.colors.fg};
+
       &:focus {
         outline: none;
       }
@@ -64,11 +67,11 @@ export const StyledSearchBar = styled.section`
   }
 `;
 
-/** 2023/05/05 - 추천 검색어 스타일 - by 1-blue */
+/** 2023/05/05 - 추천 검색어 리스트 스타일 - by 1-blue */
 export const StyledSuggestedList = styled.ul`
   max-height: 40vh;
   margin-top: 0.1em;
-  padding: 0.6em 0.4em;
+  padding: 0.2em 0.4em;
 
   display: flex;
   flex-flow: column nowrap;
@@ -85,62 +88,7 @@ export const StyledSuggestedList = styled.ul`
   ${({ theme }) => theme.util.scroll};
 
   & > * + * {
-    border-top: 2px solid ${({ theme }) => theme.colors.gray300};
-  }
-
-  & > li {
-    display: inline-flex;
-    width: 100%;
-
-    & > a {
-      width: inherit;
-      padding: 0.6em 0.8em;
-
-      border-radius: 0.2em;
-
-      transition: all 0.2s;
-
-      &:hover {
-        font-weight: bold;
-      }
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.gray300};
-      }
-    }
-
-    & > a {
-      display: flex;
-      color: #000;
-
-      /* 아바타 */
-      & > figure {
-        width: 2.4rem;
-        height: 2.4rem;
-      }
-
-      /* 닉네임과 이름 */
-      & > div {
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: center;
-
-        margin-left: 0.4em;
-
-        & > span {
-          font-size: 0.9rem;
-
-          &:first-child {
-            font-weight: bold;
-            color: ${({ theme }) => theme.colors.gray800};
-          }
-          &:last-child {
-            margin-top: 0.2em;
-            color: ${({ theme }) => theme.colors.gray400};
-          }
-        }
-      }
-    }
+    border-top: 4px solid ${({ theme }) => theme.colors.gray300};
   }
 `;
 

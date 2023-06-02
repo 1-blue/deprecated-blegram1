@@ -47,12 +47,13 @@ const StyledLink = styled.a<StyledLinkProps>`
 
   cursor: pointer;
 
-  &:hover {
+  &:hover span {
     font-weight: bold;
   }
 
   /** 네비게이션 바 텍스트 */
   & > span {
+    font-weight: 400;
     margin-top: 0.4em;
   }
 
@@ -62,7 +63,9 @@ const StyledLink = styled.a<StyledLinkProps>`
     ${({ isCurrentPath }) =>
       isCurrentPath &&
       css`
-        font-weight: bold;
+        & > span {
+          font-weight: bold;
+        }
         color: ${({ theme }) =>
           theme.isDark ? theme.colors.main600 : theme.colors.main400};
       `};
