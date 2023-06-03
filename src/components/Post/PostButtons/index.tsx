@@ -72,7 +72,7 @@ const PostButtons: React.FC<Props> = ({
     if (!me) return toast.warning("로그인후에 접근해주세요!");
 
     commentTextareaRef.current?.focus();
-  }, [me]);
+  }, [me, commentTextareaRef]);
 
   return (
     <StyledPostButtons>

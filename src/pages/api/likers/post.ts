@@ -19,6 +19,11 @@ const handler: NextApiHandler<
       const lastIdx = +(req.query.lastIdx as string);
       const postIdx = +(req.query.postIdx as string);
 
+      // 존재하지 않는 게시글에 요청
+      const exPost = await prisma.post.findUnique({ where: { idx: +postIdx } });
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
       const likers = await prisma.postLike.findMany({
         where: { postLikedIdx: postIdx },
         include: {

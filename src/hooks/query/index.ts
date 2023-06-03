@@ -2,6 +2,7 @@
 export const queryKeys = {
   user: "user",
   users: "users",
+  post: "post",
   posts: "posts",
   comments: "comments",
   postLikers: "postLikers",

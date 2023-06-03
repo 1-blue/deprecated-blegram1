@@ -26,6 +26,11 @@ const handler: NextApiHandler<
     if (req.method === "POST") {
       const { postIdx, content } = req.body as ApiUploadCommentRequest;
 
+      // 존재하지 않는 게시글의 댓글들 요청
+      const exPost = await prisma.post.findUnique({ where: { idx: +postIdx } });
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
       const createdComment = await prisma.comment.create({
         data: {
           content,
@@ -51,26 +56,43 @@ const handler: NextApiHandler<
         },
       });
 
-      return res.status(200).json({
+      return res.status(201).json({
         message: "댓글을 업로드했습니다.",
         createdComment,
       });
     }
     // 댓글 수정 요청
     if (req.method === "PATCH") {
-      const { idx, content } = req.body as ApiUpdateCommentRequest;
+      const { commentIdx, content } = req.body as ApiUpdateCommentRequest;
 
-      await prisma.comment.update({ where: { idx }, data: { content } });
+      // 존재하지 않는 댓글에 수정 요청
+      const exComment = await prisma.comment.findUnique({
+        where: { idx: +commentIdx },
+      });
+      if (!exComment)
+        return res.status(404).json({ message: "존재하지 않는 댓글입니다." });
+
+      await prisma.comment.update({
+        where: { idx: +commentIdx },
+        data: { content },
+      });
 
       return res.status(200).json({ message: "댓글을 수정했습니다." });
     }
     // 댓글 제거 요청
     if (req.method === "DELETE") {
-      const idx = +req.query.idx!;
+      const commentIdx = +(req.query.commentIdx as string);
 
-      await prisma.comment.delete({ where: { idx } });
+      // 존재하지 않는 댓글에 삭제 요청
+      const exComment = await prisma.comment.findUnique({
+        where: { idx: commentIdx },
+      });
+      if (!exComment)
+        return res.status(404).json({ message: "존재하지 않는 댓글입니다." });
 
-      return res.status(204).json({ message: "댓글을 삭제했습니다." });
+      await prisma.comment.delete({ where: { idx: commentIdx } });
+
+      return res.status(200).json({ message: "댓글을 삭제했습니다." });
     }
   } catch (error) {
     console.error("/api/comment error >> ", error);

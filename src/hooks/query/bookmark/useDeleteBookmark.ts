@@ -13,6 +13,7 @@ import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
   ApiDeleteBookmarkRequest,
   ApiDeleteBookmarkResponse,
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
 } from "@src/types/api";
 
@@ -49,6 +50,21 @@ const useDeleteBookmark = (): UseMutateFunction<
                   };
                 }),
             })),
+          }
+      );
+
+      /** 단일 포스트 */
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              bookMarkers: prev.post.bookMarkers.filter(
+                (bookmarker) => bookmarker.bookmarkerIdx !== data.bookmarkerIdx
+              ),
+            },
           }
       );
 

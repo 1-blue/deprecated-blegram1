@@ -16,12 +16,11 @@ const handler: NextApiHandler<ApiFetchLikedPostsResponse> = async (
   try {
     // 특정 유저가 좋아요한 게시글들 가져오기 요청
     if (req.method === "GET") {
+      const nickname = req.query.nickname as string;
       const take = +(req.query.take as string);
       const lastIdx = +(req.query.lastIdx as string);
-      const nickname = req.query.nickname as string;
 
       const targetUser = await prisma.user.findUnique({ where: { nickname } });
-
       if (!targetUser)
         return res.status(404).json({ message: "존재하지 않는 유저입니다." });
 

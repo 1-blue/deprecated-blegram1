@@ -27,7 +27,7 @@ const useDeleteComment = (
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(apiServiceComment.apiDeleteComment, {
-    onSuccess(data, { idx }, context) {
+    onSuccess(data, { commentIdx }, context) {
       queryClient.setQueryData<
         InfiniteData<ApiFetchCommentsResponse> | undefined
       >(
@@ -39,7 +39,7 @@ const useDeleteComment = (
               ...page,
               comments:
                 page.comments &&
-                page.comments.filter((comment) => comment.idx !== idx),
+                page.comments.filter((comment) => comment.idx !== commentIdx),
             })),
           }
       );

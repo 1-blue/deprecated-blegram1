@@ -11,19 +11,58 @@ import { getRegExp } from "@src/utils";
 import type { NextApiHandler } from "next";
 import type {
   ApiDeletePostResponse,
+  ApiFetchPostResponse,
   ApiUploadPostRequest,
   ApiUploadPostResponse,
 } from "@src/types/api";
 
 /** 2023/04/08 - 게시글 관련 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<
-  ApiUploadPostResponse | ApiDeletePostResponse
+  ApiFetchPostResponse | ApiUploadPostResponse | ApiDeletePostResponse
 > = async (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "로그인후에 접근해주세요!" });
-  }
-
   try {
+    // 게시글 가져오기 요청
+    if (req.method === "GET") {
+      const postIdx = +(req.query.postIdx as string);
+
+      const exPost = await prisma.post.findUnique({
+        where: { idx: postIdx },
+        include: {
+          user: {
+            select: {
+              idx: true,
+              avatar: true,
+              nickname: true,
+              // 로그인한 유저가 게시글 작성자를 팔로우했는지 판단
+              followers: { where: { followingIdx: req.user?.idx } },
+            },
+          },
+          // 로그인한 유저가 게시글에 좋아요 눌렀는지 판단
+          postLikers: { where: { postLikerIdx: req.user?.idx } },
+          // 로그인한 유저가 게시글에 북마크 눌렀는지 판단
+          bookMarkers: { where: { bookmarkerIdx: req.user?.idx } },
+          _count: {
+            select: {
+              comments: true,
+              postLikers: true,
+            },
+          },
+        },
+      });
+
+      if (!exPost)
+        return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
+      return res.status(200).json({
+        message: "특정 게시글을 가져왔습니다.",
+        post: exPost,
+      });
+    }
+
+    if (!req.user) {
+      return res.status(401).json({ message: "로그인후에 접근해주세요!" });
+    }
+
     // 게시글 업로드 요청
     if (req.method === "POST") {
       const { content, photoPaths } = req.body as ApiUploadPostRequest;
@@ -82,7 +121,7 @@ const handler: NextApiHandler<
         });
       }
 
-      return res.status(200).json({
+      return res.status(201).json({
         message: "게시글을 업로드했습니다.\n메인 페이지로 이동됩니다.",
         createdPost,
       });
@@ -105,7 +144,7 @@ const handler: NextApiHandler<
 };
 
 export default withAuthMiddleware({
-  methods: ["POST", "DELETE"],
+  methods: ["GET", "POST", "DELETE"],
   handler,
-  isAuth: true,
+  isAuth: false,
 });

@@ -8,10 +8,10 @@ const StyledPost = styled.ul`
 
   /* 게시글 */
   & > li {
-    padding-bottom: 0.6em;
+    padding-bottom: 2em;
 
     & > * {
-      margin-top: 0.6em;
+      margin-top: 1em;
     }
 
     & + li {

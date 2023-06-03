@@ -11,6 +11,7 @@ import { queryKeys } from "@src/hooks/query";
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
   ApiUploadLikeOfPostRequest,
   ApiUploadLikeOfPostResponse,
@@ -58,6 +59,31 @@ const useUploadLikeOfPost = (): UseMutateFunction<
                   };
                 }),
             })),
+          }
+      );
+
+      // 단일 포스트
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              postLikers: [
+                ...prev.post.postLikers,
+                {
+                  postLikerIdx,
+                  postLikedIdx: postIdx,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                },
+              ],
+              _count: {
+                ...prev.post._count,
+                postLikers: prev.post._count.postLikers + 1,
+              },
+            },
           }
       );
 

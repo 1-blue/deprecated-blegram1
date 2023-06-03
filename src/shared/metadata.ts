@@ -26,9 +26,7 @@ export const defaultMetadata: Metadata = {
     description: "인스타그램 클론 사이트입니다. ( by 1-blue )",
     url: "https://blegram.vercel.app/",
     siteName: "blegram",
-    images: [
-      // TODO: 기본 이미지 만들기 ( 썸네일 )
-    ],
+    images: ["/logo.png"],
     locale: "ko-KR",
     type: "website",
   },
@@ -37,9 +35,7 @@ export const defaultMetadata: Metadata = {
     title: "blegram",
     description: "인스타그램 클론 사이트입니다. ( by 1-blue )",
     creator: "1-blue",
-    images: [
-      // TODO: 기본 이미지 만들기 ( 썸네일 )
-    ],
+    images: ["/logo.png"],
   },
 };
 
@@ -71,7 +67,7 @@ export const getMetadata: GetMetadataHandler = ({
     ...defaultMetadata.openGraph,
     title: "blegram | " + title,
     description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
-    images: images ? images : ["TODO: 기본 이미지"],
+    images: images ? images : ["/logo.png"],
   },
 
   // twitter
@@ -79,6 +75,6 @@ export const getMetadata: GetMetadataHandler = ({
     ...defaultMetadata.twitter,
     title: "blegram | " + title,
     description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
-    images: images ? images : ["TODO: 기본 이미지"],
+    images: images ? images : ["/logo.png"],
   },
 });

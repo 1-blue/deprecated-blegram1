@@ -5,6 +5,8 @@ const ASideStyled = styled.aside`
   position: fixed;
   right: 20px;
   bottom: 80px;
+
+  z-index: 10;
 `;
 
 export default ASideStyled;

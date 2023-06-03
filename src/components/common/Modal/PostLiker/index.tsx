@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -10,9 +12,10 @@ import { useFollow, useLikers, useMe } from "@src/hooks/query";
 import InfiniteScrollContainer from "@src/components/common/InfiniteScrollContainer";
 import Avatar from "@src/components/common/Avatar";
 import Skeleton from "@src/components/common/Skeleton";
+import Icon from "@src/components/common/Icon";
 
 // style
-import StyledModal from "./style";
+import StyledPostLikerModal from "./style";
 
 /** 2023/04/25 - 게시글에 좋아요 누른 사람들의 모달 - by 1-blue */
 const PostLiker = () => {
@@ -77,11 +80,18 @@ const PostLiker = () => {
     );
 
   return (
-    <StyledModal>
+    <StyledPostLikerModal>
       {isLoading ? (
         <Skeleton.LikerModal />
       ) : (
         <ul ref={modalRef} onClick={onFollowOrUnfollow}>
+          <li>
+            <h3>게시글에 좋아요를 누른 사람들</h3>
+            <div>
+              <Icon shape="heart" reverse size="2xl" />
+            </div>
+          </li>
+
           <InfiniteScrollContainer
             fetchMore={fetchNextPage}
             hasMore={hasNextPage}
@@ -118,7 +128,7 @@ const PostLiker = () => {
           </InfiniteScrollContainer>
         </ul>
       )}
-    </StyledModal>
+    </StyledPostLikerModal>
   );
 };
 

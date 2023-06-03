@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // component
 import Icon from "@src/components/common/Icon";
@@ -18,6 +19,8 @@ interface Props {
 
 /** 2023/05/26 - 프로필 페이지 게시글 컴포넌트 - by 1-blue */
 const Post: React.FC<Props> = ({ post }) => {
+  const pathname = usePathname();
+
   /** 2023/05/26 - 이미지들 - by 1-blue */
   const photos = splitPhotoURL(post.photos);
 
@@ -37,7 +40,7 @@ const Post: React.FC<Props> = ({ post }) => {
 
       {photos.length >= 1 && <Icon shape="square-2-stack" fill color="#FFF" />}
 
-      <Link href={`/?postIdx=${post.idx}`}>
+      <Link href={{ pathname, query: { postIdx: post.idx } }}>
         <div>
           <Icon shape="heart" size="md" color="#FFF" strokeWidth={2} />
           <span>{post._count.postLikers}</span>

@@ -45,13 +45,14 @@ const PostComment: React.FC<Props> = ({
 
   /** 2023/04/21 - 댓글 수정 버튼 핸들러 - by 1-blue */
   const onClickUpdateButton = useCallback(
-    (idx: number) => {
-      if (!disabled) onUpdateComment(idx, content);
+    (commentIdx: number) => {
+      if (!disabled) onUpdateComment(commentIdx, content);
       else setTimeout(() => commentRef.current?.focus(), 0);
 
       setDisabled((prev) => !prev);
+      setTimeout(() => handleResizeHeight(), 0);
     },
-    [onUpdateComment, content, disabled, commentRef]
+    [onUpdateComment, content, disabled, commentRef, handleResizeHeight]
   );
 
   /** 2023/04/25 - 로그인한 유저가 좋아요 눌렀는지 여부 - by 1-blue */

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 // hook
-import { useMe, useUser, useAuth } from "@src/hooks/query";
+import { useMe, useUser, useAuth, useFollow } from "@src/hooks/query";
 import useFollowerModal from "@src/hooks/recoil/useFollowerModal";
 import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
 
@@ -13,7 +13,6 @@ import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
 import FormToolkit from "@src/components/common/FormToolkit";
 import Spinner from "@src/components/common/Spinner";
 import NotFound from "@src/components/common/NotFound";
-import Modal from "@src/components/common/Modal";
 
 // api
 import { apiServicePhoto } from "@src/apis";
@@ -33,7 +32,7 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
   const { me } = useMe.useFetchMe({});
   const { user, isFetchingUser } = useUser.useFetchUser({
     nickname,
-    initialData,
+    // initialData,
   });
 
   /** 2023/03/31 - 로그아웃 훅 - by 1-blue */
@@ -80,9 +79,32 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
   );
 
   /** 2023/05/12 - 팔로워 모달관련 훅 - by 1-blue */
-  const { followerModalData, openFollowerModal } = useFollowerModal();
+  const { openFollowerModal } = useFollowerModal();
   /** 2023/05/13 - 팔로잉 모달관련 훅 - by 1-blue */
-  const { followingModalData, openFollowingModal } = useFollowingModal();
+  const { openFollowingModal } = useFollowingModal();
+
+  /** 2023/05/31 - 팔로우 요청 훅 - by 1-blue */
+  const mutateFollow = useFollow.useCreateFollow();
+  /** 2023/05/31 - 언팔로우 요청 훅 - by 1-blue */
+  const mutateUnfollow = useFollow.useDeleteFollow();
+
+  /** 2023/05/31 - 팔로우했는지 여부 - by 1-blue */
+  const isFollowed = user?.followers.length || 0 > 0;
+
+  /** 2023/05/31 - 팔로우/언팔로우 요청 - by 1-blue */
+  const onFollowOrUnfollow: React.MouseEventHandler<HTMLButtonElement> =
+    useCallback(() => {
+      if (!me) return toast.warning("로그인후에 접근해주세요!");
+      if (!user) return toast.warning("새로고침후에 다시 시도해주세요!");
+
+      const userIdx = user.idx;
+      const followerIdx = me.idx;
+
+      // 언팔로우 요청
+      if (isFollowed) mutateUnfollow({ userIdx, followerIdx, nickname });
+      // 팔로우 요청
+      else mutateFollow({ userIdx, followerIdx, nickname });
+    }, [me, user, isFollowed, nickname, mutateFollow, mutateUnfollow]);
 
   // 데이터 패칭중인 경우
   if (isFetchingUser) return <Spinner.Page />;
@@ -129,8 +151,9 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
               </>
             ) : (
               <li>
-                {/* 나중에 토글버튼으로 수정 */}
-                <button type="button">팔로우</button>
+                <button type="button" onClick={onFollowOrUnfollow}>
+                  {isFollowed ? "언팔로우" : "팔로우"}
+                </button>
               </li>
             )}
           </ul>
@@ -173,11 +196,6 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
           </section>
         </section>
       </StyledProfile>
-
-      {/* 팔로워 모달 */}
-      {followerModalData.isOpen && <Modal.Follower />}
-      {/* 팔로잉 모달 */}
-      {followingModalData.isOpen && <Modal.Following />}
 
       {/* 아바타 업로드중 스피너 */}
       {isUploadAvatar && <Spinner.Page />}

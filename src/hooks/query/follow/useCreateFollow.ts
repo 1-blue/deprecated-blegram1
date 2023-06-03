@@ -18,6 +18,7 @@ import type {
   ApiFetchFollowingsResponse,
   ApiFetchHashtagPostsResponse,
   ApiFetchPostLikersResponse,
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
   ApiFetchUserResponse,
 } from "@src/types/api";
@@ -58,6 +59,22 @@ const useCreateFollow = (): UseMutateFunction<
                 };
               }),
             })),
+          }
+      );
+
+      // 단일 포스트
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              user: {
+                ...prev.post.user,
+                followers: [{ followerIdx, followingIdx }],
+              },
+            },
           }
       );
 
@@ -199,10 +216,18 @@ const useCreateFollow = (): UseMutateFunction<
                 ...prev,
                 user: prev.user && {
                   ...prev.user,
+                  // 팔로잉/팔로워 개수
                   _count: {
                     ...prev.user._count,
                     followers: prev.user._count.followers + 1,
                   },
+                  // 팔로우/언팔로우 버튼
+                  followers: [
+                    {
+                      followerIdx: prev.user.idx,
+                      followingIdx: user.followingIdx || -1,
+                    },
+                  ],
                 },
               }
           );
@@ -216,10 +241,18 @@ const useCreateFollow = (): UseMutateFunction<
                 ...prev,
                 user: prev.user && {
                   ...prev.user,
+                  // 팔로잉/팔로워 개수
                   _count: {
                     ...prev.user._count,
                     followings: prev.user._count.followings + 1,
                   },
+                  // 팔로우/언팔로우 버튼
+                  followers: [
+                    {
+                      followerIdx: prev.user.idx,
+                      followingIdx: user.followingIdx || -1,
+                    },
+                  ],
                 },
               }
           );

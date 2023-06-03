@@ -22,6 +22,13 @@ const handler: NextApiHandler<
       const lastIdx = +(req.query.lastIdx as string);
       const commentIdx = +(req.query.commentIdx as string);
 
+      // 존재하지 않는 댓글에 요청
+      const exComment = await prisma.comment.findUnique({
+        where: { idx: commentIdx },
+      });
+      if (!exComment)
+        return res.status(404).json({ message: "존재하지 않는 댓글입니다." });
+
       const likers = await prisma.commentLike.findMany({
         where: { commentLikedIdx: commentIdx },
         include: {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -11,8 +10,9 @@ import { apiServiceSearch } from "@src/apis";
 
 // component
 import Icon from "@src/components/common/Icon";
-import Avatar from "@src/components/common/Avatar";
 import Skeleton from "@src/components/common/Skeleton";
+import SuggestedHashtag from "../SuggestedHashtag";
+import SuggestedUser from "../SuggestedUser";
 
 // style
 import StyledSearchFromWrapper, {
@@ -22,7 +22,10 @@ import StyledSearchFromWrapper, {
 } from "./style";
 
 // type
-import { ApiFetchSuggestedResponse } from "@src/types/api";
+import type {
+  ApiFetchSuggestedResponse,
+  SimpleUserWithName,
+} from "@src/types/api";
 
 interface SearchForm {
   query: string;
@@ -39,6 +42,21 @@ const SearchBar = () => {
   const [suggested, setSuggested] = useState<ApiFetchSuggestedResponse | null>(
     null
   );
+
+  /** 2023/06/01 - 최근 검색어 ( 해시태그, 유저 ) - by 1-blue */
+  const [recentHashtags, setRecentHashtags] = useState<string[]>([]);
+  const [recentUsers, setRecentUsers] = useState<SimpleUserWithName[]>([]);
+  useEffect(() => {
+    const hashtags = JSON.parse(
+      localStorage.getItem("recentHashtags") || "[]"
+    ) as string[];
+    const users = JSON.parse(
+      localStorage.getItem("recentUsers") || "[]"
+    ) as SimpleUserWithName[];
+
+    setRecentHashtags(hashtags);
+    setRecentUsers(users);
+  }, []);
 
   // TODO: 디바운스 헬퍼 함수 제작 후 적용
   /** 2023/05/04 - 디바운스를 적용한 추천 검색어 요청 - by 1-blue */
@@ -68,17 +86,27 @@ const SearchBar = () => {
     useCallback(() => {
       // 1. 해시태그 검색
       if (!!suggested?.hashtags.length) {
+        localStorage.setItem(
+          "recentHashtags",
+          JSON.stringify([suggested.hashtags[0].content, ...recentHashtags])
+        );
+
         return router.push(`/hashtag?hashtag=${suggested.hashtags[0].content}`);
       }
 
       // 2. 유저 검색
       if (!!suggested?.users.length) {
+        localStorage.setItem(
+          "recentUsers",
+          JSON.stringify([suggested.users[0], ...recentUsers])
+        );
+
         return router.push(`/${suggested.users[0].nickname}`);
       }
 
       // 없으면 이동 X
       toast.warning("존재하는 해시태그나 유저가 없습니다!");
-    }, [suggested, router])
+    }, [recentHashtags, recentUsers, suggested, router])
   );
 
   /** 2023/05/06 - 검색창 포커싱 여부 - by 1-blue */
@@ -92,6 +120,7 @@ const SearchBar = () => {
     const closeHandler = (e: MouseEvent) => {
       if (!isFocus) return;
       if (!(e.target instanceof HTMLElement)) return;
+      if (e.target instanceof HTMLButtonElement) return;
       if (!wrapperRef.current) return;
       // 위쪽은 부가적인 부분이라 수정/삭제를 해도 되고 아래 부분이 핵심
       // 현재 클릭한 엘리먼트가 모달의 내부에 존재하는 엘리먼트인지 확인
@@ -104,6 +133,40 @@ const SearchBar = () => {
     window.addEventListener("click", closeHandler);
     return () => window.removeEventListener("click", closeHandler);
   }, [isFocus]);
+
+  /** 2023/06/02 - 최근 검색어 제거 - by 1-blue */
+  const onDeleteRecentWord: React.MouseEventHandler<HTMLUListElement> =
+    useCallback((e) => {
+      if (!(e.target instanceof HTMLButtonElement)) return;
+
+      const { type, idx } = e.target.dataset;
+
+      if (!type || !idx) return;
+
+      // 최근 유저 검색어 제거
+      if (type === "user") {
+        setRecentUsers((prev) => {
+          const recentUsers = prev.filter((user) => user.idx !== +idx);
+
+          localStorage.setItem("recentUsers", JSON.stringify(recentUsers));
+
+          return recentUsers;
+        });
+      }
+      // 최근 해시태그 검색어 제거
+      if (type === "hashtag") {
+        setRecentHashtags((prev) => {
+          const recentHashtags = prev.filter((hashtag) => hashtag !== idx);
+
+          localStorage.setItem(
+            "recentHashtags",
+            JSON.stringify(recentHashtags)
+          );
+
+          return recentHashtags;
+        });
+      }
+    }, []);
 
   return (
     <StyledSearchFromWrapper ref={wrapperRef}>
@@ -121,39 +184,56 @@ const SearchBar = () => {
         </form>
       </StyledSearchBar>
 
+      {/* 검색창에 포커스중인 경우 */}
       {isFocus &&
         (isFetching ? (
+          /** 패치중일때 */
           <Skeleton.Suggested />
         ) : (
+          /** 패치중이 아닐때 */
           <>
-            {!!suggested?.hashtags.length || !!suggested?.users.length ? (
-              <StyledSuggestedList>
-                {suggested?.users.map((user) => (
-                  <li key={user.idx}>
-                    <Link href={`/${user.nickname}`}>
-                      <Avatar
-                        src={user.avatar}
-                        alt={`${user.nickname}님의 아바타 이미지`}
-                      />
-                      <div>
-                        <span>{user.nickname}</span>
-                        <span>{user.name}</span>
-                      </div>
-                    </Link>
-                  </li>
+            {query.length === 0 &&
+            (!!recentUsers.length || !!recentHashtags.length) ? (
+              /** 아무것도 입력하지 않았다면 ( 최근 검색어 ) */
+              <StyledSuggestedList onClick={onDeleteRecentWord}>
+                {/* 최근 검색어 ( 유저 ) */}
+                {recentUsers.map((user) => (
+                  <SuggestedUser key={user.idx} isRecent user={user} />
                 ))}
-                {suggested?.hashtags.map(({ content }) => (
-                  <li key={content}>
-                    <Link href={`/hashtag?hashtag=${content}`}>{content}</Link>
-                  </li>
+                {/* 최근 검색어 ( 해시태그 ) */}
+                {recentHashtags.map((content) => (
+                  <SuggestedHashtag key={content} isRecent content={content} />
                 ))}
               </StyledSuggestedList>
             ) : (
-              <StyledNotSuggested>
-                <Icon shape="exclamation-circle" color="#6b7280" size="xl" />
-                <span>** 검색된 결과물이 없습니다. **</span>
-                <p>일치하는 해시태그 혹은 일치하는 유저가 존재하지 않습니다.</p>
-              </StyledNotSuggested>
+              <>
+                {!!suggested?.hashtags.length || !!suggested?.users.length ? (
+                  /** 추천 검색어가 있다면 */
+                  <StyledSuggestedList>
+                    {/* 최근 검색어 ( 유저 ) */}
+                    {suggested?.users.map((user) => (
+                      <SuggestedUser key={user.idx} user={user} />
+                    ))}
+                    {/* 최근 검색어 ( 해시태그 ) */}
+                    {suggested?.hashtags.map(({ content }) => (
+                      <SuggestedHashtag key={content} content={content} />
+                    ))}
+                  </StyledSuggestedList>
+                ) : (
+                  /** 추천 검색어가 없다면 */
+                  <StyledNotSuggested>
+                    <Icon
+                      shape="exclamation-circle"
+                      color="#6b7280"
+                      size="xl"
+                    />
+                    <span>** 검색된 결과물이 없습니다. **</span>
+                    <p>
+                      일치하는 해시태그 혹은 일치하는 유저가 존재하지 않습니다.
+                    </p>
+                  </StyledNotSuggested>
+                )}
+              </>
             )}
           </>
         ))}

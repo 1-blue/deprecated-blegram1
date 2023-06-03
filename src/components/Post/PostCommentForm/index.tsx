@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 
 // hook
@@ -59,6 +59,18 @@ const PostCommentForm: React.FC<Props> = ({
     ]
   );
 
+  /** 2023/06/01 - 댓글 생성 버튼 ref - by 1-blue */
+  const submitRef = useRef<HTMLButtonElement>(null);
+
+  /** 2023/06/01 - enter / shift + enter 감지 - by 1-blue */
+  const onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> =
+    useCallback((e) => {
+      // shift + enter -> 줄바꿈
+      if (e.key === "Enter" && e.shiftKey) return;
+      // enter -> 댓글 생성
+      if (e.key === "Enter") submitRef.current?.click();
+    }, []);
+
   return (
     <StyledPostCommentForm onSubmit={onUploadComment}>
       <Avatar
@@ -69,14 +81,15 @@ const PostCommentForm: React.FC<Props> = ({
         }
       />
       <textarea
-        placeholder="댓글추가"
+        placeholder="댓글 작성..."
         ref={commentTextareaRef}
         onChange={handleCommentTextareaResizeHeight}
         rows={1}
         onFocus={() => setIsCommentFocus(true)}
         onBlur={() => setIsCommentFocus(false)}
+        onKeyDown={onKeyDown}
       />
-      <button type="submit">
+      <button type="submit" ref={submitRef}>
         <Icon shape="chat-bubble-oval-left" fill={isCommentFocus} />
       </button>
     </StyledPostCommentForm>

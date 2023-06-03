@@ -1,5 +1,5 @@
 import type { ApiResponse } from ".";
-import type { User } from "@prisma/client";
+import type { Follow, User } from "@prisma/client";
 
 // ============================== 특정 유저 정보 ==============================
 /** 2023/03/29 - 특정 유저 정보 요청 송신 타입 - by 1-blue */
@@ -14,6 +14,7 @@ export interface ApiFetchUserResponse extends ApiResponse {
       followers: number;
       followings: number;
     };
+    followers: Follow[];
   };
 }
 /** 2023/03/29 - 특정 유저 정보 요청 핸들러 - by 1-blue */

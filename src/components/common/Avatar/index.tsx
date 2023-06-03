@@ -28,7 +28,7 @@ const Avatar: React.FC<Props> = ({ src, alt, href }) => {
   return (
     <StyledAvatar>
       {href ? (
-        <Link href={href}>
+        <Link href={href} prefetch={false}>
           <Image
             src={path ? path : "/photo/user.png"}
             alt={alt}

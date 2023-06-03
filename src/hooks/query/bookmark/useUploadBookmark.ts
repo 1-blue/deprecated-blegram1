@@ -11,6 +11,7 @@ import { queryKeys } from "@src/hooks/query";
 // type
 import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
   ApiUploadBookmarkRequest,
   ApiUploadBookmarkResponse,
@@ -54,6 +55,26 @@ const useUploadBookmark = (): UseMutateFunction<
                   };
                 }),
             })),
+          }
+      );
+
+      /** 단일 포스트 */
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              bookMarkers: [
+                {
+                  bookmarkedIdx,
+                  bookmarkerIdx: bookmarkerIdx,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                },
+              ],
+            },
           }
       );
 

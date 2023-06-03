@@ -29,7 +29,11 @@ export type IconShape =
   | "link"
   | "pencil"
   | "exclamation-circle"
-  | "square-2-stack";
+  | "square-2-stack"
+  | "light-bulb"
+  | "x-mark"
+  | "chevron-left"
+  | "chevron-right";
 
 /** 2023/05/26 - 프로필 페이지 타입 ( 어떤 종류의 게시글들을 보여줄지 ) - by 1-blue */
 export type ProfilePageType = "written" | "bookmarked" | "liked";

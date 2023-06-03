@@ -11,6 +11,13 @@ import type { ApiSignUpRequest, ApiSignUpResponse } from "@src/types/api";
 
 /** 2023/03/26 - 회원가입 엔드포인트 - by 1-blue */
 const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
+  // 로그인하고 회원가입 요청을 보낸 경우
+  if (req.user) {
+    return res.status(403).json({
+      message: "로그인을 하지 않은 경우에만 회원가입이 가능합니다.",
+    });
+  }
+
   try {
     // 회원가입
     if (req.method === "POST") {
@@ -33,7 +40,9 @@ const handler: NextApiHandler<ApiSignUpResponse> = async (req, res) => {
       if (exUserList[2])
         return res.status(409).json({ message: "이메일이 이미 존재합니다." });
       if (exUserList[3])
-        return res.status(409).json({ message: "폰번호가 이미 존재합니다." });
+        return res
+          .status(409)
+          .json({ message: "휴대폰 번호가 이미 존재합니다." });
 
       // 비밀번호 암호화
       const hashedPassword = await hashing(password);

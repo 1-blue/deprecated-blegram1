@@ -3,14 +3,15 @@ import styled from "styled-components";
 /** 2023/04/09 - 게시글 상단부 스타일 - by 1-blue */
 const StyledPostHeader = styled.section`
   padding: 0 0.6em;
+  margin-top: 2em !important;
 
   display: flex;
   align-items: center;
 
   /* 아바타 */
   figure {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.8rem;
+    height: 2.8rem;
 
     margin-right: 0.6em;
   }
@@ -23,7 +24,7 @@ const StyledPostHeader = styled.section`
   /* 팔로우/언팔로우 */
   & > .follow {
     padding: 0.4em 0.8em;
-    margin-right: 0.6em;
+    margin-right: 1em;
 
     border-radius: 0.2em;
 

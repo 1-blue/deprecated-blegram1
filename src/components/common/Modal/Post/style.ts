@@ -4,6 +4,7 @@ import styled from "styled-components";
 const StyledModal = styled.section`
   position: fixed;
   inset: 0;
+  z-index: 5;
 
   background-color: rgba(0, 0, 0, 0.7);
 
@@ -14,7 +15,9 @@ const StyledModal = styled.section`
   animation: ${({ theme }) => theme.animation.fadeIn} 0.4s;
 
   & > div {
-    width: 200px;
+    min-width: 200px;
+    max-width: 280px;
+    width: 60vw;
 
     display: flex;
     flex-flow: column nowrap;
@@ -31,20 +34,20 @@ const StyledModal = styled.section`
     }
 
     & > button[type="button"] {
-      padding: 0.5em 0.8em;
+      padding: 0.8em;
 
       display: flex;
       align-items: center;
 
       color: #000;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: bold;
       text-align: left;
 
       transition: all 0.3s;
 
       & > * + * {
-        padding-left: 0.3em;
+        padding-left: 0.8em;
       }
 
       &:hover {

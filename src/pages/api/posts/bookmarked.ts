@@ -21,7 +21,6 @@ const handler: NextApiHandler<ApiFetchBookmarkedPostsResponse> = async (
       const nickname = req.query.nickname as string;
 
       const targetUser = await prisma.user.findUnique({ where: { nickname } });
-
       if (!targetUser)
         return res.status(404).json({ message: "존재하지 않는 유저입니다." });
 

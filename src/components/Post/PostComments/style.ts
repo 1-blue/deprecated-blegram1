@@ -27,7 +27,7 @@ const StyledPostComments = styled.ul`
   /* comment */
   & > ul {
     & > * + * {
-      margin-top: 0.6em;
+      margin-top: 1em;
     }
   }
 `;
