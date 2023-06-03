@@ -24,7 +24,7 @@ const StyledPostHeader = styled.section`
   /* 팔로우/언팔로우 */
   & > .follow {
     padding: 0.4em 0.8em;
-    margin-right: 0.6em;
+    margin-right: 1em;
 
     border-radius: 0.2em;
 

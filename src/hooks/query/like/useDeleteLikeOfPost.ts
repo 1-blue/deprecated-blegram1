@@ -13,6 +13,7 @@ import type { UseMutateFunction, InfiniteData } from "react-query";
 import type {
   ApiDeleteLikeOfPostRequest,
   ApiDeleteLikeOfPostResponse,
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
 } from "@src/types/api";
 
@@ -53,6 +54,25 @@ const useDeleteLikeOfPost = (): UseMutateFunction<
                   };
                 }),
             })),
+          }
+      );
+
+      // 단일 포스트
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              postLikers: prev.post.postLikers.filter(
+                (postLiker) => postLiker.postLikerIdx !== data.postLikerIdx
+              ),
+              _count: {
+                ...prev.post._count,
+                postLikers: prev.post._count.postLikers - 1,
+              },
+            },
           }
       );
 

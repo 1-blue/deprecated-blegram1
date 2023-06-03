@@ -18,6 +18,7 @@ import type {
   ApiFetchFollowingsResponse,
   ApiFetchHashtagPostsResponse,
   ApiFetchPostLikersResponse,
+  ApiFetchPostResponse,
   ApiFetchPostsResponse,
   ApiFetchUserResponse,
 } from "@src/types/api";
@@ -54,6 +55,22 @@ const useDeleteFollow = (): UseMutateFunction<
                 };
               }),
             })),
+          }
+      );
+
+      // 단일 포스트
+      queryClient.setQueryData<ApiFetchPostResponse | undefined>(
+        [queryKeys.post, postIdx],
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              user: {
+                ...prev.post.user,
+                followers: [],
+              },
+            },
           }
       );
 

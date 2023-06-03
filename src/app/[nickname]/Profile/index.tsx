@@ -13,7 +13,6 @@ import useFollowingModal from "@src/hooks/recoil/useFollowingModal";
 import FormToolkit from "@src/components/common/FormToolkit";
 import Spinner from "@src/components/common/Spinner";
 import NotFound from "@src/components/common/NotFound";
-import Modal from "@src/components/common/Modal";
 
 // api
 import { apiServicePhoto } from "@src/apis";
@@ -80,9 +79,9 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
   );
 
   /** 2023/05/12 - 팔로워 모달관련 훅 - by 1-blue */
-  const { followerModalData, openFollowerModal } = useFollowerModal();
+  const { openFollowerModal } = useFollowerModal();
   /** 2023/05/13 - 팔로잉 모달관련 훅 - by 1-blue */
-  const { followingModalData, openFollowingModal } = useFollowingModal();
+  const { openFollowingModal } = useFollowingModal();
 
   /** 2023/05/31 - 팔로우 요청 훅 - by 1-blue */
   const mutateFollow = useFollow.useCreateFollow();
@@ -197,11 +196,6 @@ const Profile: React.FC<Props> = ({ nickname, initialData }) => {
           </section>
         </section>
       </StyledProfile>
-
-      {/* 팔로워 모달 */}
-      {followerModalData.isOpen && <Modal.Follower />}
-      {/* 팔로잉 모달 */}
-      {followingModalData.isOpen && <Modal.Following />}
 
       {/* 아바타 업로드중 스피너 */}
       {isUploadAvatar && <Spinner.Page />}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback } from "react";
 import { toast } from "react-toastify";
 
@@ -22,7 +24,9 @@ const Post = () => {
   /** 2023/04/11 - copy clipboard - by 1-blue */
   const copyLink = useCallback(() => {
     navigator.clipboard
-      .writeText(window.location.origin + `?postIdx=${postModalData.postIdx}`)
+      .writeText(
+        window.location.origin + `/post?postIdx=${postModalData.postIdx}`
+      )
       .then(() => toast.success("게시글 링크를 복사했습니다."));
   }, [postModalData]);
 

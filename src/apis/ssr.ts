@@ -1,5 +1,6 @@
 import type {
   ApiFetchHashtagPostsHandler,
+  ApiFetchPostHandler,
   ApiFetchPostsHandler,
   ApiFetchUserHandler,
 } from "@src/types/api";
@@ -28,6 +29,12 @@ const fetchHashtagPosts: ApiFetchHashtagPostsHandler = async ({
     { next: { revalidate: 60 } }
   ).then((res) => res.json());
 
+/** 2023/06/03 - 특정 게시글 정보 요청 - by 1-blue */
+const fetchPost: ApiFetchPostHandler = async ({ postIdx }) =>
+  fetch(process.env.BASE_URL + `/api/post?postIdx=${postIdx}`).then((res) =>
+    res.json()
+  );
+
 /** 2023/05/07 - SSR 요청 - by 1-blue */
 export const apiServiceSSR = {
   /** 2023/05/07 - 게시글들 가져오기 요청 - by 1-blue */
@@ -36,4 +43,6 @@ export const apiServiceSSR = {
   fetchUser,
   /** 2023/05/07 - 특정 해시태그를 갖는 게시글들 요청 - by 1-blue */
   fetchHashtagPosts,
+  /** 2023/06/03 - 특정 게시글 정보 요청 - by 1-blue */
+  fetchPost,
 };

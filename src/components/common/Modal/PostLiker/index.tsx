@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";

@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledModal = styled.section`
   position: fixed;
   inset: 0;
-  z-index: 2;
+  z-index: 5;
 
   background-color: rgba(0, 0, 0, 0.7);
 

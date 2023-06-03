@@ -245,6 +245,22 @@ const Icon = ({
             d="M6 18L18 6M6 6l12 12"
           />
         );
+      case "chevron-left":
+        return (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 19.5L8.25 12l7.5-7.5"
+          />
+        );
+      case "chevron-right":
+        return (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
+        );
     }
   }, [shape]);
 
@@ -437,6 +453,22 @@ const Icon = ({
           <path
             fillRule="evenodd"
             d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+            clipRule="evenodd"
+          />
+        );
+      case "chevron-left":
+        return (
+          <path
+            fillRule="evenodd"
+            d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
+            clipRule="evenodd"
+          />
+        );
+      case "chevron-right":
+        return (
+          <path
+            fillRule="evenodd"
+            d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
             clipRule="evenodd"
           />
         );
