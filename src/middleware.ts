@@ -17,9 +17,6 @@ export const middleware = (req: NextRequest) => {
   if (!req.cookies.has("brt")) {
     // 비로그인 시 접근 불가능한 페이지라면 => 로그인 페이지로 리다이렉트
     if (authURLs.some((url) => req.url.includes(url))) {
-      // FIXME: 배포 시 제거
-      console.log("비로그인 시 접근 불가능");
-
       const url = req.nextUrl.clone();
       url.pathname = "/login";
 
@@ -30,9 +27,6 @@ export const middleware = (req: NextRequest) => {
   else {
     // 로그인 시 접근 불가능한 페이지라면 => 메인 페이지로 리다이렉트
     if (nonAuthURLs.some((url) => req.url.includes(url))) {
-      // FIXME: 배포 시 제거
-      console.log("로그인 시 접근 불가능");
-
       const url = req.nextUrl.clone();
       url.pathname = "/";
 

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 /** 2023/04/30 - 메타 데이터 기본 형태 - by 1-blue */
 export const defaultMetadata: Metadata = {
+  title: "blegram",
+  description: "인스타그램 클론 사이트입니다. ( by 1-blue )",
   generator: "Next.js",
   applicationName: "blegram",
   referrer: "origin-when-cross-origin",
@@ -21,10 +23,10 @@ export const defaultMetadata: Metadata = {
     "신입 개발자",
     "개발자",
   ],
+
   openGraph: {
     title: "blegram",
     description: "인스타그램 클론 사이트입니다. ( by 1-blue )",
-    url: "https://blegram.vercel.app/",
     siteName: "blegram",
     images: ["/logo.png"],
     locale: "ko-KR",
@@ -40,41 +42,38 @@ export const defaultMetadata: Metadata = {
 };
 
 // type
-interface GetMetadataHandler {
-  ({
-    title,
-    description,
-    images,
-  }: {
-    title: string;
-    description?: string;
-    images?: string[];
-  }): Metadata;
+interface GetMetadataProps {
+  title: string;
+  description: string;
+  images?: string[];
+  url?: string;
 }
 
 /** 2023/05/07 - 메타데이터 제조기 - by 1-blue */
-export const getMetadata: GetMetadataHandler = ({
+export const getMetadata = ({
   title,
   description,
   images,
-}) => ({
+  url,
+}: GetMetadataProps): Metadata => ({
   ...defaultMetadata,
   title: "blegram | " + title,
-  description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+  description: description + "\n" + "인스타그램 클론 사이트 ( by 1-blue )",
 
   // og
   openGraph: {
     ...defaultMetadata.openGraph,
     title: "blegram | " + title,
-    description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+    description: description + "\n" + "인스타그램 클론 사이트 ( by 1-blue )",
     images: images ? images : ["/logo.png"],
+    url: process.env.BASE_URL + url,
   },
 
   // twitter
   twitter: {
     ...defaultMetadata.twitter,
     title: "blegram | " + title,
-    description: "인스타그램 클론 사이트 ( by 1-blue )" + "\n" + description,
+    description: description + "\n" + "인스타그램 클론 사이트 ( by 1-blue )",
     images: images ? images : ["/logo.png"],
   },
 });

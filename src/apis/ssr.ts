@@ -31,9 +31,9 @@ const fetchHashtagPosts: ApiFetchHashtagPostsHandler = async ({
 
 /** 2023/06/03 - 특정 게시글 정보 요청 - by 1-blue */
 const fetchPost: ApiFetchPostHandler = async ({ postIdx }) =>
-  fetch(process.env.BASE_URL + `/api/post?postIdx=${postIdx}`).then((res) =>
-    res.json()
-  );
+  fetch(process.env.BASE_URL + `/api/post?postIdx=${postIdx}`, {
+    next: { revalidate: 60 * 60 },
+  }).then((res) => res.json());
 
 /** 2023/05/07 - SSR 요청 - by 1-blue */
 export const apiServiceSSR = {

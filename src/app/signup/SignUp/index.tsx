@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 // util
@@ -19,7 +19,6 @@ import StyledSignUpForm from "./style";
 // type
 import type { SignUpForm } from "@src/types";
 
-// FIXME: 배포전에 validate 주석 해제하기
 /** 2023/03/25 - 회원가입 페이지 - by 1-blue */
 const SignUp = () => {
   const {
@@ -44,18 +43,18 @@ const SignUp = () => {
   const password = useRef<string | null>(null);
   password.current = watch("password");
 
-  // FIXME: 개발에만 적용할 것
-  useEffect(() => {
-    setValue("id", "a");
-    setValue("password", "a");
-    setValue("passwordCheck", "a");
-    setValue("name", "박상은");
-    setValue("nickname", "1-blue");
-    setValue("email", "1-blue98@naver.com");
-    setValue("phone", "01021038259");
-    setValue("birthday", "19981106");
-    setValue("introduction", "아무것도 하지 않을 거면 죽어버려.");
-  }, [setValue]);
+  // // FIXME: 개발에만 적용할 것
+  // useEffect(() => {
+  //   setValue("id", "a");
+  //   setValue("password", "a");
+  //   setValue("passwordCheck", "a");
+  //   setValue("name", "박상은");
+  //   setValue("nickname", "1-blue");
+  //   setValue("email", "1-blue98@naver.com");
+  //   setValue("phone", "01021038259");
+  //   setValue("birthday", "19981106");
+  //   setValue("introduction", "아무것도 하지 않을 거면 죽어버려.");
+  // }, [setValue]);
 
   return (
     <StyledSignUpForm onSubmit={onSignUp}>
@@ -71,11 +70,11 @@ const SignUp = () => {
         subText={errors.id?.message}
         {...register("id", {
           required: "아이디를 입력해주세요!",
-          // pattern: {
-          //   value: getRegExp("id"),
-          //   message:
-          //     "숫자와 영어가 최소 한 글자 이상 포함되고, 최소 6자리, 최대 16자리여야 합니다!",
-          // },
+          pattern: {
+            value: getRegExp("id"),
+            message:
+              "숫자와 영어가 최소 한 글자 이상 포함되고, 최소 6자리, 최대 16자리여야 합니다!",
+          },
         })}
       />
       {/* 비밀번호 */}
@@ -86,11 +85,11 @@ const SignUp = () => {
         subText={errors.password?.message}
         {...register("password", {
           required: "비밀번호를 입력해주세요!",
-          // pattern: {
-          //   value: getRegExp("password"),
-          //   message:
-          //     "숫자와 영어가 최소 한 글자 이상 포함되고, 최소 8자리, 최대 16자리여야 합니다!",
-          // },
+          pattern: {
+            value: getRegExp("password"),
+            message:
+              "숫자와 영어가 최소 한 글자 이상 포함되고, 최소 8자리, 최대 16자리여야 합니다!",
+          },
         })}
       />
       {/* 비밀번호 확인 */}
@@ -113,10 +112,10 @@ const SignUp = () => {
         subText={errors.name?.message}
         {...register("name", {
           required: "이름을 입력해주세요!",
-          // maxLength: {
-          //   value: 20,
-          //   message: "20자 이내로 입력해주세요!",
-          // },
+          maxLength: {
+            value: 20,
+            message: "20자 이내로 입력해주세요!",
+          },
         })}
       />
       {/* 별칭 */}
@@ -127,10 +126,10 @@ const SignUp = () => {
         subText={errors.nickname?.message}
         {...register("nickname", {
           required: "별칭을 입력해주세요!",
-          // maxLength: {
-          //   value: 30,
-          //   message: "30자 이내로 입력해주세요!",
-          // },
+          maxLength: {
+            value: 30,
+            message: "30자 이내로 입력해주세요!",
+          },
         })}
       />
       {/* 이메일 */}
@@ -141,10 +140,10 @@ const SignUp = () => {
         subText={errors.email?.message}
         {...register("email", {
           required: "이메일을 입력해주세요!",
-          // pattern: {
-          //   value: getRegExp("email"),
-          //   message: "이메일 형식에 맞게 입력해주세요!",
-          // },
+          pattern: {
+            value: getRegExp("email"),
+            message: "이메일 형식에 맞게 입력해주세요!",
+          },
         })}
       />
       {/* 휴대폰 번호 */}
@@ -155,18 +154,18 @@ const SignUp = () => {
         subText={errors.phone?.message}
         {...register("phone", {
           required: "휴대폰 번호를 입력해주세요!",
-          // pattern: {
-          //   value: getRegExp("phone"),
-          //   message: "숫자만 11자리 입력해주세요!",
-          // },
-          // minLength: {
-          //   value: 11,
-          //   message: "11자리를 입력해주세요!",
-          // },
-          // maxLength: {
-          //   value: 11,
-          //   message: "11자리를 입력해주세요!",
-          // },
+          pattern: {
+            value: getRegExp("phone"),
+            message: "숫자만 11자리 입력해주세요!",
+          },
+          minLength: {
+            value: 11,
+            message: "11자리를 입력해주세요!",
+          },
+          maxLength: {
+            value: 11,
+            message: "11자리를 입력해주세요!",
+          },
         })}
       />
       {/* 생년월일 */}
@@ -177,18 +176,18 @@ const SignUp = () => {
         subText={errors.birthday?.message}
         {...register("birthday", {
           required: "생년월일을 입력해주세요!",
-          // pattern: {
-          //   value: getRegExp("birthday"),
-          //   message: "숫자만 8자리 입력해주세요!",
-          // },
-          // minLength: {
-          //   value: 8,
-          //   message: "8자리를 입력해주세요!",
-          // },
-          // maxLength: {
-          //   value: 8,
-          //   message: "8자리를 입력해주세요!",
-          // },
+          pattern: {
+            value: getRegExp("birthday"),
+            message: "숫자만 8자리 입력해주세요!",
+          },
+          minLength: {
+            value: 8,
+            message: "8자리를 입력해주세요!",
+          },
+          maxLength: {
+            value: 8,
+            message: "8자리를 입력해주세요!",
+          },
         })}
       />
       {/* 자기 소개 */}
@@ -197,10 +196,10 @@ const SignUp = () => {
         placeholder="5줄 이내로 간단한 자기소개를 입력해주세요."
         subText={errors.introduction?.message}
         {...register("introduction", {
-          // maxLength: {
-          //   value: 100,
-          //   message: "100자 이내로 입력해주세요!",
-          // },
+          maxLength: {
+            value: 100,
+            message: "100자 이내로 입력해주세요!",
+          },
         })}
       />
       <br />
@@ -210,7 +209,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-// export const metadata = {
-//   title: "blegram | 회원가입",
-// };

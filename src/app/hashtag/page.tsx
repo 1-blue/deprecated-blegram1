@@ -4,7 +4,7 @@ import { getMetadata } from "@src/shared/metadata";
 import HashtagPosts from "./HashtagPosts";
 
 // util
-import { combinePhotoURL } from "@src/utils";
+import { combinePhotoURL, splitPhotoURL } from "@src/utils";
 
 // type
 import type { Metadata } from "next";
@@ -24,13 +24,21 @@ export const generateMetadata = async ({
     skip: 0,
   });
 
+  if (!data.posts) {
+    return getMetadata({
+      title: "#" + hashtag,
+      description: `#${hashtag}를 갖는 게시글이 없습니다.`,
+      url: `/hashtag?hashtag=${hashtag}`,
+    });
+  }
+
   return getMetadata({
     title: "#" + hashtag,
-    description:
-      data?.posts?.[0]?.content || `#${hashtag}를 갖는 게시글이 없습니다.`,
-    images: data.posts?.[0].photos[0]
-      ? [combinePhotoURL(data.posts[0].photos[0])]
-      : undefined,
+    description: data.posts[0].content,
+    images: splitPhotoURL(data.posts[0].photos).map((photo) =>
+      combinePhotoURL(photo)
+    ),
+    url: `/hashtag?hashtag=${hashtag}`,
   });
 };
 

@@ -68,7 +68,11 @@ const PostCommentForm: React.FC<Props> = ({
       // shift + enter -> 줄바꿈
       if (e.key === "Enter" && e.shiftKey) return;
       // enter -> 댓글 생성
-      if (e.key === "Enter") submitRef.current?.click();
+      if (e.key === "Enter") {
+        submitRef.current?.click();
+
+        e.preventDefault();
+      }
     }, []);
 
   return (

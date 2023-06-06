@@ -132,7 +132,7 @@ const handler: NextApiHandler<
 
       await prisma.post.delete({ where: { idx } });
 
-      return res.status(204).json({ message: "게시글을 삭제했습니다." });
+      return res.status(200).json({ message: "게시글을 삭제했습니다." });
     }
   } catch (error) {
     console.error("/api/post error >> ", error);

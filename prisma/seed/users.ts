@@ -11,7 +11,7 @@ const dummyUsers: Prisma.UserCreateInput[] = [
     birthday: "20010101",
     introduction: "소개" + 1 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
     createdAt: new Date(),
-    avatar: `${process.env.NODE_ENV}/photos/cat.jpg`,
+    avatar: `${process.env.NODE_ENV}/photos/default/barcelona.jpg`,
   },
   {
     id: "b",
@@ -23,7 +23,7 @@ const dummyUsers: Prisma.UserCreateInput[] = [
     birthday: "20020202",
     introduction: "소개" + 2 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
     createdAt: new Date(),
-    avatar: `${process.env.NODE_ENV}/photos/dog.jpg`,
+    avatar: `${process.env.NODE_ENV}/photos/default/big-ben.jpg`,
   },
   {
     id: "c",
@@ -35,7 +35,7 @@ const dummyUsers: Prisma.UserCreateInput[] = [
     birthday: "30030303",
     introduction: "소개" + 3 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
     createdAt: new Date(),
-    avatar: `${process.env.NODE_ENV}/photos/lion.jpg`,
+    avatar: `${process.env.NODE_ENV}/photos/default/germany.jpg`,
   },
   {
     id: "d",
@@ -47,7 +47,7 @@ const dummyUsers: Prisma.UserCreateInput[] = [
     birthday: "40040404",
     introduction: "소개" + 4 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
     createdAt: new Date(),
-    avatar: "",
+    avatar: `${process.env.NODE_ENV}/photos/default/Iceland-waterfall.jpg`,
   },
   {
     id: "e",
@@ -59,7 +59,7 @@ const dummyUsers: Prisma.UserCreateInput[] = [
     birthday: "50050505",
     introduction: "소개" + 5 + "\n" + "🐳🐍🐊🦖🦈🐢" + "\n" + "😕🫤🙃🫠☹️🙁",
     createdAt: new Date(),
-    avatar: "",
+    avatar: `${process.env.NODE_ENV}/photos/default/venice.jpg`,
   },
 ];
 

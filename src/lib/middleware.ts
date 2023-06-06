@@ -292,8 +292,8 @@ const withAuthMiddleware: WithAuthMiddleware =
         .status(500)
         .json({ message: "서버측 문제입니다.\n잠시후에 다시 시도해주세요!" });
     } finally {
-      // FIXME: 배포전에 제거
-      console.log(req.url, res.statusCode);
+      // // FIXME: 배포전에 제거
+      // console.log(req.url, res.statusCode);
     }
   };
 

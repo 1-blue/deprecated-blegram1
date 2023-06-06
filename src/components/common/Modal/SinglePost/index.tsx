@@ -128,6 +128,7 @@ const SingleModal: React.FC<Props> = ({ postIdx }) => {
   return (
     <StyledModal onClick={onClickBubblingHanlder} data-type="outside">
       <Link
+        replace
         href={{ pathname, query: { postIdx: post.idx - 1 } }}
         onClick={(e) => {
           sessionStorage.setItem("dir", "left");
@@ -156,6 +157,7 @@ const SingleModal: React.FC<Props> = ({ postIdx }) => {
         />
       </article>
       <Link
+        replace
         href={{ pathname, query: { postIdx: post.idx + 1 } }}
         onClick={() => sessionStorage.setItem("dir", "right")}
       >

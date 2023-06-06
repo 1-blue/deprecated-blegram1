@@ -71,13 +71,14 @@ const StyledPostComment = styled.li`
       border: 2px solid ${({ theme }) => theme.colors.fg};
 
       ${({ theme }) => theme.util.noScroll};
+      overflow: hidden;
 
       &:focus {
         outline: none;
       }
       &:disabled {
         border: 2px solid transparent;
-        padding: 0em;
+        padding: 0.4em 0;
         font-weight: 500;
       }
     }

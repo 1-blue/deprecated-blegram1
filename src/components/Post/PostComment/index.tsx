@@ -111,7 +111,7 @@ const PostComment: React.FC<Props> = ({
           ref={commentRef}
           onChange={(e) => {
             setContent(e.target.value);
-            handleResizeHeight();
+            setTimeout(() => handleResizeHeight(), 0);
           }}
           value={content}
           disabled={disabled}

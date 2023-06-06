@@ -27,12 +27,20 @@ export const generateMetadata = async ({
 
   const data = await apiServiceSSR.fetchUser({ nickname });
 
+  if (!data.user) {
+    return getMetadata({
+      title: nickname,
+      description: "존재하지 않는 유저입니다.",
+      images: undefined,
+      url: `/${nickname}`,
+    });
+  }
+
   return getMetadata({
     title: nickname,
-    description: data.user
-      ? `${data.user.nickname}\n${data.user.introduction}`
-      : "존재하지 않는 유저입니다.",
+    description: `${data.user.nickname}\n${data.user.introduction}`,
     images: data.user?.avatar ? [combinePhotoURL(data.user.avatar)] : undefined,
+    url: `/${nickname}`,
   });
 };
 

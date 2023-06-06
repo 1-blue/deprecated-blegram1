@@ -4,7 +4,7 @@ import Post from "@src/components/Post";
 // ssr
 import { apiServiceSSR } from "@src/apis";
 import { getMetadata } from "@src/shared/metadata";
-import { combinePhotoURL } from "@src/utils";
+import { combinePhotoURL, splitPhotoURL } from "@src/utils";
 import type { Metadata } from "next";
 interface Props {
   searchParams: { postIdx: string | undefined };
@@ -19,12 +19,21 @@ export const generateMetadata = async ({
     lastIdx: Number(postIdx) || -1,
   });
 
+  if (!data.posts) {
+    return getMetadata({
+      title: "메인",
+      description: "게시글이 존재하지 않습니다.",
+      url: "/",
+    });
+  }
+
   return getMetadata({
     title: "메인",
-    description: data?.posts?.[0]?.content || "게시글이 존재하지 않습니다.",
-    images: data.posts?.[0]?.photos[0]
-      ? [combinePhotoURL(data.posts[0].photos[0])]
-      : undefined,
+    description: data.posts[0].content,
+    images: splitPhotoURL(data.posts[0].photos).map((photo) =>
+      combinePhotoURL(photo)
+    ),
+    url: "/",
   });
 };
 

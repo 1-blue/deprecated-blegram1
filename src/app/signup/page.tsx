@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = getMetadata({
   title: "회원가입",
   description: "회원가입 페이지입니다.",
+  url: "/signup",
 });
 
 /** 2023/04/30 - 회원가입 페이지 - by 1-blue */

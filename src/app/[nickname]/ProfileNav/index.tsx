@@ -20,7 +20,7 @@ const ProfileNav: React.FC<Props> = ({ nickname, type }) => {
           `/${nickname}?type=written` as __next_route_internal_types__.RouteImpl<string>
         }
       >
-        게시글들
+        게시글
       </StyledLink>
       <StyledLink
         selected={type === "bookmarked"}
@@ -28,7 +28,7 @@ const ProfileNav: React.FC<Props> = ({ nickname, type }) => {
           `/${nickname}?type=bookmarked` as __next_route_internal_types__.RouteImpl<string>
         }
       >
-        북마크 누른 게시글들
+        북마크 누른 게시글
       </StyledLink>
       <StyledLink
         selected={type === "liked"}
@@ -36,7 +36,7 @@ const ProfileNav: React.FC<Props> = ({ nickname, type }) => {
           `/${nickname}?type=liked` as __next_route_internal_types__.RouteImpl<string>
         }
       >
-        좋아요 누른 게시글들
+        좋아요 누른 게시글
       </StyledLink>
     </StyledProfileNav>
   );

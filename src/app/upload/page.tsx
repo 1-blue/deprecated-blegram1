@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = getMetadata({
   title: "게시글 업로드",
   description: "게시글을 업로드하는 페이지입니다.",
+  url: "/upload",
 });
 
 /** 2023/04/30 - 게시글 업로드 페이지 - by 1-blue  */

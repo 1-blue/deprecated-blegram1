@@ -68,7 +68,8 @@ const StyledConfirmModal = styled.section`
   position: fixed;
   bottom: 10vh;
   margin: 0 auto;
-  padding: 0.4em;
+  padding: 0.6em;
+  z-index: 3;
 
   border-radius: 0.3em;
 
@@ -79,10 +80,10 @@ const StyledConfirmModal = styled.section`
 
   /** 프로필 이미지 수정/취소 버튼 */
   & > button[type="button"] {
-    padding: 0.4em 0.5em;
+    padding: 0.5em 0.8em;
 
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 800;
 
     border-radius: 0.4em;
     color: ${({ theme }) => theme.colors.bg};

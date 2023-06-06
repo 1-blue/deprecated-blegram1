@@ -18,12 +18,21 @@ export const generateMetadata = async ({
 }: Props): Promise<Metadata> => {
   const data = await apiServiceSSR.fetchPost({ postIdx: +postIdx });
 
+  if (!data.post) {
+    return getMetadata({
+      title: "존재하지 않는 게시글",
+      description: "게시글이 존재하지 않습니다.",
+      url: `/post?postIdx=${postIdx}`,
+    });
+  }
+
   return getMetadata({
     title: data.post.user.nickname + "님의 게시글",
     description: data.post.content,
     images: splitPhotoURL(data.post.photos).map((photo) =>
       combinePhotoURL(photo)
     ),
+    url: `/post?postIdx=${postIdx}`,
   });
 };
 

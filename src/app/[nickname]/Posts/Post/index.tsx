@@ -40,7 +40,7 @@ const Post: React.FC<Props> = ({ post }) => {
 
       {photos.length >= 1 && <Icon shape="square-2-stack" fill color="#FFF" />}
 
-      <Link href={{ pathname, query: { postIdx: post.idx } }}>
+      <Link href={{ pathname, query: { postIdx: post.idx } }} replace>
         <div>
           <Icon shape="heart" size="md" color="#FFF" strokeWidth={2} />
           <span>{post._count.postLikers}</span>

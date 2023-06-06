@@ -29,6 +29,7 @@ const StyledModal = styled.aside`
 
     & > figure {
       margin: 1em -1em;
+      height: 500px;
     }
 
     & > section:first-child {
@@ -49,6 +50,23 @@ const StyledModal = styled.aside`
     margin: 0 2em;
     background-color: #fff;
     border-radius: 50%;
+  }
+
+  @media ${({ theme }) => theme.mediaSize.md} {
+    & > article > figure {
+      height: 400px;
+    }
+  }
+
+  @media ${({ theme }) => theme.mediaSize.sm} {
+    & > article > figure {
+      height: 60vw;
+    }
+
+    & > a {
+      margin: 0 0.8em;
+      padding: 0.3em;
+    }
   }
 `;
 

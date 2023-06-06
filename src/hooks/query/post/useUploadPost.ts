@@ -35,7 +35,7 @@ const useUploadPost = (): UseMutateFunction<
             ...prev,
             pages: prev.pages.map((page) => ({
               ...page,
-              posts: page.posts && [...page.posts, data.createdPost],
+              posts: page.posts && [data.createdPost, ...page.posts],
             })),
           }
       );

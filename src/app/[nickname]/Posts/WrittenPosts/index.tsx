@@ -31,6 +31,20 @@ const WrittenPosts: React.FC<Props> = ({ nickname }) => {
 
         {isFetching && <Skeleton.Card />}
       </StyledWrittenPosts>
+
+      {data?.pages[0].posts?.length === 0 && (
+        <span
+          style={{
+            display: "inline-block",
+            width: "100%",
+            textAlign: "center",
+            fontSize: "1.5rem",
+            margin: "3em 0",
+          }}
+        >
+          작성한 게시글이 없습니다.
+        </span>
+      )}
     </InfiniteScrollContainer>
   );
 };
