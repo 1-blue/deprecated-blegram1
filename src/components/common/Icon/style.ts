@@ -61,9 +61,12 @@ const StyledIcon = styled.svg<StyledProps>`
           cursor: auto;
         `}
 
+
   /** 버튼/앵커의 하위요소인 경우 */
-  button > &, a > & {
+  button > &,
+  a > & {
     pointer-events: none;
+    cursor: pointer;
   }
 
   /** 아이콘 hover ( 버튼/앵커에 감싸져 있다면 버튼/앵커에 hover 시 실행 ) */
@@ -71,9 +74,6 @@ const StyledIcon = styled.svg<StyledProps>`
   a:hover > & {
     color: ${({ hover }) => hover};
     stroke-width: ${({ strokeWidth }) => strokeWidth && +strokeWidth + 1};
-  }
-  button:hover > &,
-  a:hover > & {
     cursor: pointer;
   }
 `;

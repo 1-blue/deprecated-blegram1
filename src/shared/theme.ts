@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
 
 /** 자주 사용하는 색상들 ( [tailwindcss](https://tailwindcss.com/docs/customizing-colors) ) */
 const colors = {
@@ -263,6 +263,7 @@ const mediaSize = {
   lg: `screen and (max-width: 1024px)`,
   xl: `screen and (max-width: 1280px)`,
   "2xl": `screen and (max-width: 1536px)`,
+  "3xl": `screen and (max-width: 1920px)`,
 };
 
 /** 폰트 크기 */
@@ -287,12 +288,14 @@ const size = {
 
 /** 유틸리티 */
 const util = {
+  /** "..." */
   truncate: () => css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
 
+  /** 스크롤 바 디자인 변경 */
   scroll: () => css`
     &::-webkit-scrollbar {
       /** 스크롤바의 너비 */
@@ -311,12 +314,73 @@ const util = {
     }
   `,
 
+  /** 스크롤 바 숨기기 */
+  noScroll: () => css`
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `,
+
   /** 2023/03/10 - 텍스트 라인 제한 - by 1-blue */
-  lineClamp: (line: number) => css`
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: ${() => line};
-    overflow: hidden;
+  lineClamp: (line: number) => () =>
+    css`
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: ${line};
+      overflow: hidden;
+    `,
+};
+
+/** 애니메이션 */
+const animation = {
+  fadeUp: keyframes`
+    0% {
+      opacity: 0.01;
+      transform: translateY(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  `,
+  fadeIn: keyframes`
+    0% {
+      opacity: 0.01;
+    }
+    100% {
+      opacity: 1;
+    }
+  `,
+  spinY: keyframes`
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  `,
+  bounce: keyframes`
+    0%, 100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  `,
+  gradient: keyframes`
+    0% {
+      background-color: rgba(165, 165, 165, 0.5);
+    }
+    50% {
+      background-color: rgba(165, 165, 165, 0.8);
+    }
+    100% {
+      background-color: rgba(165, 165, 165, 0.5);
+    }
   `,
 };
 
@@ -330,6 +394,7 @@ const theme = {
   fontSize,
   size,
   util,
+  animation,
   isDark,
 };
 

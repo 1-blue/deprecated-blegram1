@@ -10,14 +10,19 @@ const StyledNavBar = styled.nav<StyledProps>`
   position: fixed;
   inset: 0;
   top: auto;
+  z-index: 10;
 
+  max-width: 1024px;
   width: 100%;
+  margin: 0 auto;
 
   display: flex;
   justify-content: space-between;
 
   color: ${({ theme }) => theme.colors.bg};
   background-color: ${({ theme }) => theme.colors.fg};
+
+  border-top: 2px solid ${({ theme }) => theme.colors.gray400};
 
   transform: translateY(${({ isUp }) => (isUp ? "100%" : "0%")});
   transform: translateY(${({ isBottom }) => isBottom && "0%"});
@@ -42,12 +47,13 @@ const StyledLink = styled.a<StyledLinkProps>`
 
   cursor: pointer;
 
-  &:hover {
+  &:hover span {
     font-weight: bold;
   }
 
   /** 네비게이션 바 텍스트 */
   & > span {
+    font-weight: 400;
     margin-top: 0.4em;
   }
 
@@ -57,7 +63,9 @@ const StyledLink = styled.a<StyledLinkProps>`
     ${({ isCurrentPath }) =>
       isCurrentPath &&
       css`
-        font-weight: bold;
+        & > span {
+          font-weight: bold;
+        }
         color: ${({ theme }) =>
           theme.isDark ? theme.colors.main600 : theme.colors.main400};
       `};

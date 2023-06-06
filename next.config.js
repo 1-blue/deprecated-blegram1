@@ -13,6 +13,12 @@ const nextConfig = {
     // 서버의 구성 요소로 사용 ( 유명한 패키지는 자동으로 포함됨 )
     serverComponentsExternalPackages: [],
   },
+
+  // 이미지
+  images: {
+    // loader: "",
+    domains: ["blegram.s3.ap-northeast-2.amazonaws.com"],
+  },
 };
 
 module.exports = nextConfig;

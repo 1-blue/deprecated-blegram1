@@ -12,13 +12,13 @@ import useScrollDirection from "@src/hooks/useScrollDirection";
 import StyledNavBar, { StyledLink } from "./style";
 
 // type
-import type { NavRouter } from "@src/types";
+import type { RouterElement } from "@src/types";
 interface Props {
-  navRouter: NavRouter;
+  routerElements: RouterElement[];
 }
 
 /** 2023/03/24 - 하단에 붙은 NarBar ( 모바일 전용 ) - by 1-blue */
-const NavBar: React.FC<Props> = ({ navRouter }) => {
+const NavBar: React.FC<Props> = ({ routerElements }) => {
   /** 2023/03/24 - 현재 path - by 1-blue */
   const pathname = usePathname();
   /** 2023/03/24 - 마지막 스크롤 방향 - by 1-blue */
@@ -29,16 +29,10 @@ const NavBar: React.FC<Props> = ({ navRouter }) => {
 
   return (
     <StyledNavBar isUp={isUp} isBottom={isBottom}>
-      {navRouter.map(({ path, label, icon }) => (
+      {routerElements.map(({ path, label, icon }) => (
         <Link key={path} href={path} legacyBehavior>
           <StyledLink isCurrentPath={pathname === path}>
-            <Icon
-              shape={icon}
-              size="sm"
-              fill={pathname === path}
-              color={pathname === path ? "@#" : undefined}
-              reverse
-            />
+            <Icon shape={icon} size="sm" fill={pathname === path} reverse />
             <span>{label}</span>
           </StyledLink>
         </Link>

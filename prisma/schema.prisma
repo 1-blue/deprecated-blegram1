@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 유저 테이블
+model User {
+  idx Int @id @unique @default(autoincrement())
+  id String @unique @db.VarChar(16)
+  password String @db.VarChar(100)
+  name String @db.VarChar(20)
+  nickname String @unique @db.VarChar(30)
+  email String @unique @db.VarChar(30)
+  phone String @unique @db.VarChar(11)
+  birthday String @db.VarChar(8)
+  introduction String @db.VarChar(100)
+  avatar String? @db.VarChar(160)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 게시글 1 : N
+  posts Post[]
+
+  // 유저와 게시글 ( 좋아요 ) N : M
+  postLikeds PostLike[]
+
+  // 유저와 댓글 1 : N
+  comments Comment[]
+
+  // 유저와 댓글 ( 좋아요 ) N : M
+  commentLikeds CommentLike[]
+
+  // 유저와 게시글 ( 북마크 ) N : M
+  bookmarkeds Bookmark[]
+
+  // 유저와 유저 팔로워/팔로잉 ( N : M )
+  followers Follow[] @relation("followers")
+  followings Follow[] @relation("followings")
+}
+
+// 팔로우 테이블
+model Follow {
+  follower    User @relation("followers", fields: [followerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followerIdx  Int
+  following   User @relation("followings", fields: [followingIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followingIdx Int
+
+  @@id([followerIdx, followingIdx])
+}
+
+// 게시글 테이블
+model Post {
+  idx Int @id @unique @default(autoincrement())
+  content String @db.VarChar(2000)
+  // 여러 이미지 경로에 "|"를 기준으로 합치고 구분
+  photos String @db.VarChar(1000)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 게시글 1 : N
+  userIdx Int
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 유저와 게시글 ( 좋아요 ) N : M
+  postLikers PostLike[]
+
+  // 유저와 게시글 ( 북마크 ) N : M
+  bookMarkers Bookmark[]
+
+  // 게시글과 댓글 N : M
+  comments Comment[]
+
+  // 게시글과 해시태그 N : M
+  postHashtageds PostHashtag[]
+}
+
+// 게시글 좋아요 테이블 ( 유저와 게시글 중간 테이블 )
+model PostLike {
+  postLiker User @relation(fields: [postLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postLikerIdx Int
+  postLiked Post @relation(fields: [postLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@id([postLikedIdx, postLikerIdx])
+}
+
+// 댓글 테이블
+model Comment {
+  idx Int @id @unique @default(autoincrement())
+  content String @db.VarChar(500)
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  // 유저와 댓글 1 : N
+  userIdx Int
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 게시글과 댓글 1 : N
+  postIdx Int
+  post Post @relation(fields: [postIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+
+  // 유저와 댓글 ( 좋아요 ) N : M
+  commentLikers CommentLike[]
+}
+
+// 댓글 좋아요 테이블 ( 유저와 댓글 중간 테이블 )
+model CommentLike {
+  commentLiker User @relation(fields: [commentLikerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  commentLikerIdx Int
+  commentLiked Comment @relation(fields: [commentLikedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  commentLikedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@id([commentLikedIdx, commentLikerIdx])
+}
+
+// 북마크 ( 유저와 게시글 중간 테이블 )
+model Bookmark {
+  bookmarker User @relation(fields: [bookmarkerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  bookmarkerIdx Int
+  bookmarked Post @relation(fields: [bookmarkedIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  bookmarkedIdx Int
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@id([bookmarkerIdx, bookmarkedIdx])
+}
+
+// 해시태그
+model Hashtag {
+  content String @id @unique
+
+  // 게시글과 해시태그 N : M
+  postHashtagers PostHashtag[]
+}
+
+// 게시글과 해시태그 ( N : M )
+model PostHashtag {
+  postHashtager Post @relation(fields: [postHashtagerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade) 
+  postHashtagerIdx Int
+  postHashtaged Hashtag @relation(fields: [postHashtagedIdx], references: [content], onUpdate: Cascade, onDelete: Cascade) 
+  postHashtagedIdx String
+
+  @@id([postHashtagerIdx, postHashtagedIdx])
+}
+
+// 알림
